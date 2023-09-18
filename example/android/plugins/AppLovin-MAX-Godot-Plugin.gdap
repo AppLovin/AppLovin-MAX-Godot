@@ -1,9 +1,0 @@
-[config]
-
-name="AppLovinMAX"
-binary_type="local"
-binary="AppLovin-MAX-Godot-Plugin/AppLovin-MAX-Godot-Plugin.aar"
-
-;[dependencies]
-
-;remote: applovin sdk url

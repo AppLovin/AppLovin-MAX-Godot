@@ -1,6 +1,6 @@
 extends Node
 
-class_name MainUI
+class_name Main
 
 const SDK_KEY = "YOUR_SDK_KEY_HERE"
 const INTERSTITIAL_AD_UNIT_IDS = {

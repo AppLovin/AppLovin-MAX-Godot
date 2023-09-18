@@ -22,7 +22,6 @@ const BANNER_AD_UNIT_IDS = {
 @onready var rewarded_button = $MarginContainer/VBoxContainer/RewardedButtonContainer/RewardedButton
 @onready var banner_button = $MarginContainer/VBoxContainer/BannerButtonContainer/BannerButton
 
-var is_initialized = false
 var is_banner_created = false
 var is_banner_showing = false
 
@@ -32,7 +31,7 @@ func _ready():
 	
 	var init_listener = AppLovinMAX.InitializationListener.new()
 	init_listener.on_sdk_initialized = func(sdk_configuration : AppLovinMAX.SdkConfiguration):
-		is_initialized = true;
+
 		_log_message("SDK Initialized: " + str(sdk_configuration))
 		_attach_ad_listeners()
 		

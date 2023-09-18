@@ -30,9 +30,9 @@ func _ready():
 	status_label.text = "Initializing SDK v" + AppLovinMAX.version + "..."
 	
 	var init_listener = AppLovinMAX.InitializationListener.new()
-	init_listener.on_sdk_initialized = func(sdk_configuration : AppLovinMAX.SdkConfiguration):
+	init_listener.on_sdk_initialized = func(sdk_configuration: AppLovinMAX.SdkConfiguration):
 
-		_log_message("SDK Initialized: " + str(sdk_configuration))
+		_log_message("SDK Initialized: " + sdk_configuration.to_string())
 		_attach_ad_listeners()
 		
 		mediation_debugger_button.disabled = false
@@ -44,7 +44,6 @@ func _ready():
 
 func _attach_ad_listeners():
 	
-	# Set interstitial callbacks
 	var inter_listener = AppLovinMAX.InterstitialAdEventListener.new()
 	inter_listener.on_ad_loaded = Callable(self, "_on_interstitial_ad_loaded")
 	inter_listener.on_ad_load_failed = Callable(self, "_on_interstitial_ad_load_failed")
@@ -75,7 +74,7 @@ func _attach_ad_listeners():
 	AppLovinMAX.set_banner_ad_listener(banner_listener)
 	
 func _on_mediation_debugger_button_pressed():
-	AppLovinMAX.showMediationDebugger()
+	AppLovinMAX.show_mediation_debugger()
 
 func _on_inter_button_pressed():
 	AppLovinMAX.targeting_data.clear_all()
@@ -87,11 +86,11 @@ func _on_inter_button_pressed():
 		
 	if AppLovinMAX.is_interstitial_ready(ad_unit_id):
 		_log_message("Showing interstitial ad...")
-		AppLovinMAX.show_interstitial_ad(ad_unit_id)
+		AppLovinMAX.show_interstitial(ad_unit_id)
 	else:
 		_log_message("Loading interstitial ad...")
 		inter_button.disabled = true
-		AppLovinMAX.load_interstitial_ad(ad_unit_id)
+		AppLovinMAX.load_interstitial(ad_unit_id)
 
 func _on_rewarded_button_pressed():
 	
@@ -120,7 +119,7 @@ func _on_banner_button_pressed():
 			if !is_banner_created:
 				is_banner_created = true
 				# Programmatic banner creation - banners are automatically sized to 320x50 on phones and 728x90 on tablets
-				AppLovinMAX.create_banner(ad_unit_id, AppLovinMAX.BannerPosition.BOTTOM_CENTER)
+				AppLovinMAX.create_banner(ad_unit_id, AppLovinMAX.AdViewPosition.BOTTOM_CENTER)
 
 				# Set background color for banners to be fully functional In this case we are setting
 				# it to black - PLEASE USE HEX STRINGS ONLY
@@ -137,7 +136,7 @@ func _on_banner_button_pressed():
 ### Interstitial Ad Callbacks
 
 func _on_interstitial_ad_loaded(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
-	inter_button.enabled = true
+	inter_button.disabled = false
 	inter_button.text = "Show Interstitial"
 	_log_message("Interstitial ad loaded from" + ad_info.network_name)
 	
@@ -148,7 +147,7 @@ func _on_interstitial_ad_displayed(ad_unit_id: String, ad_info: AppLovinMAX.AdIn
 	_log_message("Interstitial ad displayed")
 	
 func _on_interstitial_ad_display_failed(ad_unit_id: String, errorInfo: AppLovinMAX.ErrorInfo, ad_info: AppLovinMAX.AdInfo):
-	inter_button.enabled = true
+	inter_button.disabled = false
 	inter_button.text = "Load Interstitial"
 	_log_message("Interstitial ad failed to display")
 	
@@ -156,14 +155,14 @@ func _on_interstitial_ad_clicked(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo
 	_log_message("Interstitial ad clicked")
 	
 func _on_interstitial_ad_hidden(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
-	inter_button.enabled = true
+	inter_button.disabled = false
 	inter_button.text = "Load Interstitial"
 	_log_message("Interstitial ad hidden")
 
 ### Rewarded Ad Callbacks
 
 func _on_rewarded_ad_loaded(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
-	rewarded_button.enabled = true
+	rewarded_button.disabled = false
 	rewarded_button.text = "Show Rewarded Ad"
 	_log_message("Rewarded ad loaded from" + ad_info.network_name)
 	
@@ -174,7 +173,7 @@ func _on_rewarded_ad_displayed(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
 	_log_message("Rewarded ad displayed")
 	
 func _on_rewarded_ad_display_failed(ad_unit_id: String, errorInfo: AppLovinMAX.ErrorInfo, ad_info: AppLovinMAX.AdInfo):
-	rewarded_button.enabled = true
+	rewarded_button.disabled = false
 	rewarded_button.text = "Load Rewarded Ad"
 	_log_message("Rewarded ad failed to display")
 	
@@ -185,7 +184,7 @@ func _on_rewarded_ad_received_reward(ad_unit_id: String, ad_info: AppLovinMAX.Ad
 	_log_message("Rewarded ad granted reward")
 	
 func _on_rewarded_ad_hidden(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
-	rewarded_button.enabled = true
+	rewarded_button.disabled = false
 	rewarded_button.text = "Load Rewarded Ad"
 	_log_message("Rewarded ad hidden")
 	

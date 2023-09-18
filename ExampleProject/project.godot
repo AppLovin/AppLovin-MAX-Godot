@@ -11,7 +11,8 @@ config_version=5
 [application]
 
 config/name="Example"
-config/features=PackedStringArray("4.0", "Mobile")
+run/main_scene="res://Scenes/main.tscn"
+config/features=PackedStringArray("4.1", "Mobile")
 config/icon="res://icon.svg"
 
 [display]
@@ -23,4 +24,5 @@ window/handheld/orientation=1
 [rendering]
 
 renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true
 environment/defaults/default_clear_color=Color(1, 1, 1, 1)

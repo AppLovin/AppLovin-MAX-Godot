@@ -120,7 +120,7 @@ func _on_banner_button_pressed():
 			if !is_banner_created:
 				is_banner_created = true
 				# Programmatic banner creation - banners are automatically sized to 320x50 on phones and 728x90 on tablets
-				AppLovinMAX.create_banner(ad_unit_id, AppLovinMAX.BannerPosition.BOTTOM_CENTER)
+				AppLovinMAX.create_banner(ad_unit_id, AppLovinMAX.AdViewPosition.BOTTOM_CENTER)
 
 				# Set background color for banners to be fully functional In this case we are setting
 				# it to black - PLEASE USE HEX STRINGS ONLY

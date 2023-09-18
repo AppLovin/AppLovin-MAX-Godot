@@ -1,0 +1,16 @@
+[config]
+name="AppLovinMAX-Godot"
+binary="AppLovin-MAX-Godot-Plugin/libAppLovin-MAX-Godot-Plugin.a"
+
+initialization="applovin_max_godot_plugin_init"
+deinitialization="applovin_max_godot_plugin_deinit"
+
+[dependencies]
+linked=[]
+embedded=[]
+system=[]
+capabilities=[]
+files=[""]
+linker_flags=["-ObjC"]
+
+[plist]

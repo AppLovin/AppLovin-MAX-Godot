@@ -1,3 +1,5 @@
+.DS_STORE
+
 # Godot 4+ specific ignores
 .godot/
 

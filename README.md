@@ -50,7 +50,7 @@ Check out the `Active development considerations` section in Godot's [Exporting 
 This will allow you to make changes to your game code without having to export to Xcode again. You can simply make changes in Godot and run your build in your Xcode project immediately after.
 
 #### Android
-1. Requirement: please read Godot's [Exporting for Android]([https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_ios.html#doc-exporting-for-ios](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_android.html) on how to setup your Godot project for Android.
+1. Requirement: please read Godot's [Exporting for Android](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_android.html) on how to setup your Godot project for Android.
 2. In the Godot editor, click on `Install Android Build Template...` from the Project menu. Click `Install`.
 3. In the Godot editor, open the `Export` window from the `Project` menu. When the `Export` window opens, click `Add..` and select `Android`.
 4. In the `Plugins` category, `App Lovin Max` checkbox must be enabled.
@@ -58,11 +58,11 @@ This will allow you to make changes to your game code without having to export t
   <img width="400" alt="image" src="https://github.com/AppLovin/AppLovin-MAX-Godot/assets/23690238/d8320199-6288-472d-93db-c81912bbddc3">
   
 5. Click on `Export Project...`
-  - Note: if you provided a `Unique Name` under the `Package` category, it does not seem to apply the package name to the Android Studio project. We will need to replace it manually yourself in the Android Studio project.
+  - Note: if you provided a `Unique Name` under the `Package` category, it does not seem to apply the package name to the Android Studio project (on the other hand, it will for the APK). We will need to replace it manually yourself in the Android Studio project. See `Other considerations`.
 6. Open the Android Studio project. By default, it will be in `<GODOT_PROJECT>/android/build` folder.
   - Note: Your Android Studio project will not run properly by default.
     1. Godot can fail to export our plugin AAR to the Android Studio project. We will be using Gradle for dependency management. See Step 7 and onwards.
-    2. Godot can also fail to export your package name properly. See `Other considerations`.
+    2. As mentioned before, Godot can also fail to export your package name properly. See `Other considerations`.
 7. Copy the `AppLovin-MAX-Godot-Plugin.aar` in `<GODOT_PROJECT>/android/plugins/AppLovin-MAX-Godot-Plugin` to the `libs` directory in <GODOT_PROJECT>/android/build/libs`.
 8. In the `build.gradle`, add the following line in the `dependencies` code block:
 ```

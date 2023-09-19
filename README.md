@@ -20,8 +20,6 @@ This section will provide the instructions on how to add the plugin to your Godo
 ### Exporting/Building to iOS/Android
 
 #### iOS
-Reference: Godot's [Exporting for iOS](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_ios.html#doc-exporting-for-ios) doc for exporting to an Xcode project.
-
 1. In the Godot editor, open the `Export` window from the `Project` menu. When the `Export` window opens, click `Add..` and select `iOS`.
   - The `App Store Team ID` and `(Bundle) Identifier` options in the `Application` category are required.
 2. In the `Plugins` category, `App Lovin Max` checkbox must be enabled.
@@ -29,6 +27,7 @@ Reference: Godot's [Exporting for iOS](https://docs.godotengine.org/en/stable/tu
   <img width="400" alt="image" src="https://github.com/AppLovin/AppLovin-MAX-Godot/assets/23690238/d8320199-6288-472d-93db-c81912bbddc3">
   
 3. Click on `Export Project...`.
+
   **Note**: You will see the export "fail" and see the error `[Xcode Build]: Xcode project build failed, see editor log for details`.
   
   <img width="400" alt="image" src="https://github.com/AppLovin/AppLovin-MAX-Godot/assets/23690238/c331552e-7fa5-4e4b-ba3f-006de2bcd694">
@@ -51,9 +50,7 @@ Check out the `Active development considerations` section in Godot's [Exporting 
 This will allow you to make changes to your game code without having to export to Xcode again. You can simply make changes in Godot and run your build in your Xcode project immediately after.
 
 #### Android
-Reference: Godot's [Exporting for Android]([https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_ios.html#doc-exporting-for-ios](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_android.html)) doc for exporting to an Android Studio project.
-
-1. Requirement: please read the above reference on how to setup your Godot project for Android.
+1. Requirement: please read Godot's [Exporting for Android]([https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_ios.html#doc-exporting-for-ios](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_android.html) on how to setup your Godot project for Android.
 2. In the Godot editor, click on `Install Android Build Template...` from the Project menu. Click `Install`.
 3. In the Godot editor, open the `Export` window from the `Project` menu. When the `Export` window opens, click `Add..` and select `Android`.
 4. In the `Plugins` category, `App Lovin Max` checkbox must be enabled.

@@ -63,7 +63,7 @@ This will allow you to make changes to your game code without having to export t
   - Note: Your Android Studio project will not run properly by default.
     1. Godot can fail to export our plugin AAR to the Android Studio project. We will be using Gradle for dependency management. See Step 7 and onwards.
     2. As mentioned before, Godot can also fail to export your package name properly. See `Other considerations`.
-7. Copy the `AppLovin-MAX-Godot-Plugin.aar` in `<GODOT_PROJECT>/android/plugins/AppLovin-MAX-Godot-Plugin` to the `libs` directory in <GODOT_PROJECT>/android/build/libs`.
+7. Copy the `AppLovin-MAX-Godot-Plugin.aar` in `<GODOT_PROJECT>/android/plugins/AppLovin-MAX-Godot-Plugin` to the `libs` directory in `<GODOT_PROJECT>/android/build/libs`.
 8. In the `build.gradle`, add the following line in the `dependencies` code block:
 ```
 implementation 'com.applovin:applovin-sdk:+'

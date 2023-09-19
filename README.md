@@ -2,6 +2,9 @@
 
 AppLovin MAX Godot plugin for Android and iOS.
 
+## Documentation
+For information on how to use our plugin in your GDScripts, check out our integration docs [here](https://dash.applovin.com/documentation/mediation/godot/getting-started/integration).
+
 ## Plugin
 The `AppLovinMAXGodotPlugin-x.x.x` directory contains the plugin assets/files.
 
@@ -75,9 +78,6 @@ implementation 'com.applovin:applovin-sdk:+'
   - Click on `Replace in Files...` under `Find` menu option (cmd+shift+R if you are on macOS).
   - Search for `com.godot.game` and replace it with your desire package name.
   - In your `src` directory, rename the subdirectories from `src`/`com`/`godot`/`game` to your desired package name.
-
-## Documentation
-For information on how to use our plugin in your GDScripts, check out our integration docs [here](https://dash.applovin.com/documentation/mediation/godot/getting-started/integration).
 
 ## Demo Apps
 The `/ExampleProject` directory contains the demo app.

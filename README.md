@@ -34,7 +34,7 @@ Reference: Godot's [Exporting for iOS](https://docs.godotengine.org/en/stable/tu
   - We have future plans to help streamline this process.
 4. Once the project has exported, create a Podfile in the same directory as your Xcode project (`.xcodeproj`). We have included an example Podfile in the top level directory of the repo.
   - To add other networks and their dependencies, please visit [Preparing Mediated Networks](https://dash.applovin.com/documentation/mediation/godot/mediation-adapters/ios). This tool will automatically generate the Podfile code.
-  - Note: Your Xcode project will not run by default as noted in the point 2 above.
+  - Note: Your Xcode project will not run by default as noted before until you run the next step.
 5. Finally, to install our AppLovinSDK and your dependencies, run the following on your command line tool:
   ```
   pod install --repo-update

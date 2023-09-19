@@ -32,8 +32,9 @@ Reference: Godot's [Exporting for iOS](https://docs.godotengine.org/en/stable/tu
   
   - This is an expected error, as the AppLovinSDK.framework is not included in the plugin by default. The reasoning behind this is to leverage Cocoapods to manage the iOS dependencies such as other ad network SDKs and our mediation adapters for them.
   - We have future plans to help streamline this process.
-4. Once the project has exported, create a Podfile in the same directory as your Xcode project (`.xcodeproj`). We have included an example Podfile in the top level directory of the repo. On the [AppLovin website](https://dash.applovin.com/documentation/mediation/godot/mediation-adapters/ios), we have tool that generates the Podfile code and dependencies you need for your Xcode project.
-    - Note: Your Xcode project will not run by default as noted in the point 2 above.
+4. Once the project has exported, create a Podfile in the same directory as your Xcode project (`.xcodeproj`). We have included an example Podfile in the top level directory of the repo.
+  - To add other networks and their dependencies, please visit [Preparing Mediated Networks](https://dash.applovin.com/documentation/mediation/godot/mediation-adapters/ios). This tool will automatically generate the Podfile code.
+  - Note: Your Xcode project will not run by default as noted in the point 2 above.
 5. Finally, to install our AppLovinSDK and your dependencies, run the following on your command line tool:
   ```
   pod install --repo-update
@@ -62,7 +63,12 @@ Reference: Godot's [Exporting for Android]([https://docs.godotengine.org/en/stab
   - Note: Your Android Studio project will not run properly by default.
     1. Godot can fail to export our plugin AAR to the Android Studio project. We will be using Gradle for dependency management. See Step 7 and onwards.
     2. Godot can also fail to export your package name properly. See `Other considerations`.
-7.  In the `build.gradle`
+7. Copy the `AppLovin-MAX-Godot-Plugin.aar` in `<GODOT_PROJECT>/android/plugins/AppLovin-MAX-Godot-Plugin` to the `libs` directory in <GODOT_PROJECT>/android/build/libs`.
+8. In the `build.gradle`, add the following line in the `dependencies` code block:
+```
+implementation 'com.applovin:applovin-sdk:+'
+```
+  - To add other networks and their dependencies, please visit [Preparing Mediated Networks](https://dash.applovin.com/documentation/mediation/godot/mediation-adapters/android). This tool will automatically generate the gradle code.
 
 ##### Other considerations
 - *`com.godot.game` package name*

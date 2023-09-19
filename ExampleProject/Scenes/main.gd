@@ -27,7 +27,7 @@ var is_banner_showing = false
 
 func _ready():
 	
-	status_label.text = "Initializing SDK v" + AppLovinMAX.version + "..."
+	status_label.text = "Initializing Plugin v" + AppLovinMAX.version + "..."
 	
 	var init_listener = AppLovinMAX.InitializationListener.new()
 	init_listener.on_sdk_initialized = func(sdk_configuration: AppLovinMAX.SdkConfiguration):

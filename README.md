@@ -77,7 +77,7 @@ implementation 'com.applovin:applovin-sdk:+'
   - In your `src` directory, rename the subdirectories from `src`/`com`/`godot`/`game` to your desired package name.
 
 ## Documentation
-For information on how to use our plugin in your GDScripts, heck out our integration docs [here](https://dash.applovin.com/documentation/mediation/godot/getting-started/integration).
+For information on how to use our plugin in your GDScripts, check out our integration docs [here](https://dash.applovin.com/documentation/mediation/godot/getting-started/integration).
 
 ## Demo Apps
 The `/ExampleProject` directory contains the demo app.

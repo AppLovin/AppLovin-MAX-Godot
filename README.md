@@ -8,7 +8,7 @@ Check out our integration docs [here](https://dash.applovin.com/documentation/me
 ## Demo Apps
 The `/ExampleProject` directory contains the demo app. Gradle and CocoaPods automatically pulls in the React Native module for easier debugging.
 
-<img src="https://user-images.githubusercontent.com/20387467/116487500-fa914900-a844-11eb-9af9-231045f84bed.jpeg" width="350" height="700" />
+<img width="832" alt="image" src="https://github.com/AppLovin/AppLovin-MAX-Godot/assets/5104410/f7fbbef0-6631-46ab-8661-b28d9b3c3d4e">
 
 ## License
 MIT

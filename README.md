@@ -42,7 +42,7 @@ This section will provide the instructions on how to add the plugin to your Godo
   pod install --repo-update
   ```
 
-##### Other considerations
+##### Other iOS Considerations
 - `Tip:` *Removing the need to export repeatedly*
   
 Check out the `Active development considerations` section in Godot's [Exporting for iOS](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_ios.html#doc-exporting-for-ios) doc.
@@ -58,11 +58,11 @@ This will allow you to make changes to your game code without having to export t
   <img width="400" alt="image" src="https://github.com/AppLovin/AppLovin-MAX-Godot/assets/23690238/d8320199-6288-472d-93db-c81912bbddc3">
   
 5. Click on `Export Project...`
-  - Note: if you provided a `Unique Name` under the `Package` category, it does not seem to apply the package name to the Android Studio project (on the other hand, it will for the APK). We will need to replace it manually yourself in the Android Studio project. See [Other considerations](#other-considerations).
+  - Note: if you provided a `Unique Name` under the `Package` category, it does not seem to apply the package name to the Android Studio project (on the other hand, it will for the APK). We will need to replace it manually yourself in the Android Studio project. See [Other considerations](#other-android-considerations).
 6. Open the Android Studio project. By default, it will be in `<GODOT_PROJECT>/android/build` folder.
   - Note: Your Android Studio project will not run properly by default.
     1. Godot can fail to export our plugin AAR to the Android Studio project. We will be using Gradle for dependency management. See Step 7 and onwards.
-    2. As mentioned before, Godot can also fail to export your package name properly. See [Other considerations](#other-considerations).
+    2. As mentioned before, Godot can also fail to export your package name properly. See [Other considerations](#other-android-considerations).
 7. Copy the `AppLovin-MAX-Godot-Plugin.aar` in `<GODOT_PROJECT>/android/plugins/AppLovin-MAX-Godot-Plugin` to the `libs` directory in `<GODOT_PROJECT>/android/build/libs`.
 8. In the `build.gradle`, add the following line in the `dependencies` code block:
 ```
@@ -70,7 +70,7 @@ implementation 'com.applovin:applovin-sdk:+'
 ```
   - To add other networks and their dependencies, please visit [Preparing Mediated Networks](https://dash.applovin.com/documentation/mediation/godot/mediation-adapters/android). This tool will automatically generate the gradle code.
 
-##### Other considerations
+##### Other Android Considerations
 - `Issue:` *`com.godot.game` package name*
   - Click on `Replace in Files...` under `Find` menu option (cmd+shift+R if you are on macOS).
   - Search for `com.godot.game` and replace it with your desire package name.

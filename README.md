@@ -6,9 +6,11 @@ AppLovin MAX Godot plugin for Android and iOS. We currently only support Godot 4
 For information on how to use our plugin in your GDScripts, check out our integration docs [here](https://dash.applovin.com/documentation/mediation/godot/getting-started/integration).
 
 ## Plugin
-You may find our plugin on the [Godot Asset Library](https://godotengine.org/asset-library/asset/2141). The source of those plugins are in the top level directory of this repo: `/addons`, `/ios`, `/android`.
+You may find our plugin on the [Godot Asset Library](https://godotengine.org/asset-library/asset/2141).
 
 We have an example scene `Main.gd` in `/addons/applovin_max/Example/Scenes` that shows an example integration of our APIs.
+
+The source files for the native plugins can be found in the `/Source` folder. The source files for the Godot plugin can be found in `/addons/applovin_max`.
 ## Plugin Integration Instructions
 This section will provide the instructions on how to add the plugin to your Godot project and how to set up your Xcode and Android Studio projects.
 

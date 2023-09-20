@@ -9,5 +9,3 @@
 /android/** !export-ignore
 /ios/       !export-ignore
 /ios/**     !export-ignore
-/LICENSE    !export-ignore
-/README.md  !export-ignore

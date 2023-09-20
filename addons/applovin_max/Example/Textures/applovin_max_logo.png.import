@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cginfx1hn5lrh"
-path="res://.godot/imported/applovin_max_logo.png-a0aa56d1ec1ba776de32515e3e06b007.ctex"
+path="res://.godot/imported/applovin_max_logo.png-2d727c2713e371e0193f04c6801a015a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/applovin_max/applovin_max_logo.png"
-dest_files=["res://.godot/imported/applovin_max_logo.png-a0aa56d1ec1ba776de32515e3e06b007.ctex"]
+source_file="res://addons/applovin_max/Example/Textures/applovin_max_logo.png"
+dest_files=["res://.godot/imported/applovin_max_logo.png-2d727c2713e371e0193f04c6801a015a.ctex"]
 
 [params]
 

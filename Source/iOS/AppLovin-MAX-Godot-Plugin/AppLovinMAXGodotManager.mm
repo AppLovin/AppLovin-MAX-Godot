@@ -167,7 +167,7 @@ static NSString *const DEFAULT_AD_VIEW_POSITION = @"top_left";
         self.sdk = [ALSdk sharedWithSettings: settings];
     }
     
-    [self.sdk setPluginVersion: [@"AppLovinMAX-Godot-" stringByAppendingString: VERSION]];
+    [self.sdk setPluginVersion: [@"Godot-" stringByAppendingString: VERSION]];
     self.sdk.mediationProvider = @"max";
     [self.sdk initializeSdkWithCompletionHandler:^(ALSdkConfiguration *configuration)
      {

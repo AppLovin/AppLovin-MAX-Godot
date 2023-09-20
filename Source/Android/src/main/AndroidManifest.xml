@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.applovin.godot">
+
+    <application>
+        <meta-data
+            android:name="org.godotengine.plugin.v1.AppLovinMAX"
+            android:value="com.applovin.godot.AppLovinMAXGodotPlugin" />
+    </application>
+
+</manifest>

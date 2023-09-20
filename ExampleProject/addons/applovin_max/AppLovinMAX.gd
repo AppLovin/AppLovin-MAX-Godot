@@ -21,7 +21,6 @@ static var _mrec_ad_listener: AdEventListener
 static var _interstitial_ad_listener: InterstitialAdEventListener
 static var _appopen_ad_listener: AppOpenAdEventListener
 static var _rewarded_ad_listener: RewardedAdEventListener
-static var _rewarded_interstitial_ad_listener: RewardedInterstitialAdEventListener
 
 static var _plugin = _get_plugin("AppLovinMAXGodotPlugin")
 	
@@ -65,10 +64,6 @@ class RewardedAdEventListener:
 	extends FullscreenAdEventListener
 	
 	var on_ad_received_reward: Callable = func(ad_unit_identifier: String, reward: AppLovinMAX.Reward, ad_info: AppLovinMAX.AdInfo): pass
-	
-	
-class RewardedInterstitialAdEventListener:
-	extends RewardedAdEventListener
 	
 	
 static func initialize(sdk_key: String, listener: InitializationListener = null, ad_unit_identifiers: Array = Array()) -> void:
@@ -683,80 +678,6 @@ static func set_rewarded_ad_local_extra_parameter(ad_unit_identifier: String, ke
 		
 	_plugin.set_rewarded_ad_local_extra_parameter(ad_unit_identifier, key, value)
 	
-	
-### Rewarded Interstitial ###
-
-static func set_rewarded_interstitial_ad_listener(listener: RewardedInterstitialAdEventListener) -> void:
-	_rewarded_interstitial_ad_listener = listener
-	
-	_plugin.connect("rewarded_interstitial_on_ad_loaded", func(ad_unit_identifier: String, ad_info: Dictionary):
-		if _rewarded_interstitial_ad_listener:
-			_rewarded_interstitial_ad_listener.on_ad_loaded.call(ad_unit_identifier, AdInfo.new(ad_info))
-	)	
-	_plugin.connect("rewarded_interstitial_on_ad_load_failed", func(ad_unit_identifier: String, error_info: Dictionary):
-		if _rewarded_interstitial_ad_listener:
-			_rewarded_interstitial_ad_listener.on_ad_load_failed.call(ad_unit_identifier, ErrorInfo.new(error_info))
-	)
-	_plugin.connect("rewarded_interstitial_on_ad_clicked", func(ad_unit_identifier: String, ad_info: Dictionary):
-		if _rewarded_interstitial_ad_listener:
-			_rewarded_interstitial_ad_listener.on_ad_clicked.call(ad_unit_identifier, AdInfo.new(ad_info))
-	)
-	_plugin.connect("rewarded_interstitial_on_ad_revenue_paid", func(ad_unit_identifier: String, ad_info: Dictionary):
-		if _rewarded_interstitial_ad_listener:
-			_rewarded_interstitial_ad_listener.on_ad_revenue.call(ad_unit_identifier, AdInfo.new(ad_info))
-	)
-	_plugin.connect("rewarded_interstitial_on_ad_displayed", func(ad_unit_identifier: String, ad_info: Dictionary):
-		if _rewarded_interstitial_ad_listener:
-			_rewarded_interstitial_ad_listener.on_ad_displayed.call(ad_unit_identifier, AdInfo.new(ad_info))
-	)
-	_plugin.connect("rewarded_interstitial_on_ad_display_failed", func(ad_unit_identifier: String, error_info: Dictionary, ad_info: Dictionary):
-		if _rewarded_interstitial_ad_listener:
-			_rewarded_interstitial_ad_listener.on_ad_display_failed.call(ad_unit_identifier, ErrorInfo.new(error_info), AdInfo.new(ad_info))
-	)
-	_plugin.connect("rewarded_interstitial_on_ad_hidden", func(ad_unit_identifier: String, ad_info: Dictionary):
-		if _rewarded_interstitial_ad_listener:
-			_rewarded_interstitial_ad_listener.on_ad_hidden.call(ad_unit_identifier, AdInfo.new(ad_info))
-	)
-	_plugin.connect("rewarded_interstitial_on_ad_received_reward", func(ad_unit_identifier: String, reward: Dictionary, ad_info: Dictionary):
-		if _rewarded_ad_listener:
-			_rewarded_ad_listener.on_ad_received_reward.call(ad_unit_identifier, Reward.new(reward), AdInfo.new(ad_info))
-	)
-	
-
-static func load_rewarded_interstitial(ad_unit_identifier: String) -> void:
-	if _plugin == null:
-		return
-		
-	_plugin.load_rewarded_interstitial(ad_unit_identifier)
-	
-	
-static func is_rewarded_interstitial_ready(ad_unit_identifier: String) -> bool:
-	if _plugin == null:
-		return false
-		
-	return _plugin.is_rewarded_interstitial_ready(ad_unit_identifier)
-	
-	
-static func show_rewarded_interstitial(ad_unit_identifier: String, placement: String = "", custom_data: String = "") -> void:
-	if _plugin == null:
-		return
-		
-	_plugin.show_rewarded_interstitial(ad_unit_identifier, placement, custom_data)
-	
-	
-static func set_rewarded_interstitial_extra_parameter(ad_unit_identifier: String, key: String, value: String) -> void:
-	if _plugin == null:
-		return
-		
-	_plugin.set_rewarded_interstitial_extra_parameter(ad_unit_identifier, key, value)
-
-
-static func set_rewarded_interstitial_local_extra_parameter(ad_unit_identifier: String, key: String, value: Object) -> void:
-	if _plugin == null:
-		return
-		
-	_plugin.set_rewarded_interstitial_local_extra_parameter(ad_unit_identifier, key, value)
-
 
 ### Event Tracking ###
 

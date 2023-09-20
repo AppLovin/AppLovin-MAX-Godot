@@ -1,0 +1,377 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6A24786F2AB465D400864F6E /* AppLovinMAXGodotManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AD94AE02AB459F800942DF0 /* AppLovinMAXGodotManager.mm */; };
+		6A2478702AB465D700864F6E /* AppLovinMAXGodotPlugin.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AD94ADB2AB4588000942DF0 /* AppLovinMAXGodotPlugin.mm */; };
+		6ACD42EB2AB64B13009F931C /* NSString+AppLovinMAXGodotPlugin.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6ACD42EA2AB64B13009F931C /* NSString+AppLovinMAXGodotPlugin.mm */; };
+		6ACD42EE2AB6529D009F931C /* NSObject+AppLovinMAXGodotPlugin.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6ACD42ED2AB6529D009F931C /* NSObject+AppLovinMAXGodotPlugin.mm */; };
+		6ACD42F12AB670C2009F931C /* NSArray+AppLovinMAXGodotPlugin.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6ACD42F02AB670C2009F931C /* NSArray+AppLovinMAXGodotPlugin.mm */; };
+		6ACD42F42AB670CB009F931C /* NSDictionary+AppLovinMAXGodotPlugin.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6ACD42F32AB670CB009F931C /* NSDictionary+AppLovinMAXGodotPlugin.mm */; };
+		6ACED7742AB7DD1A0030E0A1 /* AppLovinMAXGodotSignal.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6ACED7722AB7DD1A0030E0A1 /* AppLovinMAXGodotSignal.mm */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		6A2478642AB465C400864F6E /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		6A2478662AB465C400864F6E /* libAppLovin-MAX-Godot-Plugin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libAppLovin-MAX-Godot-Plugin.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A9524D12AB562F200EFB63F /* AppLovin-MAX-Godot-Plugin.gdip */ = {isa = PBXFileReference; lastKnownFileType = text; path = "AppLovin-MAX-Godot-Plugin.gdip"; sourceTree = "<group>"; };
+		6ACD42E92AB64B13009F931C /* NSString+AppLovinMAXGodotPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+AppLovinMAXGodotPlugin.h"; sourceTree = "<group>"; };
+		6ACD42EA2AB64B13009F931C /* NSString+AppLovinMAXGodotPlugin.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSString+AppLovinMAXGodotPlugin.mm"; sourceTree = "<group>"; };
+		6ACD42EC2AB6529D009F931C /* NSObject+AppLovinMAXGodotPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+AppLovinMAXGodotPlugin.h"; sourceTree = "<group>"; };
+		6ACD42ED2AB6529D009F931C /* NSObject+AppLovinMAXGodotPlugin.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSObject+AppLovinMAXGodotPlugin.mm"; sourceTree = "<group>"; };
+		6ACD42EF2AB670C2009F931C /* NSArray+AppLovinMAXGodotPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSArray+AppLovinMAXGodotPlugin.h"; sourceTree = "<group>"; };
+		6ACD42F02AB670C2009F931C /* NSArray+AppLovinMAXGodotPlugin.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSArray+AppLovinMAXGodotPlugin.mm"; sourceTree = "<group>"; };
+		6ACD42F22AB670CB009F931C /* NSDictionary+AppLovinMAXGodotPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+AppLovinMAXGodotPlugin.h"; sourceTree = "<group>"; };
+		6ACD42F32AB670CB009F931C /* NSDictionary+AppLovinMAXGodotPlugin.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSDictionary+AppLovinMAXGodotPlugin.mm"; sourceTree = "<group>"; };
+		6ACED7722AB7DD1A0030E0A1 /* AppLovinMAXGodotSignal.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppLovinMAXGodotSignal.mm; sourceTree = "<group>"; };
+		6ACED7732AB7DD1A0030E0A1 /* AppLovinMAXGodotSignal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppLovinMAXGodotSignal.h; sourceTree = "<group>"; };
+		6AD94ADB2AB4588000942DF0 /* AppLovinMAXGodotPlugin.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppLovinMAXGodotPlugin.mm; sourceTree = "<group>"; };
+		6AD94ADC2AB4588000942DF0 /* AppLovinMAXGodotPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppLovinMAXGodotPlugin.h; sourceTree = "<group>"; };
+		6AD94ADF2AB459F800942DF0 /* AppLovinMAXGodotManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppLovinMAXGodotManager.h; sourceTree = "<group>"; };
+		6AD94AE02AB459F800942DF0 /* AppLovinMAXGodotManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppLovinMAXGodotManager.mm; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6A2478632AB465C400864F6E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6ACD42F52AB670E3009F931C /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				6ACD42EF2AB670C2009F931C /* NSArray+AppLovinMAXGodotPlugin.h */,
+				6ACD42F02AB670C2009F931C /* NSArray+AppLovinMAXGodotPlugin.mm */,
+				6ACD42F22AB670CB009F931C /* NSDictionary+AppLovinMAXGodotPlugin.h */,
+				6ACD42F32AB670CB009F931C /* NSDictionary+AppLovinMAXGodotPlugin.mm */,
+				6ACD42EC2AB6529D009F931C /* NSObject+AppLovinMAXGodotPlugin.h */,
+				6ACD42ED2AB6529D009F931C /* NSObject+AppLovinMAXGodotPlugin.mm */,
+				6ACD42E92AB64B13009F931C /* NSString+AppLovinMAXGodotPlugin.h */,
+				6ACD42EA2AB64B13009F931C /* NSString+AppLovinMAXGodotPlugin.mm */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		6AD94ABE2AB4537C00942DF0 = {
+			isa = PBXGroup;
+			children = (
+				6A9524D12AB562F200EFB63F /* AppLovin-MAX-Godot-Plugin.gdip */,
+				6AD94ACA2AB4537C00942DF0 /* AppLovin-MAX-Godot-Plugin */,
+				6AD94AC92AB4537C00942DF0 /* Products */,
+				6AD94AD22AB453A800942DF0 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		6AD94AC92AB4537C00942DF0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6A2478662AB465C400864F6E /* libAppLovin-MAX-Godot-Plugin.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6AD94ACA2AB4537C00942DF0 /* AppLovin-MAX-Godot-Plugin */ = {
+			isa = PBXGroup;
+			children = (
+				6ACD42F52AB670E3009F931C /* Categories */,
+				6AD94ADF2AB459F800942DF0 /* AppLovinMAXGodotManager.h */,
+				6AD94AE02AB459F800942DF0 /* AppLovinMAXGodotManager.mm */,
+				6AD94ADC2AB4588000942DF0 /* AppLovinMAXGodotPlugin.h */,
+				6AD94ADB2AB4588000942DF0 /* AppLovinMAXGodotPlugin.mm */,
+				6ACED7732AB7DD1A0030E0A1 /* AppLovinMAXGodotSignal.h */,
+				6ACED7722AB7DD1A0030E0A1 /* AppLovinMAXGodotSignal.mm */,
+			);
+			path = "AppLovin-MAX-Godot-Plugin";
+			sourceTree = "<group>";
+		};
+		6AD94AD22AB453A800942DF0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6A2478652AB465C400864F6E /* AppLovin-MAX-Godot-Plugin */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6A24786C2AB465C400864F6E /* Build configuration list for PBXNativeTarget "AppLovin-MAX-Godot-Plugin" */;
+			buildPhases = (
+				6A2478622AB465C400864F6E /* Sources */,
+				6A2478632AB465C400864F6E /* Frameworks */,
+				6A2478642AB465C400864F6E /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "AppLovin-MAX-Godot-Plugin";
+			productName = "applovin-max-godot-plugin";
+			productReference = 6A2478662AB465C400864F6E /* libAppLovin-MAX-Godot-Plugin.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6AD94ABF2AB4537C00942DF0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					6A2478652AB465C400864F6E = {
+						CreatedOnToolsVersion = 14.3.1;
+					};
+				};
+			};
+			buildConfigurationList = 6AD94AC22AB4537C00942DF0 /* Build configuration list for PBXProject "AppLovin-MAX-Godot-Plugin" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 6AD94ABE2AB4537C00942DF0;
+			productRefGroup = 6AD94AC92AB4537C00942DF0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6A2478652AB465C400864F6E /* AppLovin-MAX-Godot-Plugin */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6A2478622AB465C400864F6E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6ACD42F12AB670C2009F931C /* NSArray+AppLovinMAXGodotPlugin.mm in Sources */,
+				6A2478702AB465D700864F6E /* AppLovinMAXGodotPlugin.mm in Sources */,
+				6ACD42EE2AB6529D009F931C /* NSObject+AppLovinMAXGodotPlugin.mm in Sources */,
+				6ACED7742AB7DD1A0030E0A1 /* AppLovinMAXGodotSignal.mm in Sources */,
+				6ACD42F42AB670CB009F931C /* NSDictionary+AppLovinMAXGodotPlugin.mm in Sources */,
+				6ACD42EB2AB64B13009F931C /* NSString+AppLovinMAXGodotPlugin.mm in Sources */,
+				6A24786F2AB465D400864F6E /* AppLovinMAXGodotManager.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		6A24786D2AB465C400864F6E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LIBRARY = "libc++";
+				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = (
+					$PROJECT_DIR/../../Godot,
+					$PROJECT_DIR/../../Godot/platform/ios,
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_CFLAGS = (
+					"-fcxx-modules",
+					"-fmodules",
+					"-DDEBUG",
+					"-g",
+					"-DTYPED_METHOD_BIND",
+					"-DDISABLE_FORCED_INLINE",
+					"-DDEBUG_MEMORY_ALLOC",
+					"-DDEBUG_ENABLED",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6A24786E2AB465C400864F6E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LIBRARY = "libc++";
+				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = (
+					$PROJECT_DIR/../../Godot,
+					$PROJECT_DIR/../../Godot/platform/ios,
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_CFLAGS = (
+					"-fcxx-modules",
+					"-fmodules",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		6AD94ACD2AB4537C00942DF0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = $PROJECT_DIR/../Godot/core;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		6AD94ACE2AB4537C00942DF0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = $PROJECT_DIR/../Godot/core;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6A24786C2AB465C400864F6E /* Build configuration list for PBXNativeTarget "AppLovin-MAX-Godot-Plugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6A24786D2AB465C400864F6E /* Debug */,
+				6A24786E2AB465C400864F6E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6AD94AC22AB4537C00942DF0 /* Build configuration list for PBXProject "AppLovin-MAX-Godot-Plugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6AD94ACD2AB4537C00942DF0 /* Debug */,
+				6AD94ACE2AB4537C00942DF0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6AD94ABF2AB4537C00942DF0 /* Project object */;
+}

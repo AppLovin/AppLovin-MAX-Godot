@@ -2,16 +2,8 @@
 * text=auto eol=lf
 
 # Only include the addons folder when downloading from the Asset Library.
-/**        export-ignore
-
-/README.md !export-ignore
-/LICENSE.  !export-ignore
-
-/Release/addons    !export-ignore
-/Release/addons/** !export-ignore
-
-/Release/ios	!export-ignore
-/Release/ios/** !export-ignore
-
-/Release/android    !export-ignore
-/Release/android/** !export-ignore
+/**         export-ignore
+/Release/   !export-ignore
+/Release/** !export-ignore
+/LICENSE    !export-ignore
+/README.md  !export-ignore

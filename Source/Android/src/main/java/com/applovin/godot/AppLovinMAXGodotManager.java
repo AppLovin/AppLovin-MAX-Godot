@@ -202,7 +202,7 @@ public class AppLovinMAXGodotManager
             sdk = AppLovinSdk.getInstance( settings, currentActivity );
         }
 
-        sdk.setPluginVersion( "AppLovinMAX-Godot-" + VERSION );
+        sdk.setPluginVersion( "Godot-" + VERSION );
         sdk.setMediationProvider( AppLovinMediationProvider.MAX );
         sdk.initializeSdk( new AppLovinSdk.SdkInitializationListener()
         {

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cginfx1hn5lrh"
-path="res://.godot/imported/applovin_max_logo.png-a0aa56d1ec1ba776de32515e3e06b007.ctex"
+uid="uid://dpmjyul66t65v"
+path="res://.godot/imported/icon.svg-bf4b26253bd4aa467bd0df482e82ef2c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/applovin_max/applovin_max_logo.png"
-dest_files=["res://.godot/imported/applovin_max_logo.png-a0aa56d1ec1ba776de32515e3e06b007.ctex"]
+source_file="res://addons/applovin_max/Example/Textures/icon.svg"
+dest_files=["res://.godot/imported/icon.svg-bf4b26253bd4aa467bd0df482e82ef2c.ctex"]
 
 [params]
 
@@ -32,3 +32,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false

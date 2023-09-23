@@ -15,15 +15,23 @@ const BANNER_AD_UNIT_IDS = {
 	"android" : "ENTER_ANDROID_BANNER_AD_UNIT_ID_HERE",
 	"ios" : "ENTER_IOS_BANNER_AD_UNIT_ID_HERE"
 }
+const MREC_AD_UNIT_IDS = {
+	"android" : "ENTER_ANDROID_MREC_AD_UNIT_ID_HERE",
+	"ios" : "ENTER_IOS_MREC_AD_UNIT_ID_HERE"
+}
 
 @onready var status_label = $MarginContainer/VBoxContainer/StatusContainer/StatusLabel
 @onready var mediation_debugger_button = $MarginContainer/VBoxContainer/MediationDebuggerButtonContainer/MediationDebuggerButton
 @onready var inter_button = $MarginContainer/VBoxContainer/InterButtonContainer/InterButton
 @onready var rewarded_button = $MarginContainer/VBoxContainer/RewardedButtonContainer/RewardedButton
 @onready var banner_button = $MarginContainer/VBoxContainer/BannerButtonContainer/BannerButton
+@onready var mrec_button = $MarginContainer/VBoxContainer/MRecButtonContainer/MRecButton
 
 var is_banner_created = false
 var is_banner_showing = false
+
+var is_mrec_created = false
+var is_mrec_showing = false
 
 func _ready():
 	
@@ -39,8 +47,10 @@ func _ready():
 		inter_button.disabled = false
 		rewarded_button.disabled = false
 		banner_button.disabled = false
+		mrec_button.disabled = false
 		
 	AppLovinMAX.initialize(SDK_KEY, init_listener)
+	
 
 func _attach_ad_listeners():
 	
@@ -73,8 +83,19 @@ func _attach_ad_listeners():
 	#banner_listener.on_banner_ad_collapsed = Callable(self, "_on_banner_ad_collapsed")	
 	AppLovinMAX.set_banner_ad_listener(banner_listener)
 	
+	# Set mrec callbacks
+	var mrec_listener = AppLovinMAX.BannerAdEventListener.new()
+	mrec_listener.on_ad_loaded = Callable(self, "_on_banner_ad_loaded")
+	mrec_listener.on_ad_load_failed = Callable(self, "_on_banner_ad_load_failed")
+	mrec_listener.on_ad_clicked = Callable(self, "_on_banner_ad_clicked")
+	#mrec_listener.on_mrec_ad_expanded = Callable(self, "_on_mrec_ad_expanded")
+	#mrec_listener.on_mrec_ad_collapsed = Callable(self, "_on_mrec_ad_collapsed")	
+	AppLovinMAX.set_mrec_ad_listener(mrec_listener)
+	
+	
 func _on_mediation_debugger_button_pressed():
 	AppLovinMAX.show_mediation_debugger()
+	
 
 func _on_inter_button_pressed():
 	AppLovinMAX.targeting_data.clear_all()
@@ -92,6 +113,7 @@ func _on_inter_button_pressed():
 		inter_button.disabled = true
 		AppLovinMAX.load_interstitial(ad_unit_id)
 
+
 func _on_rewarded_button_pressed():
 	
 	var ad_unit_id = _get_ad_unit_id(REWARDED_AD_UNIT_IDS)
@@ -107,6 +129,7 @@ func _on_rewarded_button_pressed():
 		_log_message("Loading rewarded ad...")
 		rewarded_button.disabled = true
 		AppLovinMAX.load_rewarded_ad(ad_unit_id)
+	
 	
 func _on_banner_button_pressed():
 
@@ -132,6 +155,29 @@ func _on_banner_button_pressed():
 	else:
 		_log_message("Ad Unit ID unavailable")
 		return
+		
+		
+func _on_mrec_button_pressed():
+
+	var ad_unit_id = _get_ad_unit_id(MREC_AD_UNIT_IDS)
+	if ad_unit_id != null:	
+		is_mrec_showing = !is_mrec_showing
+		if is_mrec_showing:
+			mrec_button.text = "Hide MRec"
+			
+			if !is_mrec_created:
+				is_mrec_created = true
+				# Programmatic banner creation - banners are automatically sized to 320x50 on phones and 728x90 on tablets
+				AppLovinMAX.create_mrec(ad_unit_id, AppLovinMAX.AdViewPosition.TOP_LEFT)
+			
+			AppLovinMAX.show_mrec(ad_unit_id)
+		else:
+			mrec_button.text = "Show MRec"
+			AppLovinMAX.hide_mrec(ad_unit_id)
+	else:
+		_log_message("Ad Unit ID unavailable")
+		return
+
 
 ### Interstitial Ad Callbacks
 
@@ -140,24 +186,30 @@ func _on_interstitial_ad_loaded(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo)
 	inter_button.text = "Show Interstitial"
 	_log_message("Interstitial ad loaded from" + ad_info.network_name)
 	
+	
 func _on_interstitial_ad_load_failed(ad_unit_id: String, errorInfo: AppLovinMAX.ErrorInfo):
-	_log_message("Interstitial ad failed to load with code " + str(errorInfo.code) + " with " + str(errorInfo.message))
+	_log_message("Interstitial ad failed to load with code " + str(errorInfo.code) + " with " + errorInfo.message)
+	
 	
 func _on_interstitial_ad_displayed(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
 	_log_message("Interstitial ad displayed")
+	
 	
 func _on_interstitial_ad_display_failed(ad_unit_id: String, errorInfo: AppLovinMAX.ErrorInfo, ad_info: AppLovinMAX.AdInfo):
 	inter_button.disabled = false
 	inter_button.text = "Load Interstitial"
 	_log_message("Interstitial ad failed to display")
 	
+	
 func _on_interstitial_ad_clicked(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
 	_log_message("Interstitial ad clicked")
+	
 	
 func _on_interstitial_ad_hidden(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
 	inter_button.disabled = false
 	inter_button.text = "Load Interstitial"
 	_log_message("Interstitial ad hidden")
+
 
 ### Rewarded Ad Callbacks
 
@@ -166,50 +218,85 @@ func _on_rewarded_ad_loaded(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
 	rewarded_button.text = "Show Rewarded Ad"
 	_log_message("Rewarded ad loaded from" + ad_info.network_name)
 	
+	
 func _on_rewarded_ad_load_failed(ad_unit_id: String, errorInfo: AppLovinMAX.ErrorInfo):
-	_log_message("Rewarded ad failed to load with code " + str(errorInfo.code) + " with " + str(errorInfo.message))
+	_log_message("Rewarded ad failed to load with code " + str(errorInfo.code) + " with " + errorInfo.message)
+	
 	
 func _on_rewarded_ad_displayed(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
 	_log_message("Rewarded ad displayed")
+	
 	
 func _on_rewarded_ad_display_failed(ad_unit_id: String, errorInfo: AppLovinMAX.ErrorInfo, ad_info: AppLovinMAX.AdInfo):
 	rewarded_button.disabled = false
 	rewarded_button.text = "Load Rewarded Ad"
 	_log_message("Rewarded ad failed to display")
 	
+	
 func _on_rewarded_ad_clicked(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
 	_log_message("Rewarded ad clicked")
 
+
 func _on_rewarded_ad_received_reward(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo, reward: AppLovinMAX.Reward):
 	_log_message("Rewarded ad granted reward")
+	
 	
 func _on_rewarded_ad_hidden(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
 	rewarded_button.disabled = false
 	rewarded_button.text = "Load Rewarded Ad"
 	_log_message("Rewarded ad hidden")
 	
+	
 ### Banner Ad Callbacks
 
 func _on_banner_ad_loaded(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
 	_log_message("Banner ad loaded from" + ad_info.network_name)
 	
+	
 func _on_banner_ad_load_failed(ad_unit_id: String, errorInfo: AppLovinMAX.ErrorInfo):
 	_log_message("Banner ad failed to load with code " + str(errorInfo.code) + " with " + str(errorInfo.message))
+	
 	
 func _on_banner_ad_clicked(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
 	_log_message("Banner ad clicked")
 	
+	
 func _on_banner_ad_expanded(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
 	_log_message("Banner ad expanded")
 	
+	
 func _on_banner_ad_collapsed(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
 	_log_message("Banner ad collapsed")
+	
+	
+### Banner Ad Callbacks
+
+func _on_mrec_ad_loaded(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
+	_log_message("MRec ad loaded from" + ad_info.network_name)
+	
+	
+func _on_mrec_ad_load_failed(ad_unit_id: String, errorInfo: AppLovinMAX.ErrorInfo):
+	_log_message("MRec ad failed to load with code " + str(errorInfo.code) + " with " + errorInfo.message)
+	
+	
+func _on_mrec_ad_clicked(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
+	_log_message("MRec ad clicked")
+	
+	
+func _on_mrec_ad_expanded(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
+	_log_message("MRec ad expanded")
+	
+	
+func _on_mrec_ad_collapsed(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
+	_log_message("MRec ad collapsed")
+	
 	
 ### Utility Methods
 
 func _log_message(message):
 	print(message)
 	status_label.text = message
+
 
 func _get_ad_unit_id(ad_units_dict):
 	var platform = OS.get_name().to_lower() # "android", "ios", etc

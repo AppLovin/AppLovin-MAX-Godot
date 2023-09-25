@@ -25,7 +25,7 @@ const MREC_AD_UNIT_IDS = {
 @onready var inter_button = $MarginContainer/VBoxContainer/InterButtonContainer/InterButton
 @onready var rewarded_button = $MarginContainer/VBoxContainer/RewardedButtonContainer/RewardedButton
 @onready var banner_button = $MarginContainer/VBoxContainer/BannerButtonContainer/BannerButton
-@onready var mrec_button = $MarginContainer/VBoxContainer/MRecButtonContainer/MRecButton
+@onready var mrec_button = $MarginContainer/VBoxContainer/MRECButtonContainer/MRECButton
 
 var is_banner_created = false
 var is_banner_showing = false

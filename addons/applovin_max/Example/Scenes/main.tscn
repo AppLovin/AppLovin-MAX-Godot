@@ -97,20 +97,20 @@ theme_override_font_sizes/font_size = 70
 disabled = true
 text = "Show Banner"
 
-[node name="MRecButtonContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+[node name="MRECButtonContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="MRecButton" type="Button" parent="MarginContainer/VBoxContainer/MRecButtonContainer"]
+[node name="MRECButton" type="Button" parent="MarginContainer/VBoxContainer/MRECButtonContainer"]
 layout_mode = 2
 theme = SubResource("Theme_5r1ue")
 theme_override_font_sizes/font_size = 70
 disabled = true
-text = "Show MRec"
+text = "Show MREC"
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/MediationDebuggerButtonContainer/MediationDebuggerButton" to="." method="_on_mediation_debugger_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/InterButtonContainer/InterButton" to="." method="_on_inter_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/RewardedButtonContainer/RewardedButton" to="." method="_on_rewarded_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/BannerButtonContainer/BannerButton" to="." method="_on_banner_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/MRecButtonContainer/MRecButton" to="." method="_on_mrec_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MRECButtonContainer/MRECButton" to="." method="_on_mrec_button_pressed"]

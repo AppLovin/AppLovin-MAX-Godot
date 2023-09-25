@@ -21,6 +21,10 @@ window/size/viewport_width=1440
 window/size/viewport_height=2560
 window/handheld/orientation=1
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/applovin_max/plugin.cfg")
+
 [rendering]
 
 renderer/rendering_method="mobile"

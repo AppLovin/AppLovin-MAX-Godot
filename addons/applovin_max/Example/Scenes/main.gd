@@ -83,11 +83,11 @@ func _attach_ad_listeners():
 	#banner_listener.on_banner_ad_collapsed = Callable(self, "_on_banner_ad_collapsed")	
 	AppLovinMAX.set_banner_ad_listener(banner_listener)
 	
-	# Set mrec callbacks
-	var mrec_listener = AppLovinMAX.BannerAdEventListener.new()
-	mrec_listener.on_ad_loaded = Callable(self, "_on_banner_ad_loaded")
-	mrec_listener.on_ad_load_failed = Callable(self, "_on_banner_ad_load_failed")
-	mrec_listener.on_ad_clicked = Callable(self, "_on_banner_ad_clicked")
+	# Set MREC callbacks
+	var mrec_listener = AppLovinMAX.MRecAdEventListener.new()
+	mrec_listener.on_ad_loaded = Callable(self, "_on_mrec_ad_loaded")
+	mrec_listener.on_ad_load_failed = Callable(self, "_on_mrec_ad_load_failed")
+	mrec_listener.on_ad_clicked = Callable(self, "_on_mrec_ad_clicked")
 	#mrec_listener.on_mrec_ad_expanded = Callable(self, "_on_mrec_ad_expanded")
 	#mrec_listener.on_mrec_ad_collapsed = Callable(self, "_on_mrec_ad_collapsed")	
 	AppLovinMAX.set_mrec_ad_listener(mrec_listener)
@@ -163,16 +163,15 @@ func _on_mrec_button_pressed():
 	if ad_unit_id != null:	
 		is_mrec_showing = !is_mrec_showing
 		if is_mrec_showing:
-			mrec_button.text = "Hide MRec"
+			mrec_button.text = "Hide MREC"
 			
 			if !is_mrec_created:
 				is_mrec_created = true
-				# Programmatic banner creation - banners are automatically sized to 320x50 on phones and 728x90 on tablets
 				AppLovinMAX.create_mrec(ad_unit_id, AppLovinMAX.AdViewPosition.TOP_LEFT)
 			
 			AppLovinMAX.show_mrec(ad_unit_id)
 		else:
-			mrec_button.text = "Show MRec"
+			mrec_button.text = "Show MREC"
 			AppLovinMAX.hide_mrec(ad_unit_id)
 	else:
 		_log_message("Ad Unit ID unavailable")
@@ -269,26 +268,26 @@ func _on_banner_ad_collapsed(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
 	_log_message("Banner ad collapsed")
 	
 	
-### Banner Ad Callbacks
+### MREC Ad Callbacks
 
 func _on_mrec_ad_loaded(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
-	_log_message("MRec ad loaded from" + ad_info.network_name)
+	_log_message("MREC ad loaded from" + ad_info.network_name)
 	
 	
 func _on_mrec_ad_load_failed(ad_unit_id: String, errorInfo: AppLovinMAX.ErrorInfo):
-	_log_message("MRec ad failed to load with code " + str(errorInfo.code) + " with " + errorInfo.message)
+	_log_message("MREC ad failed to load with code " + str(errorInfo.code) + " with " + errorInfo.message)
 	
 	
 func _on_mrec_ad_clicked(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
-	_log_message("MRec ad clicked")
+	_log_message("MREC ad clicked")
 	
 	
 func _on_mrec_ad_expanded(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
-	_log_message("MRec ad expanded")
+	_log_message("MREC ad expanded")
 	
 	
 func _on_mrec_ad_collapsed(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
-	_log_message("MRec ad collapsed")
+	_log_message("MREC ad collapsed")
 	
 	
 ### Utility Methods

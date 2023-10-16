@@ -30,7 +30,6 @@
 
 /* Begin PBXFileReference section */
 		6A2478662AB465C400864F6E /* libAppLovin-MAX-Godot-Plugin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libAppLovin-MAX-Godot-Plugin.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6A9524D12AB562F200EFB63F /* AppLovin-MAX-Godot-Plugin.gdip */ = {isa = PBXFileReference; lastKnownFileType = text; path = "AppLovin-MAX-Godot-Plugin.gdip"; sourceTree = "<group>"; };
 		6ACD42E92AB64B13009F931C /* NSString+AppLovinMAXGodotPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+AppLovinMAXGodotPlugin.h"; sourceTree = "<group>"; };
 		6ACD42EA2AB64B13009F931C /* NSString+AppLovinMAXGodotPlugin.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSString+AppLovinMAXGodotPlugin.mm"; sourceTree = "<group>"; };
 		6ACD42EC2AB6529D009F931C /* NSObject+AppLovinMAXGodotPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+AppLovinMAXGodotPlugin.h"; sourceTree = "<group>"; };
@@ -76,7 +75,6 @@
 		6AD94ABE2AB4537C00942DF0 = {
 			isa = PBXGroup;
 			children = (
-				6A9524D12AB562F200EFB63F /* AppLovin-MAX-Godot-Plugin.gdip */,
 				6AD94ACA2AB4537C00942DF0 /* AppLovin-MAX-Godot-Plugin */,
 				6AD94AC92AB4537C00942DF0 /* Products */,
 				6AD94AD22AB453A800942DF0 /* Frameworks */,
@@ -188,8 +186,8 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CODE_SIGN_STYLE = Automatic;
 				HEADER_SEARCH_PATHS = (
-					$PROJECT_DIR/../../Godot,
-					$PROJECT_DIR/../../Godot/platform/ios,
+					$PROJECT_DIR/../../../Godot,
+					$PROJECT_DIR/../../../Godot/platform/ios,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -216,8 +214,8 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CODE_SIGN_STYLE = Automatic;
 				HEADER_SEARCH_PATHS = (
-					$PROJECT_DIR/../../Godot,
-					$PROJECT_DIR/../../Godot/platform/ios,
+					$PROJECT_DIR/../../../Godot,
+					$PROJECT_DIR/../../../Godot/platform/ios,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";

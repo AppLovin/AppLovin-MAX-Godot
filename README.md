@@ -82,7 +82,7 @@ implementation 'com.applovin:applovin-sdk:+'
 ## Demo Apps
 The `/ExampleProject` directory contains the demo app.
 
-<img width="832" alt="image" src="https://github.com/AppLovin/AppLovin-MAX-Godot/assets/5104410/f7fbbef0-6631-46ab-8661-b28d9b3c3d4e">
+<img width="400" alt="image" src="https://github.com/AppLovin/AppLovin-MAX-Godot/assets/23690238/4d03b9e2-5bf8-4dc2-bffd-e87c4868f48f">
 
 ## License
 MIT

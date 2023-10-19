@@ -364,7 +364,7 @@ static func set_mrec_ad_listener(listener: AdEventListener) -> void:
 	)
 	_plugin.connect("mrec_on_ad_revenue_paid", func(ad_unit_identifier: String, ad_info: Dictionary):
 		if _mrec_ad_listener:
-			_mrec_ad_listener.on_ad_revenue.call(ad_unit_identifier, AdInfo.new(ad_info))
+			_mrec_ad_listener.on_ad_revenue_paid.call(ad_unit_identifier, AdInfo.new(ad_info))
 	)
 	
 
@@ -486,7 +486,7 @@ static func set_interstitial_ad_listener(listener: InterstitialAdEventListener) 
 	)
 	_plugin.connect("interstitial_on_ad_revenue_paid", func(ad_unit_identifier: String, ad_info: Dictionary):
 		if _interstitial_ad_listener:
-			_interstitial_ad_listener.on_ad_revenue.call(ad_unit_identifier, AdInfo.new(ad_info))
+			_interstitial_ad_listener.on_ad_revenue_paid.call(ad_unit_identifier, AdInfo.new(ad_info))
 	)
 	_plugin.connect("interstitial_on_ad_displayed", func(ad_unit_identifier: String, ad_info: Dictionary):
 		if _interstitial_ad_listener:
@@ -556,7 +556,7 @@ static func set_appopen_ad_listener(listener: AppOpenAdEventListener) -> void:
 	)
 	_plugin.connect("appopen_on_ad_revenue_paid", func(ad_unit_identifier: String, ad_info: Dictionary):
 		if _appopen_ad_listener:
-			_appopen_ad_listener.on_ad_revenue.call(ad_unit_identifier, AdInfo.new(ad_info))
+			_appopen_ad_listener.on_ad_revenue_paid.call(ad_unit_identifier, AdInfo.new(ad_info))
 	)
 	_plugin.connect("appopen_on_ad_displayed", func(ad_unit_identifier: String, ad_info: Dictionary):
 		if _appopen_ad_listener:
@@ -626,7 +626,7 @@ static func set_rewarded_ad_listener(listener: RewardedAdEventListener) -> void:
 	)
 	_plugin.connect("rewarded_on_ad_revenue_paid", func(ad_unit_identifier: String, ad_info: Dictionary):
 		if _rewarded_ad_listener:
-			_rewarded_ad_listener.on_ad_revenue.call(ad_unit_identifier, AdInfo.new(ad_info))
+			_rewarded_ad_listener.on_ad_revenue_paid.call(ad_unit_identifier, AdInfo.new(ad_info))
 	)
 	_plugin.connect("rewarded_on_ad_displayed", func(ad_unit_identifier: String, ad_info: Dictionary):
 		if _rewarded_ad_listener:

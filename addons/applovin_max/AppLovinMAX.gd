@@ -1159,7 +1159,7 @@ class ErrorInfo:
 		mediated_network_error_code = AppLovinMAXDictionaryUtils.get_int(error_info_dictionary, "mediatedNetworkErrorCode", int(ErrorCode.UNSPECIFIED))
 		mediated_network_error_message = AppLovinMAXDictionaryUtils.get_string(error_info_dictionary, "mediatedNetworkErrorMessage", "")
 		ad_load_failure_info = AppLovinMAXDictionaryUtils.get_string(error_info_dictionary, "adLoadFailureInfo", "")
-		waterfall_info = WaterfallInfo.new(error_info_dictionary["waterfallInfo"])
+		waterfall_info = WaterfallInfo.new(error_info_dictionary["waterfallInfo"]) if "waterfallInfo" in error_info_dictionary else null
 
 
 	func _to_string() -> String:

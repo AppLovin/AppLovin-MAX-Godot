@@ -222,7 +222,7 @@ static func set_banner_ad_listener(listener: AdEventListener) -> void:
 	)
 	_plugin.connect("banner_on_ad_revenue_paid", func(ad_unit_identifier: String, ad_info: Dictionary):
 		if _banner_ad_listener:
-			_banner_ad_listener.on_ad_revenue.call(ad_unit_identifier, AdInfo.new(ad_info))
+			_banner_ad_listener.on_ad_revenue_paid.call(ad_unit_identifier, AdInfo.new(ad_info))
 	)
 	
 
@@ -364,7 +364,7 @@ static func set_mrec_ad_listener(listener: AdEventListener) -> void:
 	)
 	_plugin.connect("mrec_on_ad_revenue_paid", func(ad_unit_identifier: String, ad_info: Dictionary):
 		if _mrec_ad_listener:
-			_mrec_ad_listener.on_ad_revenue.call(ad_unit_identifier, AdInfo.new(ad_info))
+			_mrec_ad_listener.on_ad_revenue_paid.call(ad_unit_identifier, AdInfo.new(ad_info))
 	)
 	
 
@@ -486,7 +486,7 @@ static func set_interstitial_ad_listener(listener: InterstitialAdEventListener) 
 	)
 	_plugin.connect("interstitial_on_ad_revenue_paid", func(ad_unit_identifier: String, ad_info: Dictionary):
 		if _interstitial_ad_listener:
-			_interstitial_ad_listener.on_ad_revenue.call(ad_unit_identifier, AdInfo.new(ad_info))
+			_interstitial_ad_listener.on_ad_revenue_paid.call(ad_unit_identifier, AdInfo.new(ad_info))
 	)
 	_plugin.connect("interstitial_on_ad_displayed", func(ad_unit_identifier: String, ad_info: Dictionary):
 		if _interstitial_ad_listener:
@@ -556,7 +556,7 @@ static func set_appopen_ad_listener(listener: AppOpenAdEventListener) -> void:
 	)
 	_plugin.connect("appopen_on_ad_revenue_paid", func(ad_unit_identifier: String, ad_info: Dictionary):
 		if _appopen_ad_listener:
-			_appopen_ad_listener.on_ad_revenue.call(ad_unit_identifier, AdInfo.new(ad_info))
+			_appopen_ad_listener.on_ad_revenue_paid.call(ad_unit_identifier, AdInfo.new(ad_info))
 	)
 	_plugin.connect("appopen_on_ad_displayed", func(ad_unit_identifier: String, ad_info: Dictionary):
 		if _appopen_ad_listener:
@@ -626,7 +626,7 @@ static func set_rewarded_ad_listener(listener: RewardedAdEventListener) -> void:
 	)
 	_plugin.connect("rewarded_on_ad_revenue_paid", func(ad_unit_identifier: String, ad_info: Dictionary):
 		if _rewarded_ad_listener:
-			_rewarded_ad_listener.on_ad_revenue.call(ad_unit_identifier, AdInfo.new(ad_info))
+			_rewarded_ad_listener.on_ad_revenue_paid.call(ad_unit_identifier, AdInfo.new(ad_info))
 	)
 	_plugin.connect("rewarded_on_ad_displayed", func(ad_unit_identifier: String, ad_info: Dictionary):
 		if _rewarded_ad_listener:
@@ -984,7 +984,7 @@ class SdkConfiguration:
 		var sdk_configuration = SdkConfiguration.new()
 		sdk_configuration.is_successfully_initialized = true
 		var localeInfo = OS.get_locale().split("_", true)
-		sdk_configuration.country_code = localeInfo[2] != null if localeInfo[2] else localeInfo[0]
+		sdk_configuration.country_code = localeInfo[2] if localeInfo[2] != null else localeInfo[0]
 		sdk_configuration.is_test_mode_enabled = false
 		return sdk_configuration
 
@@ -1102,13 +1102,13 @@ class NetworkResponseInfo:
 
 	func _init(network_response_info_dict: Dictionary):
 		var mediated_network_info_dict = AppLovinMAXDictionaryUtils.get_dictionary(network_response_info_dict, "mediatedNetwork")
-		mediated_network = mediated_network_info_dict != null if MediatedNetworkInfo.new(mediated_network_info_dict) else null
+		mediated_network = MediatedNetworkInfo.new(mediated_network_info_dict) if mediated_network_info_dict != null else null
 		credentials = AppLovinMAXDictionaryUtils.get_dictionary(network_response_info_dict, "credentials", {})
 		is_bidding = AppLovinMAXDictionaryUtils.get_bool(network_response_info_dict, "isBidding")
 		latency_millis = AppLovinMAXDictionaryUtils.get_long(network_response_info_dict, "latencyMillis")
 		ad_load_state = AppLovinMAXDictionaryUtils.get_int(network_response_info_dict, "adLoadState")
 		var error_info_dict = AppLovinMAXDictionaryUtils.get_dictionary(network_response_info_dict, "error")
-		error = error_info_dict != null if ErrorInfo.new(error_info_dict) else null
+		error = ErrorInfo.new(error_info_dict) if error_info_dict != null else null
 
 
 	func _to_string() -> String:
@@ -1159,7 +1159,7 @@ class ErrorInfo:
 		mediated_network_error_code = AppLovinMAXDictionaryUtils.get_int(error_info_dictionary, "mediatedNetworkErrorCode", int(ErrorCode.UNSPECIFIED))
 		mediated_network_error_message = AppLovinMAXDictionaryUtils.get_string(error_info_dictionary, "mediatedNetworkErrorMessage", "")
 		ad_load_failure_info = AppLovinMAXDictionaryUtils.get_string(error_info_dictionary, "adLoadFailureInfo", "")
-		waterfall_info = WaterfallInfo.new(error_info_dictionary["waterfallInfo"])
+		waterfall_info = WaterfallInfo.new(error_info_dictionary["waterfallInfo"]) if "waterfallInfo" in error_info_dictionary else null
 
 
 	func _to_string() -> String:

@@ -181,6 +181,7 @@ public class AppLovinMAXGodotPlugin
                                      String.class,
                                      Dictionary.class ) );
         signals.add( new SignalInfo( Signal.REWARDED_ON_AD_CLICKED,
+                                     String.class,
                                      Dictionary.class ) );
         signals.add( new SignalInfo( Signal.REWARDED_ON_AD_REVENUE_PAID,
                                      String.class,

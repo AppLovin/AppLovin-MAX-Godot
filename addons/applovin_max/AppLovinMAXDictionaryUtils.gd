@@ -48,6 +48,8 @@ static func get_bool(dictionary: Dictionary, key: String, defaultValue: bool = f
 
 	var value = dictionary.get(key)
 	if value != null:
+		if value is bool:
+			return value
 		return value.to_bool()
 
 	return defaultValue

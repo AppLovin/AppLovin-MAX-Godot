@@ -7,9 +7,7 @@
 ##
 
 ## AppLovin MAX Godot Plugin API
-@tool
 class_name AppLovinMAX
-extends EditorPlugin
 
 ## Returns the plugin version
 static var version: String = "1.0.2"

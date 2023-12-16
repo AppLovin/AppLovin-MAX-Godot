@@ -61,7 +61,6 @@ This will allow you to make changes to your game code without having to export t
   <img width="400" alt="image" src="https://github.com/AppLovin/AppLovin-MAX-Godot/assets/23690238/d8320199-6288-472d-93db-c81912bbddc3">
   
 5. Click on `Export Project...`
-  - Note: if you provided a `Unique Name` under the `Package` category, it does not seem to apply the package name to the Android Studio project (on the other hand, it will for the APK). We will need to replace it manually yourself in the Android Studio project. See [Other considerations](#other-android-considerations).
 6. Open the Android Studio project. By default, it will be in `<GODOT_PROJECT>/android/build` folder.
   - Note: Your Android Studio project will not run properly by default.
     1. Godot can fail to export our plugin AAR to the Android Studio project. We will be using Gradle for dependency management. See Step 7 and onwards.
@@ -72,12 +71,7 @@ This will allow you to make changes to your game code without having to export t
 implementation 'com.applovin:applovin-sdk:+'
 ```
   - To add other networks and their dependencies, please visit [Preparing Mediated Networks](https://dash.applovin.com/documentation/mediation/godot/mediation-adapters/android). This tool will automatically generate the gradle code.
-
-##### Other Android Considerations
-- `Issue:` *`com.godot.game` package name*
-  - Click on `Replace in Files...` under `Find` menu option (cmd+shift+R if you are on macOS).
-  - Search for `com.godot.game` and replace it with your desire package name.
-  - In your `src` directory, rename the subdirectories from `src`/`com`/`godot`/`game` to your desired package name.
+9. In the `AndroidManifest.xml`, in the `.GodotApp` activity entry, change the `android:launchMode` attribute value from `singleInstance` to `singleTask`.
 
 ## Demo Apps
 The `/ExampleProject` directory contains the demo app.

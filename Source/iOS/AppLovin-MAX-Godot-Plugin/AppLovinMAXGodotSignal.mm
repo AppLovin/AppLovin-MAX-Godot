@@ -13,11 +13,15 @@ String AppLovinMAXSignalBannerOnAdLoaded = "banner_on_ad_loaded";
 String AppLovinMAXSignalBannerOnAdLoadFailed = "banner_on_ad_load_failed";
 String AppLovinMAXSignalBannerOnAdClicked = "banner_on_ad_clicked";
 String AppLovinMAXSignalBannerOnAdRevenuePaid = "banner_on_ad_revenue_paid";
+String AppLovinMAXSignalBannerOnAdExpanded = "banner_on_ad_expanded";
+String AppLovinMAXSignalBannerOnAdCollapsed = "banner_on_ad_collapsed";
 
 String AppLovinMAXSignalMRecOnAdLoaded = "mrec_on_ad_loaded";
 String AppLovinMAXSignalMRecOnAdLoadFailed = "mrec_on_ad_load_failed";
 String AppLovinMAXSignalMRecOnAdClicked = "mrec_on_ad_clicked";
 String AppLovinMAXSignalMRecOnAdRevenuePaid = "mrec_on_ad_revenue_paid";
+String AppLovinMAXSignalMRecOnAdExpanded = "mrec_on_ad_expanded";
+String AppLovinMAXSignalMRecOnAdCollapsed = "mrec_on_ad_collapsed";
 
 String AppLovinMAXSignalInterstitialOnAdLoaded = "interstitial_on_ad_loaded";
 String AppLovinMAXSignalInterstitialOnAdLoadFailed = "interstitial_on_ad_load_failed";

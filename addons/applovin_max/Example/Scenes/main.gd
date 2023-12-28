@@ -79,8 +79,8 @@ func _attach_ad_listeners():
 	banner_listener.on_ad_loaded = Callable(self, "_on_banner_ad_loaded")
 	banner_listener.on_ad_load_failed = Callable(self, "_on_banner_ad_load_failed")
 	banner_listener.on_ad_clicked = Callable(self, "_on_banner_ad_clicked")
-	#banner_listener.on_banner_ad_expanded = Callable(self, "_on_banner_ad_expanded")
-	#banner_listener.on_banner_ad_collapsed = Callable(self, "_on_banner_ad_collapsed")	
+	banner_listener.on_ad_expanded = Callable(self, "_on_banner_ad_expanded")
+	banner_listener.on_ad_collapsed = Callable(self, "_on_banner_ad_collapsed")	
 	AppLovinMAX.set_banner_ad_listener(banner_listener)
 	
 	# Set MREC callbacks
@@ -88,8 +88,8 @@ func _attach_ad_listeners():
 	mrec_listener.on_ad_loaded = Callable(self, "_on_mrec_ad_loaded")
 	mrec_listener.on_ad_load_failed = Callable(self, "_on_mrec_ad_load_failed")
 	mrec_listener.on_ad_clicked = Callable(self, "_on_mrec_ad_clicked")
-	#mrec_listener.on_mrec_ad_expanded = Callable(self, "_on_mrec_ad_expanded")
-	#mrec_listener.on_mrec_ad_collapsed = Callable(self, "_on_mrec_ad_collapsed")	
+	mrec_listener.on_ad_expanded = Callable(self, "_on_mrec_ad_expanded")
+	mrec_listener.on_ad_collapsed = Callable(self, "_on_mrec_ad_collapsed")	
 	AppLovinMAX.set_mrec_ad_listener(mrec_listener)
 	
 	

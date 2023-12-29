@@ -898,12 +898,6 @@ public class AppLovinMAXGodotManager
     }
 
     @Override
-    public void onAdCollapsed(final MaxAd ad) { }
-
-    @Override
-    public void onAdExpanded(final MaxAd ad) { }
-
-    @Override
     public void onRewardedVideoCompleted(final MaxAd ad)
     {
         // This event is not forwarded
@@ -984,6 +978,70 @@ public class AppLovinMAXGodotManager
 
         Dictionary adInfo = getAdInfo( ad );
 
+        Utils.runSafelyOnUiThread( getCurrentActivity(), new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                plugin.get().emitSignal( signalName, ad.getAdUnitId(), adInfo );
+            }
+        } );
+    }
+
+    @Override
+    public void onAdExpanded(final MaxAd ad)
+    {
+        final MaxAdFormat adFormat = ad.getFormat();
+        if ( !adFormat.isAdViewAd() ) return;
+
+        final String signalName;
+        if ( MaxAdFormat.BANNER == adFormat || MaxAdFormat.LEADER == adFormat )
+        {
+            signalName = Signal.BANNER_ON_AD_EXPANDED;
+        }
+        else if ( MaxAdFormat.MREC == adFormat )
+        {
+            signalName = Signal.MREC_ON_AD_EXPANDED;
+        }
+        else
+        {
+            logInvalidAdFormat( adFormat );
+            return;
+        }
+
+        Dictionary adInfo = getAdInfo( ad );
+        Utils.runSafelyOnUiThread( getCurrentActivity(), new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                plugin.get().emitSignal( signalName, ad.getAdUnitId(), adInfo );
+            }
+        } );
+    }
+
+    @Override
+    public void onAdCollapsed(final MaxAd ad)
+    {
+        final MaxAdFormat adFormat = ad.getFormat();
+        if ( !adFormat.isAdViewAd() ) return;
+
+        final String signalName;
+        if ( MaxAdFormat.BANNER == adFormat || MaxAdFormat.LEADER == adFormat )
+        {
+            signalName = Signal.BANNER_ON_AD_COLLAPSED;
+        }
+        else if ( MaxAdFormat.MREC == adFormat )
+        {
+            signalName = Signal.MREC_ON_AD_COLLAPSED;
+        }
+        else
+        {
+            logInvalidAdFormat( adFormat );
+            return;
+        }
+
+        Dictionary adInfo = getAdInfo( ad );
         Utils.runSafelyOnUiThread( getCurrentActivity(), new Runnable()
         {
             @Override

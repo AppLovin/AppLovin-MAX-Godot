@@ -114,6 +114,12 @@ public class AppLovinMAXGodotPlugin
         signals.add( new SignalInfo( Signal.BANNER_ON_AD_REVENUE_PAID,
                                      String.class,
                                      Dictionary.class ) );
+        signals.add( new SignalInfo( Signal.BANNER_ON_AD_EXPANDED,
+                                     String.class,
+                                     Dictionary.class ) );
+        signals.add( new SignalInfo( Signal.BANNER_ON_AD_COLLAPSED,
+                                     String.class,
+                                     Dictionary.class ) );
 
         signals.add( new SignalInfo( Signal.MREC_ON_AD_LOADED,
                                      String.class,
@@ -125,6 +131,12 @@ public class AppLovinMAXGodotPlugin
                                      String.class,
                                      Dictionary.class ) );
         signals.add( new SignalInfo( Signal.MREC_ON_AD_REVENUE_PAID,
+                                     String.class,
+                                     Dictionary.class ) );
+        signals.add( new SignalInfo( Signal.MREC_ON_AD_EXPANDED,
+                                     String.class,
+                                     Dictionary.class ) );
+        signals.add( new SignalInfo( Signal.MREC_ON_AD_COLLAPSED,
                                      String.class,
                                      Dictionary.class ) );
 

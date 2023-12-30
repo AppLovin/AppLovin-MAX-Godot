@@ -167,7 +167,7 @@ func _on_mrec_button_pressed():
 			
 			if !is_mrec_created:
 				is_mrec_created = true
-				AppLovinMAX.create_mrec(ad_unit_id, AppLovinMAX.AdViewPosition.TOP_LEFT)
+				AppLovinMAX.create_mrec(ad_unit_id, AppLovinMAX.AdViewPosition.BOTTOM_CENTER)
 			
 			AppLovinMAX.show_mrec(ad_unit_id)
 		else:
@@ -183,7 +183,7 @@ func _on_mrec_button_pressed():
 func _on_interstitial_ad_loaded(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
 	inter_button.disabled = false
 	inter_button.text = "Show Interstitial"
-	_log_message("Interstitial ad loaded from" + ad_info.network_name)
+	_log_message("Interstitial ad loaded from " + ad_info.network_name)
 	
 	
 func _on_interstitial_ad_load_failed(ad_unit_id: String, errorInfo: AppLovinMAX.ErrorInfo):
@@ -215,7 +215,7 @@ func _on_interstitial_ad_hidden(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo)
 func _on_rewarded_ad_loaded(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
 	rewarded_button.disabled = false
 	rewarded_button.text = "Show Rewarded Ad"
-	_log_message("Rewarded ad loaded from" + ad_info.network_name)
+	_log_message("Rewarded ad loaded from " + ad_info.network_name)
 	
 	
 func _on_rewarded_ad_load_failed(ad_unit_id: String, errorInfo: AppLovinMAX.ErrorInfo):
@@ -249,7 +249,7 @@ func _on_rewarded_ad_hidden(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
 ### Banner Ad Callbacks
 
 func _on_banner_ad_loaded(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
-	_log_message("Banner ad loaded from" + ad_info.network_name)
+	_log_message("Banner ad loaded from " + ad_info.network_name)
 	
 	
 func _on_banner_ad_load_failed(ad_unit_id: String, errorInfo: AppLovinMAX.ErrorInfo):
@@ -271,7 +271,7 @@ func _on_banner_ad_collapsed(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
 ### MREC Ad Callbacks
 
 func _on_mrec_ad_loaded(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
-	_log_message("MREC ad loaded from" + ad_info.network_name)
+	_log_message("MREC ad loaded from " + ad_info.network_name)
 	
 	
 func _on_mrec_ad_load_failed(ad_unit_id: String, errorInfo: AppLovinMAX.ErrorInfo):

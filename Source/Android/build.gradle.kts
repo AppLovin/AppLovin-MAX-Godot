@@ -13,18 +13,11 @@ var libraryArtifactName by extra("${libraryArtifactId}-${libraryVersionName}.aar
 
 var libraryVersions = rootProject.extra["versions"] as Map<*, *>
 
-//buildscript {
-//    dependencies {
-//        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10")
-//    }
-//}
-
 android {
     compileSdkVersion(libraryVersions["compileSdk"] as Int)
 
     defaultConfig {
         minSdkVersion(libraryVersions["minSdk"] as Int)
-        targetSdkVersion(libraryVersions["targetSdk"] as Int)
 
         consumerProguardFiles("proguard-rules.pro")
 

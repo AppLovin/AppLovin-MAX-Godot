@@ -34,8 +34,10 @@ class AdEventListener:
 	var on_ad_load_failed: Callable = func(ad_unit_identifier: String, errorInfo: AppLovinMAX.ErrorInfo): pass
 	var on_ad_clicked: Callable = func(ad_unit_identifier: String, ad_info: AppLovinMAX.AdInfo): pass
 	var on_ad_revenue_paid: Callable = func(ad_unit_identifier: String, ad_info: AppLovinMAX.AdInfo): pass
-		
-		
+	var on_ad_expanded: Callable = func(ad_unit_identifier: String, ad_info: AppLovinMAX.AdInfo): pass
+	var on_ad_collapsed: Callable = func(ad_unit_identifier: String, ad_info: AppLovinMAX.AdInfo): pass
+	
+	
 class FullscreenAdEventListener:
 	extends AdEventListener
 	
@@ -222,7 +224,15 @@ static func set_banner_ad_listener(listener: AdEventListener) -> void:
 		if _banner_ad_listener:
 			_banner_ad_listener.on_ad_revenue_paid.call(ad_unit_identifier, AdInfo.new(ad_info))
 	)
-	
+	_plugin.connect("banner_on_ad_expanded", func(ad_unit_identifier: String, ad_info: Dictionary):
+		if _banner_ad_listener:
+			_banner_ad_listener.on_ad_expanded.call(ad_unit_identifier, AdInfo.new(ad_info))
+	)
+	_plugin.connect("banner_on_ad_collapsed", func(ad_unit_identifier: String, ad_info: Dictionary):
+		if _banner_ad_listener:
+			_banner_ad_listener.on_ad_collapsed.call(ad_unit_identifier, AdInfo.new(ad_info))
+	)
+
 
 static func create_banner(ad_unit_identifier: String, banner_position: AdViewPosition) -> void:
 	if _plugin == null:
@@ -363,6 +373,14 @@ static func set_mrec_ad_listener(listener: AdEventListener) -> void:
 	_plugin.connect("mrec_on_ad_revenue_paid", func(ad_unit_identifier: String, ad_info: Dictionary):
 		if _mrec_ad_listener:
 			_mrec_ad_listener.on_ad_revenue_paid.call(ad_unit_identifier, AdInfo.new(ad_info))
+	)
+	_plugin.connect("mrec_on_ad_expanded", func(ad_unit_identifier: String, ad_info: Dictionary):
+		if _mrec_ad_listener:
+			_mrec_ad_listener.on_ad_expanded.call(ad_unit_identifier, AdInfo.new(ad_info))
+	)
+	_plugin.connect("mrec_on_ad_collapsed", func(ad_unit_identifier: String, ad_info: Dictionary):
+		if _mrec_ad_listener:
+			_mrec_ad_listener.on_ad_collapsed.call(ad_unit_identifier, AdInfo.new(ad_info))
 	)
 	
 

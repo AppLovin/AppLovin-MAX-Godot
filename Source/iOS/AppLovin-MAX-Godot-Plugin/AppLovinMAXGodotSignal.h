@@ -15,11 +15,15 @@ extern String AppLovinMAXSignalBannerOnAdLoaded;
 extern String AppLovinMAXSignalBannerOnAdLoadFailed;
 extern String AppLovinMAXSignalBannerOnAdClicked;
 extern String AppLovinMAXSignalBannerOnAdRevenuePaid;
+extern String AppLovinMAXSignalBannerOnAdExpanded;
+extern String AppLovinMAXSignalBannerOnAdCollapsed;
 
 extern String AppLovinMAXSignalMRecOnAdLoaded;
 extern String AppLovinMAXSignalMRecOnAdLoadFailed;
 extern String AppLovinMAXSignalMRecOnAdClicked;
 extern String AppLovinMAXSignalMRecOnAdRevenuePaid;
+extern String AppLovinMAXSignalMRecOnAdExpanded;
+extern String AppLovinMAXSignalMRecOnAdCollapsed;
 
 extern String AppLovinMAXSignalInterstitialOnAdLoaded;
 extern String AppLovinMAXSignalInterstitialOnAdLoadFailed;

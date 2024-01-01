@@ -8,11 +8,15 @@ public class Signal
     public static String BANNER_ON_AD_LOAD_FAILED = "banner_on_ad_load_failed";
     public static String BANNER_ON_AD_CLICKED = "banner_on_ad_clicked";
     public static String BANNER_ON_AD_REVENUE_PAID = "banner_on_ad_revenue_paid";
+    public static String BANNER_ON_AD_EXPANDED = "banner_on_ad_expanded";
+    public static String BANNER_ON_AD_COLLAPSED = "banner_on_ad_collapsed";
 
     public static String MREC_ON_AD_LOADED = "mrec_on_ad_loaded";
     public static String MREC_ON_AD_LOAD_FAILED = "mrec_on_ad_load_failed";
     public static String MREC_ON_AD_CLICKED = "mrec_on_ad_clicked";
     public static String MREC_ON_AD_REVENUE_PAID = "mrec_on_ad_revenue_paid";
+    public static String MREC_ON_AD_EXPANDED = "mrec_on_ad_expanded";
+    public static String MREC_ON_AD_COLLAPSED = "mrec_on_ad_collapsed";
 
     public static String INTERSTITIAL_ON_AD_LOADED = "interstitial_on_ad_loaded";
     public static String INTERSTITIAL_ON_AD_LOAD_FAILED = "interstitial_on_ad_load_failed";

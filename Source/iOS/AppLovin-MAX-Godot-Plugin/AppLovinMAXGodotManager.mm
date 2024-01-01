@@ -846,6 +846,58 @@ static NSString *const DEFAULT_AD_VIEW_POSITION = @"top_left";
     });
 }
 
+- (void)didExpandAd:(nonnull MAAd *)ad
+{
+    MAAdFormat *adFormat = ad.format;
+    if ( ![adFormat isAdViewAd] ) return;
+    
+    String signalName;
+    if ( MAAdFormat.banner == adFormat ||  MAAdFormat.leader == adFormat )
+    {
+        signalName = AppLovinMAXSignalBannerOnAdExpanded;
+    }
+    else if ( MAAdFormat.mrec == adFormat )
+    {
+        signalName = AppLovinMAXSignalMRecOnAdExpanded;
+    }
+    else
+    {
+        [self logInvalidAdFormat: adFormat];
+        return;
+    }
+    
+    Dictionary adInfo = [self adInfoForAd: ad];
+    max_godot_dispatch_on_main_thread(^{
+        AppLovinMAXGodotPlugin::get_instance()->emit_signal(signalName, GODOT_STRING(ad.adUnitIdentifier), adInfo);
+    });
+}
+
+- (void)didCollapseAd:(nonnull MAAd *)ad
+{
+    MAAdFormat *adFormat = ad.format;
+    if ( ![adFormat isAdViewAd] ) return;
+    
+    String signalName;
+    if ( MAAdFormat.banner == adFormat || MAAdFormat.leader == adFormat )
+    {
+        signalName = AppLovinMAXSignalBannerOnAdCollapsed;
+    }
+    else if ( MAAdFormat.mrec == adFormat )
+    {
+        signalName = AppLovinMAXSignalMRecOnAdCollapsed;
+    }
+    else
+    {
+        [self logInvalidAdFormat: adFormat];
+        return;
+    }
+    
+    Dictionary adInfo = [self adInfoForAd: ad];
+    max_godot_dispatch_on_main_thread(^{
+        AppLovinMAXGodotPlugin::get_instance()->emit_signal(signalName, GODOT_STRING(ad.adUnitIdentifier), adInfo);
+    });
+}
+
 #pragma mark - Internal Methods
 
 - (void)createAdViewWithAdUnitIdentifier:(NSString *)adUnitIdentifier adFormat:(MAAdFormat *)adFormat atPosition:(NSString *)adViewPosition withOffset:(CGPoint)offset
@@ -1645,9 +1697,5 @@ static NSString *const DEFAULT_AD_VIEW_POSITION = @"top_left";
         return self.adInfoDict[adUnitIdentifier];
     }
 }
-
-- (void)didCollapseAd:(nonnull MAAd *)ad {}
-
-- (void)didExpandAd:(nonnull MAAd *)ad {}
 
 @end

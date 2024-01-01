@@ -96,6 +96,12 @@ void AppLovinMAXGodotPlugin::_bind_methods()
     ADD_SIGNAL(MethodInfo(AppLovinMAXSignalBannerOnAdRevenuePaid,
                           PropertyInfo(Variant::STRING, "ad_unit_identifier"),
                           PropertyInfo(Variant::DICTIONARY, "ad_info")));
+    ADD_SIGNAL(MethodInfo(AppLovinMAXSignalBannerOnAdExpanded,
+                          PropertyInfo(Variant::STRING, "ad_unit_identifier"),
+                          PropertyInfo(Variant::DICTIONARY, "ad_info")));
+    ADD_SIGNAL(MethodInfo(AppLovinMAXSignalBannerOnAdCollapsed,
+                          PropertyInfo(Variant::STRING, "ad_unit_identifier"),
+                          PropertyInfo(Variant::DICTIONARY, "ad_info")));
     
     ADD_SIGNAL(MethodInfo(AppLovinMAXSignalMRecOnAdLoaded,
                           PropertyInfo(Variant::STRING, "ad_unit_identifier"),
@@ -107,6 +113,12 @@ void AppLovinMAXGodotPlugin::_bind_methods()
                           PropertyInfo(Variant::STRING, "ad_unit_identifier"),
                           PropertyInfo(Variant::DICTIONARY, "ad_info")));
     ADD_SIGNAL(MethodInfo(AppLovinMAXSignalMRecOnAdRevenuePaid,
+                          PropertyInfo(Variant::STRING, "ad_unit_identifier"),
+                          PropertyInfo(Variant::DICTIONARY, "ad_info")));
+    ADD_SIGNAL(MethodInfo(AppLovinMAXSignalMRecOnAdExpanded,
+                          PropertyInfo(Variant::STRING, "ad_unit_identifier"),
+                          PropertyInfo(Variant::DICTIONARY, "ad_info")));
+    ADD_SIGNAL(MethodInfo(AppLovinMAXSignalMRecOnAdCollapsed,
                           PropertyInfo(Variant::STRING, "ad_unit_identifier"),
                           PropertyInfo(Variant::DICTIONARY, "ad_info")));
     

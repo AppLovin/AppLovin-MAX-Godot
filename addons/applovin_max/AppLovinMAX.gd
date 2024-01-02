@@ -10,7 +10,7 @@
 class_name AppLovinMAX
 
 ## Returns the plugin version
-static var version: String = "1.0.2"
+static var version: String = "1.0.3"
 ## This class allows you to provide user or app data that will improve how we target ads.
 static var targeting_data: TargetingData = TargetingData.new()
 ## User segments allow us to serve ads using custom-defined rules based on which segment the user is in. For now, we only support a custom string 32 alphanumeric characters or less as the user segment.

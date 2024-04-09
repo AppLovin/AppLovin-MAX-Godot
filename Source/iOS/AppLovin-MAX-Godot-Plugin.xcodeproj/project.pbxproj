@@ -29,7 +29,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		6A2478662AB465C400864F6E /* libAppLovin-MAX-Godot-Plugin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libAppLovin-MAX-Godot-Plugin.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A2478662AB465C400864F6E /* libAppLovinMAXGodotPlugin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAppLovinMAXGodotPlugin.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ACD42E92AB64B13009F931C /* NSString+AppLovinMAXGodotPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+AppLovinMAXGodotPlugin.h"; sourceTree = "<group>"; };
 		6ACD42EA2AB64B13009F931C /* NSString+AppLovinMAXGodotPlugin.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSString+AppLovinMAXGodotPlugin.mm"; sourceTree = "<group>"; };
 		6ACD42EC2AB6529D009F931C /* NSObject+AppLovinMAXGodotPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+AppLovinMAXGodotPlugin.h"; sourceTree = "<group>"; };
@@ -84,7 +84,7 @@
 		6AD94AC92AB4537C00942DF0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6A2478662AB465C400864F6E /* libAppLovin-MAX-Godot-Plugin.a */,
+				6A2478662AB465C400864F6E /* libAppLovinMAXGodotPlugin.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -113,9 +113,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		6A2478652AB465C400864F6E /* AppLovin-MAX-Godot-Plugin */ = {
+		6A2478652AB465C400864F6E /* AppLovinMAXGodotPlugin */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6A24786C2AB465C400864F6E /* Build configuration list for PBXNativeTarget "AppLovin-MAX-Godot-Plugin" */;
+			buildConfigurationList = 6A24786C2AB465C400864F6E /* Build configuration list for PBXNativeTarget "AppLovinMAXGodotPlugin" */;
 			buildPhases = (
 				6A2478622AB465C400864F6E /* Sources */,
 				6A2478632AB465C400864F6E /* Frameworks */,
@@ -125,9 +125,9 @@
 			);
 			dependencies = (
 			);
-			name = "AppLovin-MAX-Godot-Plugin";
+			name = AppLovinMAXGodotPlugin;
 			productName = "applovin-max-godot-plugin";
-			productReference = 6A2478662AB465C400864F6E /* libAppLovin-MAX-Godot-Plugin.a */;
+			productReference = 6A2478662AB465C400864F6E /* libAppLovinMAXGodotPlugin.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -157,7 +157,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				6A2478652AB465C400864F6E /* AppLovin-MAX-Godot-Plugin */,
+				6A2478652AB465C400864F6E /* AppLovinMAXGodotPlugin */,
 			);
 		};
 /* End PBXProject section */
@@ -190,7 +190,10 @@
 					$PROJECT_DIR/../../../Godot/platform/ios,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/godot/bin",
+				);
 				OTHER_CFLAGS = (
 					"-fcxx-modules",
 					"-fmodules",
@@ -218,7 +221,10 @@
 					$PROJECT_DIR/../../../Godot/platform/ios,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/godot/bin",
+				);
 				OTHER_CFLAGS = (
 					"-fcxx-modules",
 					"-fmodules",
@@ -351,7 +357,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		6A24786C2AB465C400864F6E /* Build configuration list for PBXNativeTarget "AppLovin-MAX-Godot-Plugin" */ = {
+		6A24786C2AB465C400864F6E /* Build configuration list for PBXNativeTarget "AppLovinMAXGodotPlugin" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6A24786D2AB465C400864F6E /* Debug */,

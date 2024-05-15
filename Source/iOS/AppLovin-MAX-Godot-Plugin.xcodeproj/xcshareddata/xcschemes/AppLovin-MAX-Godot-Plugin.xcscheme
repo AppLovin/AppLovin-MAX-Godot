@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "6A2478652AB465C400864F6E"
-               BuildableName = "libAppLovin-MAX-Godot-Plugin.a"
-               BlueprintName = "AppLovin-MAX-Godot-Plugin"
+               BuildableName = "libAppLovinMAXGodotPlugin.a"
+               BlueprintName = "AppLovinMAXGodotPlugin"
                ReferencedContainer = "container:AppLovin-MAX-Godot-Plugin.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -50,8 +50,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6A2478652AB465C400864F6E"
-            BuildableName = "libAppLovin-MAX-Godot-Plugin.a"
-            BlueprintName = "AppLovin-MAX-Godot-Plugin"
+            BuildableName = "libAppLovinMAXGodotPlugin.a"
+            BlueprintName = "AppLovinMAXGodotPlugin"
             ReferencedContainer = "container:AppLovin-MAX-Godot-Plugin.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

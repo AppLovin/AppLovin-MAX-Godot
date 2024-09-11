@@ -1,8 +1,8 @@
 blank_issues_enabled: true
 contact_links:
   - name: Documentation
-    url: https://dash.applovin.com/documentation/mediation/godot/getting-started/integration
+    url: https://developers.applovin.com/en/max/godot/overview/integration
     about: Documentation for the AppLovin MAX Godot Plugin
   - name: Support
-    url: https://monetization-support.applovin.com/hc/en-us
+    url: https://developers.applovin.com/en/max/faq/common-questions-from-publishers
     about: Answers to common questions and support for AppLovin MAX

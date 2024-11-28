@@ -6,13 +6,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.applovin.sdk.AppLovinAdContentRating;
-import com.applovin.sdk.AppLovinGender;
 import com.applovin.sdk.AppLovinPrivacySettings;
 import com.applovin.sdk.AppLovinSdk;
 import com.applovin.sdk.AppLovinSdkConfiguration;
 import com.applovin.sdk.AppLovinSdkSettings;
 import com.applovin.sdk.AppLovinSdkUtils;
+import com.applovin.sdk.AppLovinTargetingData;
 
 import org.godotengine.godot.Dictionary;
 import org.godotengine.godot.Godot;
@@ -68,7 +67,7 @@ public class AppLovinMAXGodotPlugin
         super( godot );
 
         AppLovinMAXGodotManager.setGodotActivity( getActivity() );
-        appLovinMAX = new AppLovinMAXGodotManager(new WeakReference<>( this ));
+        appLovinMAX = new AppLovinMAXGodotManager( new WeakReference<>( this ) );
         isPluginInitialized = true;
     }
 
@@ -104,7 +103,7 @@ public class AppLovinMAXGodotPlugin
 
         signals.add( new SignalInfo( Signal.BANNER_ON_AD_LOADED,
                                      String.class,
-                                     Dictionary.class) );
+                                     Dictionary.class ) );
         signals.add( new SignalInfo( Signal.BANNER_ON_AD_LOAD_FAILED,
                                      String.class,
                                      Dictionary.class ) );
@@ -204,14 +203,14 @@ public class AppLovinMAXGodotPlugin
         signals.add( new SignalInfo( Signal.REWARDED_ON_AD_DISPLAY_FAILED,
                                      String.class,
                                      Dictionary.class,
-                                     Dictionary.class) );
+                                     Dictionary.class ) );
         signals.add( new SignalInfo( Signal.REWARDED_ON_AD_HIDDEN,
                                      String.class,
                                      Dictionary.class ) );
         signals.add( new SignalInfo( Signal.REWARDED_ON_AD_RECEIVED_REWARD,
                                      String.class,
                                      Dictionary.class,
-                                     Dictionary.class) );
+                                     Dictionary.class ) );
 
         signals.add( new SignalInfo( Signal.REWARDED_INTERSTITIAL_ON_AD_LOADED,
                                      String.class,
@@ -238,7 +237,7 @@ public class AppLovinMAXGodotPlugin
         signals.add( new SignalInfo( Signal.REWARDED_INTERSTITIAL_ON_AD_RECEIVED_REWARD,
                                      String.class,
                                      Dictionary.class,
-                                     Dictionary.class) );
+                                     Dictionary.class ) );
 
         return signals;
     }
@@ -1104,40 +1103,40 @@ public class AppLovinMAXGodotPlugin
         return settings;
     }
 
-    private AppLovinGender getAppLovinGender(String gender)
+    private AppLovinTargetingData.Gender getAppLovinGender(String gender)
     {
         if ( "F".equalsIgnoreCase( gender ) )
         {
-            return AppLovinGender.FEMALE;
+            return AppLovinTargetingData.Gender.FEMALE;
         }
         else if ( "M".equalsIgnoreCase( gender ) )
         {
-            return AppLovinGender.MALE;
+            return AppLovinTargetingData.Gender.MALE;
         }
         else if ( "O".equalsIgnoreCase( gender ) )
         {
-            return AppLovinGender.OTHER;
+            return AppLovinTargetingData.Gender.OTHER;
         }
 
-        return AppLovinGender.UNKNOWN;
+        return AppLovinTargetingData.Gender.UNKNOWN;
     }
 
-    private AppLovinAdContentRating getAppLovinAdContentRating(int maximumAdContentRating)
+    private AppLovinTargetingData.AdContentRating getAppLovinAdContentRating(int maximumAdContentRating)
     {
         if ( maximumAdContentRating == 1 )
         {
-            return AppLovinAdContentRating.ALL_AUDIENCES;
+            return AppLovinTargetingData.AdContentRating.ALL_AUDIENCES;
         }
         else if ( maximumAdContentRating == 2 )
         {
-            return AppLovinAdContentRating.EVERYONE_OVER_TWELVE;
+            return AppLovinTargetingData.AdContentRating.EVERYONE_OVER_TWELVE;
         }
         else if ( maximumAdContentRating == 3 )
         {
-            return AppLovinAdContentRating.MATURE_AUDIENCES;
+            return AppLovinTargetingData.AdContentRating.MATURE_AUDIENCES;
         }
 
-        return AppLovinAdContentRating.NONE;
+        return AppLovinTargetingData.AdContentRating.NONE;
     }
 
     //endregion

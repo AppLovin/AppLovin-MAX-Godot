@@ -3,7 +3,7 @@
 AppLovin MAX Godot plugin for Android and iOS. We currently only support Godot 4.x.
 
 ## Documentation
-For information on how to use our plugin in your GDScripts, check out our integration docs [here](https://dash.applovin.com/documentation/mediation/godot/getting-started/integration).
+For information on how to use our plugin in your GDScripts, check out our integration docs [here](https://developers.applovin.com/en/godot/overview/integration).
 
 ## Plugin
 You may find our plugin on the [Godot Asset Library](https://godotengine.org/asset-library/asset/2141).
@@ -38,7 +38,7 @@ This section will provide the instructions on how to add the plugin to your Godo
   - This is an expected error, as the AppLovinSDK.framework is not included in the plugin by default. The reasoning behind this is to leverage Cocoapods to manage the iOS dependencies such as other ad network SDKs and our mediation adapters for them.
   - We have future plans to help streamline this process.
 4. Once the project has exported, create a Podfile in the same directory as your Xcode project (`.xcodeproj`). We have included an example Podfile in the top level directory of the repo.
-  - To add other networks and their dependencies, please visit [Preparing Mediated Networks](https://dash.applovin.com/documentation/mediation/godot/mediation-adapters/ios). This tool will automatically generate the Podfile code.
+  - To add other networks and their dependencies, please visit [Preparing Mediated Networks](https://developers.applovin.com/en/godot/preparing-mediated-networks#ios). This tool will automatically generate the Podfile code.
   - Note: Your Xcode project will not run by default as noted before until you run the next step.
 5. Finally, to install our AppLovinSDK and your dependencies, run the following on your command line tool:
   ```
@@ -70,7 +70,7 @@ This will allow you to make changes to your game code without having to export t
 ```
 implementation 'com.applovin:applovin-sdk:+'
 ```
-  - To add other networks and their dependencies, please visit [Preparing Mediated Networks](https://dash.applovin.com/documentation/mediation/godot/mediation-adapters/android). This tool will automatically generate the gradle code.
+  - To add other networks and their dependencies, please visit [Preparing Mediated Networks](https://developers.applovin.com/en/godot/preparing-mediated-networks#android). This tool will automatically generate the gradle code.
 9. In the `AndroidManifest.xml`, in the `.GodotApp` activity entry, change the `android:launchMode` attribute value from `singleInstance` to `singleTask`.
 
 ## Demo Apps

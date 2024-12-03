@@ -1,5 +1,8 @@
 .DS_STORE
 
+# AppLovin-specific ignores
+godot/
+
 # Godot 4+ specific ignores
 .godot/
 
@@ -14,3 +17,6 @@ export.cfg
 .mono/
 data_*/
 mono_crash.*.json
+
+# Android-specific ignores
+.gradle/

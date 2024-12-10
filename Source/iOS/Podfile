@@ -1,0 +1,7 @@
+source 'https://cdn.cocoapods.org/'
+
+use_frameworks!
+
+target 'AppLovinMAXGodotPlugin' do
+    pod 'AppLovinSDK'
+end

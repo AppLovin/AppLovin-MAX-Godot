@@ -1,7 +1,8 @@
 .DS_STORE
 
-# AppLovin-specific ignores
+# AppLovin-MAX-Godot ignores
 godot/
+build/
 
 # Godot 4+ specific ignores
 .godot/
@@ -20,3 +21,9 @@ mono_crash.*.json
 
 # Android-specific ignores
 .gradle/
+libs/
+local.properties
+
+# iOS-specific ignores
+Pods/
+Podfile.lock

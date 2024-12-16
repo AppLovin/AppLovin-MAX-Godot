@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import glob
 import os
 import sys
 import subprocess
@@ -11,6 +12,8 @@ else:
     def decode_utf8(x):
         return codecs.utf_8_decode(x)[0]
 
+plugin_name="AppLovin-MAX-Godot-Plugin"
+
 opts = Variables([], ARGUMENTS)
 
 # Gets the standard flags CC, CCX, etc.
@@ -21,8 +24,7 @@ opts.Add(EnumVariable('target', "Compilation target", 'debug', ['debug', 'releas
 opts.Add(EnumVariable('arch', "Compilation Architecture", '', ['', 'arm64', 'x86_64']))
 opts.Add(BoolVariable('simulator', "Compilation platform", 'no'))
 opts.Add(BoolVariable('use_llvm', "Use the LLVM / Clang compiler", 'no'))
-opts.Add(PathVariable('target_path', 'The path where the lib is installed.', 'build/'))
-opts.Add(EnumVariable('plugin', 'Plugin to build', '', ['', 'AppLovinMAXGodotPlugin']))
+opts.Add(PathVariable('target_path', 'The path where the lib is installed.', 'Source/iOS/build/'))
 
 # Updates the environment with the option variables.
 opts.Update(env)
@@ -34,10 +36,6 @@ if env['use_llvm']:
 
 if env['arch'] == '':
     print("No valid arch selected.")
-    quit();
-
-if env['plugin'] == '':
-    print("No valid plugin selected.")
     quit();
 
 # For the reference:
@@ -55,20 +53,20 @@ xcframework_directory = ''
 if env['simulator']:
     xcframework_directory = 'ios-arm64_x86_64-simulator'
     sdk_name = 'iphonesimulator'
-    env.Append(CCFLAGS=['-mios-simulator-version-min=11.0'])
-    env.Append(LINKFLAGS=["-mios-simulator-version-min=11.0"])
+    env.Append(CCFLAGS=['-mios-simulator-version-min=12.0'])
+    env.Append(LINKFLAGS=["-mios-simulator-version-min=12.0"])
 else:
     xcframework_directory = 'ios-arm64'
     sdk_name = 'iphoneos'
-    env.Append(CCFLAGS=['-miphoneos-version-min=11.0'])
-    env.Append(LINKFLAGS=["-miphoneos-version-min=11.0"])
-
-env.Append(FRAMEWORKPATH=['AppLovinSDK.xcframework/' + xcframework_directory])
+    env.Append(CCFLAGS=['-miphoneos-version-min=12.0'])
+    env.Append(LINKFLAGS=["-miphoneos-version-min=12.0"])
 
 try:
     sdk_path = decode_utf8(subprocess.check_output(['xcrun', '--sdk', sdk_name, '--show-sdk-path']).strip())
 except (subprocess.CalledProcessError, OSError):
     raise ValueError("Failed to find SDK path while running xcrun --sdk {} --show-sdk-path.".format(sdk_name))
+
+env.Append(FRAMEWORKPATH=[glob.glob("Pods/AppLovinSDK/**/AppLovinSDK.xcframework/{}".format(xcframework_directory), recursive=True)])
 
 env.Append(CCFLAGS=[
     '-fobjc-arc', 
@@ -76,27 +74,23 @@ env.Append(CCFLAGS=[
     '-fdiagnostics-show-category=id', '-fdiagnostics-parseable-fixits', '-fpascal-strings', 
     '-fblocks', '-fvisibility=hidden', '-MMD', '-MT', 'dependencies', '-fno-exceptions', 
     '-Wno-ambiguous-macro', 
-    '-Wall', '-Werror=return-type',
-    # '-Wextra',
+    '-Wall', '-Werror=return-type'
 ])
 
 env.Append(CCFLAGS=['-arch', env['arch'], "-isysroot", "-stdlib=libc++", '-isysroot', sdk_path])
 env.Append(CCFLAGS=['-DPTRCALL_ENABLED'])
 env.Prepend(CXXFLAGS=[
-    '-DNEED_LONG_INT', '-DLIBYUV_DISABLE_NEON', 
-    '-DUNIX_ENABLED', '-DCOREAUDIO_ENABLED'
+	'-DNEED_LONG_INT', '-DLIBYUV_DISABLE_NEON', 
+	'-DIPHONE_ENABLED', '-DUNIX_ENABLED', '-DCOREAUDIO_ENABLED'
 ])
 env.Append(LINKFLAGS=["-arch", env['arch'], '-isysroot', sdk_path, '-F' + sdk_path])
-
-if env['arch'] == 'armv7':
-    env.Prepend(CXXFLAGS=['-fno-aligned-allocation'])
 
 env.Append(CCFLAGS=["$IOS_SDK_PATH"])
 env.Prepend(CXXFLAGS=['-DIOS_ENABLED'])
 env.Prepend(CXXFLAGS=['-DVERSION_4_0'])
 
 env.Prepend(CFLAGS=['-std=gnu11'])
-env.Prepend(CXXFLAGS=['-std=gnu++17'])
+env.Prepend(CXXFLAGS=['-std=gnu++20'])
 
 if env['target'] == 'debug':
     env.Prepend(CXXFLAGS=[
@@ -110,30 +104,27 @@ elif env['target'] == 'release_debug':
         '-DNDEBUG', '-DNS_BLOCK_ASSERTIONS=1', '-DDEBUG_ENABLED',
     ])
 
-    if env['arch'] != 'armv7':
-        env.Prepend(CXXFLAGS=['-fomit-frame-pointer'])
+    env.Prepend(CXXFLAGS=['-fomit-frame-pointer'])
 else:
     env.Prepend(CXXFLAGS=[
         '-O2', '-ftree-vectorize',
         '-DNDEBUG', '-DNS_BLOCK_ASSERTIONS=1',
     ])
 
-    if env['arch'] != 'armv7':
-        env.Prepend(CXXFLAGS=['-fomit-frame-pointer'])            
+    env.Prepend(CXXFLAGS=['-fomit-frame-pointer']) 
 
-env.Append(CPPPATH=[ 
-    '../Godot', 
-    '../Godot/platform/ios',
+# Adding header files
+env.Append(CPPPATH=[
+	'godot',
+	'godot/platform/ios'
 ])
 
 # tweak this if you want to use different folders, or more folders, to store your source code in.
-if env['plugin'] == 'AppLovinMAXGodotPlugin':
-    sources = Glob('Source/iOS/AppLovin-MAX-Godot-Plugin/*.mm')
-    sources.append(Glob('Source/iOS/AppLovin-MAX-Godot-Plugin/Categories/*.mm'))
+sources = glob.glob("Source/iOS/{}/**/*.mm".format(plugin_name), recursive=True)
+sources.append(glob.glob("Source/iOS/{}/**/*.m".format(plugin_name), recursive=True))
 
 # lib<plugin>.<arch>-<simulator|ios>.<release|debug|release_debug>.a
 library_platform = env["arch"] + "-" + ("simulator" if env["simulator"] else "ios")
-print(library_platform)
 library_name = "libAppLovinMAXGodotPlugin." + library_platform + "." + env["target"] + ".a"
 library = env.StaticLibrary(target=env['target_path'] + library_name, source=sources)
 

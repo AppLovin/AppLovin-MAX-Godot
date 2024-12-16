@@ -11,10 +11,6 @@ class_name AppLovinMAX
 
 ## Returns the plugin version
 static var version: String = "1.0.3"
-## This class allows you to provide user or app data that will improve how we target ads.
-static var targeting_data: TargetingData = TargetingData.new()
-## User segments allow us to serve ads using custom-defined rules based on which segment the user is in. For now, we only support a custom string 32 alphanumeric characters or less as the user segment.
-static var user_segment: UserSegment = UserSegment.new()
 
 static var _banner_ad_listener: AdEventListener
 static var _mrec_ad_listener: AdEventListener
@@ -99,13 +95,6 @@ static func show_creative_debugger() -> void:
 		return
 	
 	_plugin.show_creative_debugger()
-	
-	
-static func set_user_id(user_id: String) -> void:
-	if _plugin == null:
-		return
-		
-	_plugin.set_user_id(user_id)
 
 
 static func get_sdk_configuration() -> SdkConfiguration:
@@ -159,27 +148,6 @@ static func is_user_consent_set() -> bool:
 		return false
 		
 	return _plugin.is_user_consent_set()
-	
-	
-static func set_is_age_restricted_user(is_age_restricted_user: bool) -> void:
-	if _plugin == null:
-		return
-		
-	_plugin.set_is_age_restricted_user(is_age_restricted_user)
-	
-	
-static func is_age_restricted_user() -> bool:
-	if _plugin == null:
-		return false
-		
-	return _plugin.is_age_restricted_user()
-	
-	
-static func is_age_restricted_user_set() -> bool:
-	if _plugin == null:
-		return false
-		
-	return _plugin.is_age_restricted_user_set()
 	
 	
 static func set_do_not_sell(do_not_sell: bool) -> void:
@@ -757,13 +725,6 @@ static func set_exception_handler_enabled(enabled: bool) -> void:
 	_plugin.set_exception_handler_enabled(enabled)
 	
 	
-static func set_location_collection_enabled(enabled: bool) -> void:
-	if _plugin == null:
-		return
-		
-	_plugin.set_location_collection_enabled(enabled)
-	
-	
 static func set_extra_parameter(key: String, value: String) -> void:
 	if _plugin == null:
 		return
@@ -887,106 +848,6 @@ static func get_app_tracking_status_string(status: AppTrackingStatus) -> String:
 			return "DENIED"
 		_: 
 			return "AUTHORIZED"
-			
-
-class TargetingData:
-	## This enumeration represents content ratings for the ads shown to users.
-	## They correspond to IQG Media Ratings.
-	enum AdContentRating {
-		NONE,
-		ALL_AUDIENCES,
-		EVERYONE_OVER_TWELVE,
-		MATURE_AUDIENCES
-	}
-
-	## This enumeration represents gender.
-	enum UserGender {
-		UNKNOWN,
-		FEMALE,
-		MALE,
-		OTHER
-	}
-
-	var year_of_birth: int:
-		set(value):
-			if AppLovinMAX._plugin == null:
-				return
-				
-			AppLovinMAX._plugin.set_targeting_data_year_of_birth(value)
-			
-			
-	var gender: UserGender:
-		set(value):
-			if AppLovinMAX._plugin == null:
-				return
-			
-			var string_value
-			match value:
-				UserGender.FEMALE:
-					string_value = "F"
-				UserGender.MALE:
-					string_value = "M"
-				UserGender.OTHER:
-					string_value = "O"
-				_:
-					string_value = ""
-			AppLovinMAX._plugin.set_targeting_data_gender(string_value)
-			
-			
-	var maximum_ad_content_rating: AdContentRating:
-		set(value):
-			if AppLovinMAX._plugin == null:
-				return
-			
-			AppLovinMAX._plugin.set_targeting_data_maximum_ad_content_rating(int(value))
-		
-		
-	var email: String:
-		set(value):
-			if AppLovinMAX._plugin == null:
-				return
-			
-			AppLovinMAX._plugin.set_targeting_data_email(value)
-			
-			
-	var phone_number: String:
-		set(value):
-			if AppLovinMAX._plugin == null:
-				return
-			
-			AppLovinMAX._plugin.set_targeting_data_phone_number(phone_number)
-			
-			
-	var keywords: Array:
-		set(value):
-			if AppLovinMAX._plugin == null:
-				return
-			
-			AppLovinMAX._plugin.set_targeting_data_keywords(value)
-		
-		
-	var interests: Array:
-		set(value):
-			if AppLovinMAX._plugin == null:
-				return
-			
-			AppLovinMAX._plugin.set_targeting_data_interests(value)
-
-
-	func clear_all() -> void:
-		if AppLovinMAX._plugin == null:
-				return
-		
-		AppLovinMAX._plugin.clear_all_targeting_data()
-
-
-class UserSegment:
-	var name: String:
-		set(value):
-			if AppLovinMAX._plugin == null:
-				return
-		
-			AppLovinMAX._plugin.set_user_segment_field("name", value)
 
 
 class SdkConfiguration:

@@ -11,13 +11,12 @@ var libraryVersionCode by extra((versionMajor * 10000) + (versionMinor * 100) + 
 var libraryArtifactId by extra("applovin-max-godot-plugin")
 var libraryArtifactName by extra("${libraryArtifactId}-${libraryVersionName}.aar")
 
-var libraryVersions = rootProject.extra["versions"] as Map<*, *>
-
 android {
-    compileSdkVersion(libraryVersions["compileSdk"] as Int)
+    namespace = "com.applovin.godot"
+    compileSdk = 33
 
     defaultConfig {
-        minSdkVersion(libraryVersions["minSdk"] as Int)
+        minSdk = 19
 
         consumerProguardFiles("proguard-rules.pro")
 
@@ -25,15 +24,13 @@ android {
         buildConfigField("int", "VERSION_CODE", libraryVersionCode.toString())
     }
 
-    flavorDimensions("default")
+    flavorDimensions.add("default")
     productFlavors {
-        // Flavor when building Unity Plugin as a standalone product
-        create("standalone") {
-            buildConfigField("boolean", "IS_TEST_APP", "false")
-        }
-        // Flavor from the test app
         create("app") {
-            buildConfigField("boolean", "IS_TEST_APP", "true")
+            dimension = "default"
+        }
+        create("standalone") {
+            dimension = "default"
         }
     }
 
@@ -49,22 +46,8 @@ android {
 }
 
 dependencies {
-
-    // AppLovin Workspace SDK
-    if (file("../../../SDK-Android/Android-SDK/build.gradle.kts").exists()) {
-        compileOnly(project(":Android-SDK"))
-    } else {
-        compileOnly("com.applovin:applovin-sdk:+@aar")
-    }
+    compileOnly("com.applovin:applovin-sdk:+@aar")
 
     // Godot Engine
     compileOnly("org.godotengine.godot:godot-lib:+@aar")
-}
-
-repositories {
-    mavenCentral()
-
-    flatDir {
-        dirs("libs")
-    }
 }

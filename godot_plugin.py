@@ -83,23 +83,22 @@ def prepare_plugin_environment(version):
 # Build the iOS plugin in either debug or release target.
 def build_ios(version=None, debug=False):
     try:
-        target = "Debug" if debug else "Release"
+        target = "debug" if debug else "release"
         print("Building iOS plugin in {} target...".format(target))
 
         build_dir = "./Source/iOS/build"
-        generate_xcframework(target, version, build_dir)
+        if not os.path.exists(build_dir):
+            print("Creating directory: {}".format(build_dir))
+            os.makedirs(build_dir)
+
+        generate_static_library(target, build_dir)
 
         # Move the xcframework to the plugin directory
-        plugin_name = "AppLovin-MAX-Godot-Plugin.xcframework"
-        xcframework = "AppLovin-MAX-Godot-Plugin.{}.xcframework".format(target)
-        xcframework_path = "{}/{}".format(build_dir, xcframework)
-        rename(xcframework_path, plugin_name)
-        move(build_dir + "/" + plugin_name, "ios/plugins/AppLovin-MAX-Godot-Plugin/")
-
-        for file in os.listdir(build_dir):
-            if file.endswith(".xcarchive"):
-                print("Removing ios build artifact: {}...".format(file))
-                os.remove(file)
+        plugin_name = "libAppLovinMAXGodotPlugin.a"
+        plugin_lib = "libAppLovinMAXGodotPlugin.{}.a".format(target)
+        plugin_path = "{}/{}".format(build_dir, plugin_lib)
+        rename(plugin_path, plugin_name)
+        move(build_dir + "/" + plugin_name, "Example/ios/plugins/AppLovin-MAX-Godot-Plugin/")
 
         print("iOS plugin build in {} target completed successfully.".format(target))
     except Exception as e:
@@ -193,12 +192,23 @@ def clean():
 
 ### Plugin Development ###
 
-# Generate the engine iOS headers for the iOS plugin to import
-def generate_ios_headers():
+def generate_ios_headers(timeout=15):
+    """
+    Generate Godot iOS headers for the plugin using SCons, with a timeout.
+
+    Args:
+        timeout (int): Maximum time (in seconds) to allow the command to run.
+    """
     try:
         os.chdir("./godot")
+        
         print("Running SCons to generate iOS headers...")
-        subprocess.call(["scons", "platform=ios", "target=template_release"])
+        subprocess.check_call(
+            ["scons", "platform=ios", "target=template_release"],
+            timeout=timeout
+        )
+    except subprocess.TimeoutExpired:
+        print("Error: The iOS header generation command timed out after {} seconds.".format(timeout))
     except Exception as e:
         print("Error while generating iOS headers: {}".format(e))
     finally:
@@ -208,7 +218,7 @@ def generate_ios_headers():
 def generate_pods():
     try:
         print("Generating AppLovinSDK dependency...")
-        subprocess.call(["pod", "install"], cwd="Source/iOS")
+        subprocess.call(["pod", "install"])
     except Exception as e:
         print("Error while generating AppLovinSDK dependency: {}".format(e))
 
@@ -237,6 +247,10 @@ def download_godot(version, stable=True):
 
     os.rename(godot_folder, "godot")
     os.remove(download_file)
+
+    # Ignore the Godot project files for the Example Godot project
+    subprocess.check_call(["touch", ".gdignore"], cwd="godot/")
+
     print("Download and extraction complete.")
 
 # Download the Godot Android lib
@@ -269,66 +283,20 @@ def download_godot_android_lib(version, stable=True):
 
 ### Utils ###
 
-# Generate xcframework for iOS plugin
-def generate_xcframework(target, version, output_dir):
+def generate_static_library(target, build_dir):
     try:
-        print("Starting XCFramework generation for target: {}, version: {}".format(target, version))
+        subprocess.check_call(["scons", "plugin={}".format("AppLovinMAXGodotPlugin"), "target={}".format(target), "arch=arm64"])
+        subprocess.check_call(["scons", "plugin={}".format("AppLovinMAXGodotPlugin"), "target={}".format(target), "arch=x86_64", "simulator=yes"])
 
-        # Ensure the destination directory exists
-        if not os.path.exists(output_dir):
-            print("Creating directory: {}".format(output_dir))
-            os.makedirs(output_dir)
-
-        # Define paths for static libraries and XCFramework
-        scheme = "AppLovin-MAX-Godot-Plugin"
-        workspace = "Source/iOS/AppLovin-MAX-Godot-Plugin.xcworkspace"
-        product = "libAppLovinMAXGodotPlugin.a"
-        device_library_path = os.path.join(output_dir, "{}-device.{}.xcarchive".format(scheme, target))
-        simulator_library_path = os.path.join(output_dir, "{}-simulator.{}.xcarchive".format(scheme, target))
-        xcframework_path = os.path.join(output_dir, "{}.{}.xcframework".format(scheme, target))
-
-        # Build for ARM64 device
-        print("Building for ARM64 device...")
-        build_xcarchive(scheme, target, "iphoneos", device_library_path, workspace)
-
-        # Build for ARM64 simulator
-        print("Building for ARM64 simulator...")
-        build_xcarchive(scheme, target, "iphonesimulator", simulator_library_path, workspace)
-
-        # Create XCFramework
-        print("Creating XCFramework at {}...".format(xcframework_path))
         subprocess.check_call([
-            "xcodebuild", "-create-xcframework",
-            "-library", os.path.join(device_library_path, "Products/usr/local/lib", product),
-            "-library", os.path.join(simulator_library_path, "Products/usr/local/lib", product),
-            "-output", xcframework_path
+            "lipo", "-create",
+            "{}/lib{}.arm64-ios.{}.a".format(build_dir, "AppLovinMAXGodotPlugin", target),
+            "{}/lib{}.x86_64-simulator.{}.a".format(build_dir, "AppLovinMAXGodotPlugin", target),
+            "-output", "{}/lib{}.{}.a".format(build_dir, "AppLovinMAXGodotPlugin", target)
         ])
-
-        print("XCFramework generated successfully at {}".format(xcframework_path))
-
     except subprocess.CalledProcessError as e:
-        raise Exception("An error occurred while generating the XCFramework: {}".format(e))
-    
-def build_xcarchive(scheme, target, arch, archivePath, workspace):
-    print("Starting xcode archive for scheme: {}, target: {}, arch: {}".format(scheme, target, arch))
+        raise Exception("An error occurred while generating the static library: {}".format(e))
 
-    xcodebuild_command = [
-        "xcodebuild",
-        "archive",
-        "-workspace", workspace,
-        "-scheme", scheme,
-        "-sdk", arch,
-        "-configuration", target,
-        "-archivePath", archivePath,
-        "SKIP_INSTALL=NO"
-    ]
-
-    # Only append preprocessor definitions for debug builds
-    if target.lower() == "debug":
-        xcodebuild_command.append('GCC_PREPROCESSOR_DEFINITIONS="DEBUG_ENABLED=1"')
-
-    subprocess.check_call(xcodebuild_command)
-    
 # Moves a file from the source path to the destination directory.
 def move(source_path, destination_dir):
     try:

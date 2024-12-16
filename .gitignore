@@ -27,3 +27,6 @@ local.properties
 # iOS-specific ignores
 Pods/
 Podfile.lock
+
+# Scon-specific ignores
+.sconsign.dblite

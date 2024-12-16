@@ -97,4 +97,3 @@ static func get_double(dictionary: Dictionary, key: String, defaultValue: float 
 		return float(value)
 
 	return defaultValue
-

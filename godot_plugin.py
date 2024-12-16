@@ -219,6 +219,8 @@ def generate_pods():
     try:
         print("Generating AppLovinSDK dependency...")
         subprocess.call(["pod", "install"])
+
+        subprocess.check_call(["touch", ".gdignore"], cwd="Pods/")
     except Exception as e:
         print("Error while generating AppLovinSDK dependency: {}".format(e))
 

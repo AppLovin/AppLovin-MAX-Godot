@@ -35,7 +35,12 @@ var is_mrec_showing = false
 
 func _ready():
 	
-	status_label.text = "Initializing Plugin v" + AppLovinMAX.version + "..."
+	_log_message("Main scene is ready")
+	
+	if _is_editor():
+		status_label.text = "Plugin is disabled in Editor"
+	else:
+		status_label.text = "Initializing Plugin v" + AppLovinMAX.version + "..."
 	
 	var init_listener = AppLovinMAX.InitializationListener.new()
 	init_listener.on_sdk_initialized = func(sdk_configuration: AppLovinMAX.SdkConfiguration):
@@ -98,7 +103,6 @@ func _on_mediation_debugger_button_pressed():
 	
 
 func _on_inter_button_pressed():
-	AppLovinMAX.targeting_data.clear_all()
 	var ad_unit_id = _get_ad_unit_id(INTERSTITIAL_AD_UNIT_IDS)
 	if ad_unit_id == null:
 		_log_message("Ad Unit ID unavailable")
@@ -291,6 +295,9 @@ func _on_mrec_ad_collapsed(ad_unit_id: String, ad_info: AppLovinMAX.AdInfo):
 	
 	
 ### Utility Methods
+
+func _is_editor():
+	return OS.has_feature("editor")
 
 func _log_message(message):
 	print(message)

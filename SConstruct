@@ -53,13 +53,13 @@ xcframework_directory = ''
 if env['simulator']:
     xcframework_directory = 'ios-arm64_x86_64-simulator'
     sdk_name = 'iphonesimulator'
-    env.Append(CCFLAGS=['-mios-simulator-version-min=12.0'])
-    env.Append(LINKFLAGS=["-mios-simulator-version-min=12.0"])
+    env.Append(CCFLAGS=['-mios-simulator-version-min=13.0'])
+    env.Append(LINKFLAGS=["-mios-simulator-version-min=13.0"])
 else:
     xcframework_directory = 'ios-arm64'
     sdk_name = 'iphoneos'
-    env.Append(CCFLAGS=['-miphoneos-version-min=12.0'])
-    env.Append(LINKFLAGS=["-miphoneos-version-min=12.0"])
+    env.Append(CCFLAGS=['-miphoneos-version-min=13.0'])
+    env.Append(LINKFLAGS=["-miphoneos-version-min=13.0"])
 
 try:
     sdk_path = decode_utf8(subprocess.check_output(['xcrun', '--sdk', sdk_name, '--show-sdk-path']).strip())
@@ -115,13 +115,13 @@ else:
 
 # Adding header files
 env.Append(CPPPATH=[
-	'godot',
-	'godot/platform/ios'
+	'godot', 
+    'godot/platform/ios',
 ])
 
 # tweak this if you want to use different folders, or more folders, to store your source code in.
-sources = glob.glob("Source/iOS/{}/**/*.mm".format(plugin_name), recursive=True)
-sources.append(glob.glob("Source/iOS/{}/**/*.m".format(plugin_name), recursive=True))
+sources = Glob('Source/iOS/AppLovin-MAX-Godot-Plugin/*.mm')
+sources.append(Glob('Source/iOS/AppLovin-MAX-Godot-Plugin/Categories/*.mm'))
 
 # lib<plugin>.<arch>-<simulator|ios>.<release|debug|release_debug>.a
 library_platform = env["arch"] + "-" + ("simulator" if env["simulator"] else "ios")

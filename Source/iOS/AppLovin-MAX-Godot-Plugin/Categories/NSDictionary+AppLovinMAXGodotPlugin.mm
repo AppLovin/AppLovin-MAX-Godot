@@ -42,4 +42,17 @@
     return result;
 }
 
+- (nullable NSString *)serializedString
+{
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject: self options: 0 error: &error];
+    if ( !jsonData )
+    {
+        NSLog(@"Error serializing dictionary: %@", error.localizedDescription);
+        return nil;
+    }
+
+    return [[NSString alloc] initWithData: jsonData encoding: NSUTF8StringEncoding];
+}
+
 @end

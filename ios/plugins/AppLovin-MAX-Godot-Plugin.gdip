@@ -1,6 +1,6 @@
 [config]
 name="AppLovinMAX"
-binary="AppLovin-MAX-Godot-Plugin/libAppLovin-MAX-Godot-Plugin.a"
+binary="AppLovin-MAX-Godot-Plugin/libAppLovinMAXGodotPlugin.a"
 
 initialization="applovin_max_godot_plugin_init"
 deinitialization="applovin_max_godot_plugin_deinit"

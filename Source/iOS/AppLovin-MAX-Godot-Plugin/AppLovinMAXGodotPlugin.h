@@ -10,6 +10,8 @@
 
 #import "AppLovinMAXGodotManager.h"
 
+#define DISABLE_DEPRECATED
+#define DEBUG_METHODS_ENABLED
 #include "core/object/class_db.h"
 
 void applovin_max_godot_plugin_init();
@@ -27,27 +29,15 @@ class AppLovinMAXGodotPlugin : public Object
     static bool _isSdkInitialized;
     
     // Store these values if pub attempts to set it before calling _MaxInitializeSdk()
-    static NSString *_userIdentifierToSet;
-    static NSString *_userSegmentNameToSet;
     static NSArray<NSString *> *_testDeviceIdentifiersToSet;
     static NSNumber *_verboseLoggingToSet;
     static NSNumber *_creativeDebuggerEnabledToSet;
     static NSNumber *_exceptionHandlerEnabledToSet;
-    static NSNumber *_locationCollectionEnabledToSet;
-    static NSNumber *_targetingYearOfBirth;
-    static NSString *_targetingGender;
-    static NSNumber *_targetingMaximumAdContentRating;
-    static NSString *_targetingEmail;
-    static NSString *_targetingPhoneNumber;
-    static NSArray<NSString *> *_targetingKeywords;
-    static NSArray<NSString *> *_targetingInterests;
     static NSMutableDictionary<NSString *, NSString *> *_extraParametersToSet;
     static NSObject *_extraParametersToSetLock;
     
     ALSdkSettings *generateSDKSettings(Array ad_unit_identifiers, Dictionary metadata);
     void setPendingExtraParametersIfNeeded(ALSdkSettings *settings);
-    ALGender getAppLovinGender(NSString *gender_string);
-    ALAdContentRating getAppLovinAdContentRating(int maximum_ad_content_rating);
     
 public:
     AppLovinMAXGodotPlugin();
@@ -61,7 +51,6 @@ public:
     void show_mediation_debugger();
     void show_creative_debugger();
     
-    void set_user_id(String user_id);
     Dictionary get_sdk_configuration();
     String get_ad_value(String ad_unit_identifier, String key);
     
@@ -72,10 +61,6 @@ public:
     void set_has_user_consent(bool has_user_consent);
     bool get_has_user_consent();
     bool is_user_consent_set();
-    
-    void set_is_age_restricted_user(bool is_age_restricted_user);
-    bool is_age_restricted_user();
-    bool is_age_restricted_user_set();
     
     void set_do_not_sell(bool do_not_sell);
     bool get_do_not_sell();
@@ -140,19 +125,6 @@ public:
 #pragma mark - Event Tracking
     void track_event(String name, Dictionary parameters);
     
-#pragma mark - User Segment
-    void set_user_segment_field(String field, String value);
-    
-#pragma mark - Targeting Data
-    void set_targeting_data_year_of_birth(int year_of_birth);
-    void set_targeting_data_gender(String gender);
-    void set_targeting_data_maximum_ad_content_rating(int maximum_ad_content_rating);
-    void set_targeting_data_email(String email);
-    void set_targeting_data_phone_number(String phone_number);
-    void set_targeting_data_keywords(Array keywords);
-    void set_targeting_data_interests(Array interests);
-    void clear_all_targeting_data();
-    
 #pragma mark - Settings
     void set_muted(bool muted);
     bool is_muted();
@@ -161,6 +133,5 @@ public:
     void set_creative_debugger_enabled(bool enabled);
     void set_test_device_advertising_identifiers(Array advertising_identifiers);
     void set_exception_handler_enabled(bool enabled);
-    void set_location_collection_enabled(bool enabled);
     void set_extra_parameter(String key, String value);
 };

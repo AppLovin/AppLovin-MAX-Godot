@@ -1,7 +1,7 @@
 .DS_STORE
 
 # AppLovin-MAX-Godot ignores
-godot/
+/godot/
 build/
 
 # Godot 4+ specific ignores
@@ -27,6 +27,7 @@ local.properties
 # iOS-specific ignores
 Pods/
 Podfile.lock
+xcuserdata/
 
 # Scon-specific ignores
 .sconsign.dblite

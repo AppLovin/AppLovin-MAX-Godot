@@ -1,7 +1,7 @@
 source 'https://cdn.cocoapods.org/'
 
 use_frameworks!
-platform :ios, '12.0'
+platform :ios, '13.0'
 
 workspace 'AppLovin-MAX-Godot'
 

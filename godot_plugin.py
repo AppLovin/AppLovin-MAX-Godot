@@ -98,7 +98,14 @@ def build_ios(version=None, debug=False):
         plugin_lib = "libAppLovinMAXGodotPlugin.{}.a".format(target)
         plugin_path = "{}/{}".format(build_dir, plugin_lib)
         rename(plugin_path, plugin_name)
-        move(build_dir + "/" + plugin_name, "Example/ios/plugins/AppLovin-MAX-Godot-Plugin/")
+        move(build_dir + "/" + plugin_name, "ios/plugins/AppLovin-MAX-Godot-Plugin/")
+
+        print("Cleaning up intermediate files...")
+        for pattern in ["*.o", "*.d"]:
+            files = glob.glob(os.path.join("./Source/iOS/AppLovin-MAX-Godot-Plugin", "**", pattern), recursive=True)
+            for file in files:
+                print("Removing: {}".format(file))
+                os.remove(file)
 
         print("iOS plugin build in {} target completed successfully.".format(target))
     except Exception as e:
@@ -109,32 +116,6 @@ def build_android(version=None, debug=False):
     try:
         target = "Debug" if debug else "Release"
         gradle_task = "assemble{}".format(target)
-
-        if version:
-            build_gradle_path = "Source/Android/build.gradle.kts"
-
-            print("Updating version in build.gradle.kts...")
-            version_parts = version.split(".")
-            if len(version_parts) != 3:
-                raise ValueError("Version must be in the format 'major.minor.patch' (e.g., '1.2.3').")
-
-            version_major, version_minor, version_patch = version_parts
-
-            with open(build_gradle_path, "r") as file:
-                gradle_content = file.readlines()
-
-            with open(build_gradle_path, "w") as file:
-                for line in gradle_content:
-                    if line.strip().startswith("private val versionMajor"):
-                        line = "private val versionMajor = {}\n".format(version_major)
-                    elif line.strip().startswith("private val versionMinor"):
-                        line = "private val versionMinor = {}\n".format(version_minor)
-                    elif line.strip().startswith("private val versionPatch"):
-                        line = "private val versionPatch = {}\n".format(version_patch)
-                    file.write(line)
-
-            print("Version updated in build.gradle.kts: Major={}, Minor={}, Patch={}".format(
-                version_major, version_minor, version_patch))
 
         # Build the Android plugin
         print("Building Android plugin in {} target...".format(target))

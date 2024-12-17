@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 
 import org.godotengine.godot.Dictionary;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +17,7 @@ public class Utils
 {
     static Map<String, String> toJavaStringMap(final Dictionary dictionary)
     {
-        final Map<String, String> result = new HashMap();
+        final Map<String, String> result = new HashMap<>();
         for ( final Map.Entry<?, ?> metaDataEntry : dictionary.entrySet() )
         {
             final Object key = metaDataEntry.getKey();
@@ -70,6 +71,21 @@ public class Utils
         }
 
         return dictionary;
+    }
+
+    public static String toJSONString(Dictionary dictionary)
+    {
+        if ( dictionary == null ) return "";
+
+        try
+        {
+            return new JSONObject( dictionary ).toString();
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     static void runSafelyOnUiThread(final Activity activity, final Runnable runner)

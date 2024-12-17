@@ -35,8 +35,6 @@ var is_mrec_showing = false
 
 func _ready():
 	
-	_log_message("Main scene is ready")
-	
 	if _is_editor():
 		status_label.text = "Plugin is disabled in Editor"
 	else:

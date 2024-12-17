@@ -11,7 +11,6 @@ import com.applovin.sdk.AppLovinSdk;
 import com.applovin.sdk.AppLovinSdkConfiguration;
 import com.applovin.sdk.AppLovinSdkSettings;
 import com.applovin.sdk.AppLovinSdkUtils;
-import com.applovin.sdk.AppLovinTargetingData;
 
 import org.godotengine.godot.Dictionary;
 import org.godotengine.godot.Godot;
@@ -34,30 +33,20 @@ public class AppLovinMAXGodotPlugin
     private final static String TAG     = "AppLovinMAX-Godot";
     private static final String SDK_TAG = "AppLovinSdk";
 
-    private AppLovinMAXGodotManager appLovinMAX;
-    private AppLovinSdk             sdk;
+    private final AppLovinMAXGodotManager appLovinMAX;
+    private       AppLovinSdk             sdk;
 
     private boolean isPluginInitialized = false;
-    private boolean isdkInitialized     = false;
+    private boolean isSdkInitialized    = false;
 
     private WeakReference<Activity> activity;
     private FrameLayout             godotLayout;
 
     // Store these values if pub attempts to set it before calling initializeSdk()
-    private String       userIdToSet;
-    private String       userSegmentNameToSet;
     private List<String> testDeviceAdvertisingIds;
     private Boolean      verboseLogging;
     private Boolean      creativeDebuggerEnabled;
     private Boolean      exceptionHandlerEnabled;
-    private Boolean      locationCollectionEnabled;
-    private Integer      targetingYearOfBirth;
-    private String       targetingGender;
-    private Integer      targetingMaximumAdContentRating;
-    private String       targetingEmail;
-    private String       targetingPhoneNumber;
-    private List<String> targetingKeywords;
-    private List<String> targetingInterests;
 
     private final Map<String, String> extraParametersToSet     = new HashMap<>();
     private final Object              extraParametersToSetLock = new Object();
@@ -250,65 +239,11 @@ public class AppLovinMAXGodotPlugin
             @Override
             public void onSdkInitializationComplete(final AppLovinSdkConfiguration sdkConfiguration)
             {
-                isdkInitialized = true;
+                isSdkInitialized = true;
 
                 emitSignal( Signal.SDK_INITIALIZATION, get_sdk_configuration() );
             }
         } );
-
-        if ( !TextUtils.isEmpty( userIdToSet ) )
-        {
-            sdk.setUserIdentifier( userIdToSet );
-            userIdToSet = null;
-        }
-
-        if ( !TextUtils.isEmpty( userSegmentNameToSet ) )
-        {
-            sdk.getUserSegment().setName( userSegmentNameToSet );
-            userSegmentNameToSet = null;
-        }
-
-        if ( targetingYearOfBirth != null )
-        {
-            sdk.getTargetingData().setYearOfBirth( targetingYearOfBirth <= 0 ? null : targetingYearOfBirth );
-            targetingYearOfBirth = null;
-        }
-
-        if ( targetingGender != null )
-        {
-            sdk.getTargetingData().setGender( getAppLovinGender( targetingGender ) );
-            targetingGender = null;
-        }
-
-        if ( targetingMaximumAdContentRating != null )
-        {
-            sdk.getTargetingData().setMaximumAdContentRating( getAppLovinAdContentRating( targetingMaximumAdContentRating ) );
-            targetingMaximumAdContentRating = null;
-        }
-
-        if ( targetingEmail != null )
-        {
-            sdk.getTargetingData().setEmail( targetingEmail );
-            targetingEmail = null;
-        }
-
-        if ( targetingPhoneNumber != null )
-        {
-            sdk.getTargetingData().setPhoneNumber( targetingPhoneNumber );
-            targetingPhoneNumber = null;
-        }
-
-        if ( targetingKeywords != null )
-        {
-            sdk.getTargetingData().setKeywords( targetingKeywords );
-            targetingKeywords = null;
-        }
-
-        if ( targetingInterests != null )
-        {
-            sdk.getTargetingData().setInterests( targetingInterests );
-            targetingInterests = null;
-        }
 
         setPendingExtraParametersIfNeeded( sdk.getSettings() );
     }
@@ -316,7 +251,7 @@ public class AppLovinMAXGodotPlugin
     @UsedByGodot
     public boolean is_initialized()
     {
-        return isPluginInitialized && isdkInitialized;
+        return isPluginInitialized && isSdkInitialized;
     }
 
     @UsedByGodot
@@ -341,20 +276,6 @@ public class AppLovinMAXGodotPlugin
         }
 
         sdk.showCreativeDebugger();
-    }
-
-    @UsedByGodot
-    public void set_user_id(String userId)
-    {
-        if ( sdk != null )
-        {
-            sdk.setUserIdentifier( userId );
-            userIdToSet = null;
-        }
-        else
-        {
-            userIdToSet = userId;
-        }
     }
 
     @UsedByGodot
@@ -408,25 +329,6 @@ public class AppLovinMAXGodotPlugin
     public boolean is_user_consent_set()
     {
         return AppLovinPrivacySettings.isUserConsentSet( getCurrentActivity() );
-    }
-
-    @UsedByGodot
-    public void set_is_age_restricted_user(boolean isAgeRestrictedUser)
-    {
-        AppLovinPrivacySettings.setIsAgeRestrictedUser( isAgeRestrictedUser, getCurrentActivity() );
-    }
-
-    @UsedByGodot
-    public boolean is_age_restricted_user()
-    {
-        return AppLovinPrivacySettings.isAgeRestrictedUser( getCurrentActivity() );
-    }
-
-    @UsedByGodot
-    public boolean is_age_restricted_user_set()
-    {
-        return AppLovinPrivacySettings.isAgeRestrictedUserSet( getCurrentActivity() );
-
     }
 
     @UsedByGodot
@@ -790,123 +692,6 @@ public class AppLovinMAXGodotPlugin
     }
 
     @UsedByGodot
-    public void set_user_segment_field(String field, String value)
-    {
-        if ( sdk != null )
-        {
-            sdk.getUserSegment().setName( value );
-        }
-        else
-        {
-            userSegmentNameToSet = value;
-        }
-    }
-
-    @UsedByGodot
-    public void set_targeting_data_year_of_birth(int yearOfBirth)
-    {
-        if ( sdk == null )
-        {
-            targetingYearOfBirth = yearOfBirth;
-            return;
-        }
-
-        sdk.getTargetingData().setYearOfBirth( yearOfBirth <= 0 ? null : yearOfBirth );
-    }
-
-    @UsedByGodot
-    public void set_targeting_data_gender(String gender)
-    {
-        if ( sdk == null )
-        {
-            targetingGender = gender;
-            return;
-        }
-
-        sdk.getTargetingData().setGender( getAppLovinGender( gender ) );
-    }
-
-    @UsedByGodot
-    public void set_targeting_data_maximum_ad_content_rating(int maximumAdContentRating)
-    {
-        if ( sdk == null )
-        {
-            targetingMaximumAdContentRating = maximumAdContentRating;
-            return;
-        }
-
-        sdk.getTargetingData().setMaximumAdContentRating( getAppLovinAdContentRating( maximumAdContentRating ) );
-    }
-
-    @UsedByGodot
-    public void set_targeting_data_email(String email)
-    {
-        if ( sdk == null )
-        {
-            targetingEmail = email;
-            return;
-        }
-
-        sdk.getTargetingData().setEmail( email );
-    }
-
-    @UsedByGodot
-    public void set_targeting_data_phone_number(String phoneNumber)
-    {
-        if ( sdk == null )
-        {
-            targetingPhoneNumber = phoneNumber;
-            return;
-        }
-
-        sdk.getTargetingData().setPhoneNumber( phoneNumber );
-    }
-
-    @UsedByGodot
-    public void set_targeting_data_keywords(String[] keywords)
-    {
-        List<String> keywordsList = keywords != null ? Arrays.asList( keywords ) : null;
-        if ( sdk == null )
-        {
-            targetingKeywords = keywordsList;
-            return;
-        }
-
-        sdk.getTargetingData().setKeywords( keywordsList );
-    }
-
-    @UsedByGodot
-    public void set_targeting_data_interests(String[] interests)
-    {
-        List<String> interestsList = interests != null ? Arrays.asList( interests ) : null;
-        if ( sdk == null )
-        {
-            targetingInterests = interestsList;
-            return;
-        }
-
-        sdk.getTargetingData().setInterests( interestsList );
-    }
-
-    @UsedByGodot
-    public void clear_all_targeting_data()
-    {
-        if ( sdk == null )
-        {
-            targetingYearOfBirth = null;
-            targetingGender = null;
-            targetingMaximumAdContentRating = null;
-            targetingEmail = null;
-            targetingPhoneNumber = null;
-            targetingKeywords = null;
-            targetingInterests = null;
-            return;
-        }
-
-        sdk.getTargetingData().clearAll();
-    }
-
-    @UsedByGodot
     public void set_muted(boolean muted)
     {
         if ( sdk == null ) return;
@@ -986,20 +771,6 @@ public class AppLovinMAXGodotPlugin
     }
 
     @UsedByGodot
-    public void set_location_collection_enabled(boolean enabled)
-    {
-        if ( sdk != null )
-        {
-            sdk.getSettings().setLocationCollectionEnabled( enabled );
-            locationCollectionEnabled = null;
-        }
-        else
-        {
-            locationCollectionEnabled = enabled;
-        }
-    }
-
-    @UsedByGodot
     public void set_extra_parameter(String key, String value)
     {
         if ( TextUtils.isEmpty( key ) )
@@ -1075,68 +846,11 @@ public class AppLovinMAXGodotPlugin
             exceptionHandlerEnabled = null;
         }
 
-        if ( locationCollectionEnabled != null )
-        {
-            settings.setLocationCollectionEnabled( locationCollectionEnabled );
-            locationCollectionEnabled = null;
-        }
-
         settings.setInitializationAdUnitIds( Arrays.asList( adUnitIds ) );
 
-        // Set the meta data to settings.
-        try
-        {
-            final Field metaDataField = AppLovinSdkSettings.class.getDeclaredField( "metaData" );
-            metaDataField.setAccessible( true );
-            final Map<String, String> metaDataMap = (Map<String, String>) metaDataField.get( settings );
-            for ( final Map.Entry<String, Object> metaDataEntry : metaData.entrySet() )
-            {
-                final Object value = metaDataEntry.getValue();
-                if ( value instanceof String )
-                {
-                    metaDataMap.put( metaDataEntry.getKey(), (String) value );
-                }
-            }
-        }
-        catch ( Exception ignored ) { }
+        settings.setExtraParameter( "applovin_godot_metadata", Utils.toJSONString( metaData ) );
 
         return settings;
-    }
-
-    private AppLovinTargetingData.Gender getAppLovinGender(String gender)
-    {
-        if ( "F".equalsIgnoreCase( gender ) )
-        {
-            return AppLovinTargetingData.Gender.FEMALE;
-        }
-        else if ( "M".equalsIgnoreCase( gender ) )
-        {
-            return AppLovinTargetingData.Gender.MALE;
-        }
-        else if ( "O".equalsIgnoreCase( gender ) )
-        {
-            return AppLovinTargetingData.Gender.OTHER;
-        }
-
-        return AppLovinTargetingData.Gender.UNKNOWN;
-    }
-
-    private AppLovinTargetingData.AdContentRating getAppLovinAdContentRating(int maximumAdContentRating)
-    {
-        if ( maximumAdContentRating == 1 )
-        {
-            return AppLovinTargetingData.AdContentRating.ALL_AUDIENCES;
-        }
-        else if ( maximumAdContentRating == 2 )
-        {
-            return AppLovinTargetingData.AdContentRating.EVERYONE_OVER_TWELVE;
-        }
-        else if ( maximumAdContentRating == 3 )
-        {
-            return AppLovinTargetingData.AdContentRating.MATURE_AUDIENCES;
-        }
-
-        return AppLovinTargetingData.AdContentRating.NONE;
     }
 
     //endregion

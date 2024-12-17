@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (Dictionary)alg_godotDictionary;
 
+- (nullable NSString *)serializedString;
+
 @end
 
 NS_ASSUME_NONNULL_END

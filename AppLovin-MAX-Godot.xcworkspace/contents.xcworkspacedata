@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:Exported-Xcode-Project/Example.xcodeproj">
+      location = "group:Example-Xcode-Project/Example.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Source/iOS/AppLovin-MAX-Godot-Plugin.xcodeproj">

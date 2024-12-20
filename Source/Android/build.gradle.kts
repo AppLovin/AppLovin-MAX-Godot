@@ -3,8 +3,8 @@ plugins {
 }
 
 private val versionMajor = 1
-private val versionMinor = 0
-private val versionPatch = 3
+private val versionMinor = 1
+private val versionPatch = 0
 
 var libraryVersionName by extra("${versionMajor}.${versionMinor}.${versionPatch}")
 var libraryVersionCode by extra((versionMajor * 10000) + (versionMinor * 100) + versionPatch)

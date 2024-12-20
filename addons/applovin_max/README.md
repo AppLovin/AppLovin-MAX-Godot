@@ -3,12 +3,13 @@
 AppLovin MAX Godot plugin for Android and iOS. We currently only support Godot 4.x.
 
 ## Documentation
-For information on how to use our plugin in your GDScripts, check out our integration docs [here](https://developers.applovin.com/en/godot/overview/integration).
-
-## Plugin
-You may find our plugin on the [Godot Asset Library](https://godotengine.org/asset-library/asset/2141). The source of those plugins are in the top level directory of this repo: `/addons`, `/ios`, `/android`.
+You may find our plugin on the [Godot Asset Library](https://godotengine.org/asset-library/asset/2141).
 
 We have an example scene `Main.gd` in `/addons/applovin_max/Example/Scenes` that shows an example integration of our APIs.
+<img width="400" alt="image" src="https://github.com/AppLovin/AppLovin-MAX-Godot/assets/23690238/4d03b9e2-5bf8-4dc2-bffd-e87c4868f48f">
+
+For information on how to use our plugin in your GDScripts, check out our integration docs [here](https://developers.applovin.com/en/godot/overview/integration).
+
 ## Plugin Integration Instructions
 This section will provide the instructions on how to add the plugin to your Godot project and how to set up your Xcode and Android Studio projects.
 
@@ -76,11 +77,6 @@ implementation 'com.applovin:applovin-sdk:+'
   - Click on `Replace in Files...` under `Find` menu option (cmd+shift+R if you are on macOS).
   - Search for `com.godot.game` and replace it with your desire package name.
   - In your `src` directory, rename the subdirectories from `src`/`com`/`godot`/`game` to your desired package name.
-
-## Demo Apps
-The `/ExampleProject` directory contains the demo app.
-
-<img width="832" alt="image" src="https://github.com/AppLovin/AppLovin-MAX-Godot/assets/5104410/f7fbbef0-6631-46ab-8661-b28d9b3c3d4e">
 
 ## License
 MIT

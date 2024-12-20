@@ -3,14 +3,13 @@
 AppLovin MAX Godot plugin for Android and iOS. We currently only support Godot 4.x.
 
 ## Documentation
-For information on how to use our plugin in your GDScripts, check out our integration docs [here](https://developers.applovin.com/en/godot/overview/integration).
-
-## Plugin
 You may find our plugin on the [Godot Asset Library](https://godotengine.org/asset-library/asset/2141).
 
 We have an example scene `Main.gd` in `/addons/applovin_max/Example/Scenes` that shows an example integration of our APIs.
+<img width="400" alt="image" src="https://github.com/AppLovin/AppLovin-MAX-Godot/assets/23690238/4d03b9e2-5bf8-4dc2-bffd-e87c4868f48f">
 
-The source files for the native plugins can be found in the `/Source` folder. The source files for the Godot plugin can be found in `/addons/applovin_max`.
+For information on how to use our plugin in your GDScripts, check out our integration docs [here](https://developers.applovin.com/en/godot/overview/integration).
+
 ## Plugin Integration Instructions
 This section will provide the instructions on how to add the plugin to your Godot project and how to set up your Xcode and Android Studio projects.
 
@@ -73,10 +72,58 @@ implementation 'com.applovin:applovin-sdk:+'
   - To add other networks and their dependencies, please visit [Preparing Mediated Networks](https://developers.applovin.com/en/godot/preparing-mediated-networks#android). This tool will automatically generate the gradle code.
 9. In the `AndroidManifest.xml`, in the `.GodotApp` activity entry, change the `android:launchMode` attribute value from `singleInstance` to `singleTask`.
 
-## Demo Apps
-The `/ExampleProject` directory contains the demo app.
+## Repo Structure
+This repo contains the following:
 
-<img width="400" alt="image" src="https://github.com/AppLovin/AppLovin-MAX-Godot/assets/23690238/4d03b9e2-5bf8-4dc2-bffd-e87c4868f48f">
+### AppLovinMAX Godot Plugin
+The root-level of this repo is structured to provide the official plugin and assets to Godot Asset Library:
+- The Godot plugin source code is located in `addons/applovin_max`.
+- The official Android Godot plugin `aar` library and `gdap` configuration file is located in `android/plugins/AppLovin-MAX-Godot-Plugin`
+- The official iOS Godot plugin `.a` library and `.gdip` configuration file is located in `ios/plugins/AppLovin-MAX-Godot-Plugin`
+
+### AppLovinMAX Godot Development and Example Project
+The root-level of this repo contains a Godot Example project used to develop and export the Example project (with the AppLovin-MAX-Godot plugin) to Xcode and Android Studio.
+Files/Folders:
+- **project.godot**, Open the project in the Godot IDE
+- **addons/applovin_max/**, contains the official AppLovin-MAX-Godot plugin gdscripts.
+- **addons/applovin_max/Example**, contains the Example project's main scene (`main.tscn`) and source code (`main.gd`)
+- **export_presets.cfg**, Export Configuration file. Used for exporting to Xcode/Android Studio.
+  - For Xcode, the export path is already defined to 'Example-Xcode-Project/`.
+  - For Android, you must first install the Android Studio Build Template under the Project options which will create the Android Studio project in `android/build`. Godot does not directly export to Android Studio; the export action essentially updates the build template project.
+- **android/build/**, as noted above, this is the Android Studio project for the Godot Example project. You must first install the Android Studio Build Template under the Project options to generate the project.
+- **Example-Xcode-Project/**, export in the Godot IDE to generate the Xcode Project for the Godot Example project.
+
+### iOS Plugin
+The root-level and `Source/iOS` of this repo contains the Xcode workspace needed to build and develop the iOS `AppLovin-MAX-Godot-Plugin`.
+- **AppLovin-MAX-Godot.xcworkspace**, workspace contains both the `AppLovin-MAX-Godot-Plugin` xcodeproj and the `Example` xcodeproj (if available/exported).
+- **Podfile**, run `pod install` to add the `AppLovinSDK` dependency to workspace. This is where additional ad networks/adapters can be added to the `Example` xcodeproj.
+- **Source/iOS/AppLovin-MAX-Godot-Plugin**, contains the iOS plugin source code.
+- **Source/iOS/build**, used by the `godot_plugin.py` script to build the plugin `.a` library and its intermediaries.
+- **Example-Xcode-Project**, by default, this will use the official iOS plugin, but the dependency can be updated to use the local `AppLovin-MAX-Godot-Plugin.xcodeproj` version. 
+
+### Android Plugin
+The `Source/Android` of this repo contains Android Studio project needed to build and develop the Android `AppLovin-MAX-Godot-Plugin`.
+- **Source/Android**, the Android Studio project contains the plugins source files and its `build.gradle` references the necessary dependencies on the `godot-lib.aar` and AppLovinSDK `aar`. Note: as of Godot 4.3, the latest Java supported is Java 17.
+
+## godot_plugin.py
+This scripts standardizes the build and development process of the iOS and Android plugins. Please use Python 3.x to run the script.
+
+### Commands
+#### `python3 godot_plugin.py prepare_plugin_environment <GODOT_VERSION>`
+Prepares the working space for iOS and Android development. Steps 2/4/5 prepares iOS; Step 3 prepares Android.
+
+This command does the following:
+1. Cleans the working space and removes artifacts generated by previous builds or downloads.
+2. Downloads the `godot engine` source code using the given `<GODOT_VERSION>`.
+3. Downloads the official Godot Android library using the given `<GODOT_VERSION>`.
+4. Generates the godot engine's iOS headers so the plugin may reference them.
+5. Runs `pod install` for AppLovin-MAX-Godot.xcworkspace and installs the `AppLovinSDK` dependency.
+
+#### `python3 godot_plugin.py build_ios`
+Builds the iOS plugin to `ios/plugins/AppLovin-MAX-Godot-Plugin`.
+
+#### `python3 godot_plugin.py build_android`
+Builds the Android plugin to `android/plugins/AppLovin-MAX-Godot-Plugin`
 
 ## License
 MIT

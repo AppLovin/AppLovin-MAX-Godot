@@ -36,7 +36,7 @@ This section will provide the instructions on how to add the plugin to your Godo
   
   - This is an expected error, as the AppLovinSDK.framework is not included in the plugin by default. The reasoning behind this is to leverage Cocoapods to manage the iOS dependencies such as other ad network SDKs and our mediation adapters for them.
   - We have future plans to help streamline this process.
-4. Once the project has exported, create a Podfile in the same directory as your Xcode project (`.xcodeproj`). We have included an example Podfile in the top level directory of the repo.
+4. Once the project has exported, create a Podfile in the same directory as your Xcode project (`.xcodeproj`). We have included an example Podfile in the `Example-Xcode-Project` directory of the repo. Note: there is another Podfile at the top-level directory that is setup to support the plugin development and not the standalone example project.
   - To add other networks and their dependencies, please visit [Preparing Mediated Networks](https://developers.applovin.com/en/godot/preparing-mediated-networks#ios). This tool will automatically generate the Podfile code.
   - Note: Your Xcode project will not run by default as noted before until you run the next step.
 5. Finally, to install our AppLovinSDK and your dependencies, run the following on your command line tool:
@@ -96,7 +96,7 @@ Files/Folders:
 ### iOS Plugin
 The root-level and `Source/iOS` of this repo contains the Xcode workspace needed to build and develop the iOS `AppLovin-MAX-Godot-Plugin`.
 - **AppLovin-MAX-Godot.xcworkspace**, workspace contains both the `AppLovin-MAX-Godot-Plugin` xcodeproj and the `Example` xcodeproj (if available/exported).
-- **Podfile**, run `pod install` to add the `AppLovinSDK` dependency to workspace. This is where additional ad networks/adapters can be added to the `Example` xcodeproj.
+- **Podfile**, run `pod install` to add the `AppLovinSDK` dependency to workspace. This is where additional ad networks/adapters can be added to the `Example` xcodeproj. Note: there are two Podfiles in the repo; one is the top-level and the other is in the `Example-Xcode-Project` directory. The former is used to build the iOS plugin and Example project; the latter is used to build Example project as a standalone project.
 - **Source/iOS/AppLovin-MAX-Godot-Plugin**, contains the iOS plugin source code.
 - **Source/iOS/build**, used by the `godot_plugin.py` script to build the plugin `.a` library and its intermediaries.
 - **Example-Xcode-Project**, by default, this will use the official iOS plugin, but the dependency can be updated to use the local `AppLovin-MAX-Godot-Plugin.xcodeproj` version. 

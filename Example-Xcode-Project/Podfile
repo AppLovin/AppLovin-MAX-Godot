@@ -1,0 +1,15 @@
+source 'https://cdn.cocoapods.org/'
+
+use_frameworks!
+platform :ios, '13.0'
+
+workspace 'Example'
+
+example_path = Pathname.new('Example.xcodeproj')
+if example_path.exist?()
+    target 'Example' do
+        project example_path
+
+        pod 'AppLovinSDK'
+    end
+end

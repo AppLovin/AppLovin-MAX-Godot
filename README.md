@@ -36,7 +36,7 @@ This section will provide the instructions on how to add the plugin to your Godo
   
   - This is an expected error, as the AppLovinSDK.framework is not included in the plugin by default. The reasoning behind this is to leverage Cocoapods to manage the iOS dependencies such as other ad network SDKs and our mediation adapters for them.
   - We have future plans to help streamline this process.
-4. Once the project has exported, create a Podfile in the same directory as your Xcode project (`.xcodeproj`). We have included an example Podfile in the `Example-Xcode-Project` directory of the repo. Note: there is another Podfile at the top-level directory that is setup to support the plugin development and not the standalone example project.
+4. Once the project has exported, create a Podfile in the same directory as your Xcode project (`.xcodeproj`). We have included an example Podfile in the `Example-Xcode-Project` directory of the repo. Note: do not use the Podfile at the top-level directory as it is setup to build and use the plugin source files.
   - To add other networks and their dependencies, please visit [Preparing Mediated Networks](https://developers.applovin.com/en/godot/preparing-mediated-networks#ios). This tool will automatically generate the Podfile code.
   - Note: Your Xcode project will not run by default as noted before until you run the next step.
 5. Finally, to install our AppLovinSDK and your dependencies, run the following on your command line tool:

@@ -10,8 +10,7 @@
 
 #import "AppLovinMAXGodotManager.h"
 
-#define DISABLE_DEPRECATED
-#define DEBUG_METHODS_ENABLED
+#include "core/object/object.h"
 #include "core/object/class_db.h"
 
 void applovin_max_godot_plugin_init();

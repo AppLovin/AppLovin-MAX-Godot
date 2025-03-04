@@ -12,14 +12,18 @@
 
 + (NSArray *)alg_arrayWithGodotArray:(Array)array
 {
+    if ( array.is_empty() ) return @[];
+    
     NSMutableArray *result = [[NSMutableArray alloc] init];
     for ( int i = 0; i < array.size(); i++ )
     {
+        if (!array.has(i)) continue;
+        
         NSObject *value = NSOBJECT(array[i]);
-        
-        if ( !value ) continue;
-        
-        [result addObject: value];
+        if ( value )
+        {
+            [result addObject: value];
+        }
     }
     return result;
 }

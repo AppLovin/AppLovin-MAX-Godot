@@ -7,8 +7,6 @@
 
 #import <Foundation/Foundation.h>
 
-#define DISABLE_DEPRECATED
-#define DEBUG_METHODS_ENABLED
 #include "core/object/class_db.h"
 
 extern String AppLovinMAXSignalSdkInitialization;

@@ -12,9 +12,8 @@
 #import "Categories/NSObject+AppLovinMAXGodotPlugin.h"
 #import "Categories/NSString+AppLovinMAXGodotPlugin.h"
 
-#define DISABLE_DEPRECATED
-#define DEBUG_METHODS_ENABLED
 #include "core/config/engine.h"
+#include "core/config/project_settings.h"
 
 #pragma mark - AppLovinMAXGodotPlugin Fields
 

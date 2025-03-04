@@ -13,10 +13,6 @@
 #import "Categories/NSObject+AppLovinMAXGodotPlugin.h"
 #import "Categories/NSString+AppLovinMAXGodotPlugin.h"
 
-#define DISABLE_DEPRECATED
-#define DEBUG_METHODS_ENABLED
-#include "core/object/class_db.h"
-
 #define VERSION @"1.1.0"
 #define KEY_WINDOW [UIApplication sharedApplication].keyWindow
 #define DEVICE_SPECIFIC_ADVIEW_AD_FORMAT ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) ? MAAdFormat.leader : MAAdFormat.banner

@@ -201,33 +201,6 @@ public class AppLovinMAXGodotPlugin
                                      Dictionary.class,
                                      Dictionary.class ) );
 
-        signals.add( new SignalInfo( Signal.REWARDED_INTERSTITIAL_ON_AD_LOADED,
-                                     String.class,
-                                     Dictionary.class ) );
-        signals.add( new SignalInfo( Signal.REWARDED_INTERSTITIAL_ON_AD_LOAD_FAILED,
-                                     String.class,
-                                     Dictionary.class ) );
-        signals.add( new SignalInfo( Signal.REWARDED_INTERSTITIAL_ON_AD_CLICKED,
-                                     String.class,
-                                     Dictionary.class ) );
-        signals.add( new SignalInfo( Signal.REWARDED_INTERSTITIAL_ON_AD_REVENUE_PAID,
-                                     String.class,
-                                     Dictionary.class ) );
-        signals.add( new SignalInfo( Signal.REWARDED_INTERSTITIAL_ON_AD_DISPLAYED,
-                                     String.class,
-                                     Dictionary.class ) );
-        signals.add( new SignalInfo( Signal.REWARDED_INTERSTITIAL_ON_AD_DISPLAY_FAILED,
-                                     String.class,
-                                     Dictionary.class,
-                                     Dictionary.class ) );
-        signals.add( new SignalInfo( Signal.REWARDED_INTERSTITIAL_ON_AD_HIDDEN,
-                                     String.class,
-                                     Dictionary.class ) );
-        signals.add( new SignalInfo( Signal.REWARDED_INTERSTITIAL_ON_AD_RECEIVED_REWARD,
-                                     String.class,
-                                     Dictionary.class,
-                                     Dictionary.class ) );
-
         return signals;
     }
 
@@ -643,40 +616,6 @@ public class AppLovinMAXGodotPlugin
     public void set_rewarded_ad_local_extra_parameter(String adUnitId, String key, Object value)
     {
         appLovinMAX.setRewardedAdLocalExtraParameter( adUnitId.trim(), key, value );
-    }
-
-    //endregion
-
-    //region Rewarded Interstitial
-
-    @UsedByGodot
-    public void load_rewarded_interstitial(String adUnitId)
-    {
-        appLovinMAX.loadRewardedInterstitialAd( adUnitId.trim() );
-    }
-
-    @UsedByGodot
-    public boolean is_rewarded_interstitial_ready(String adUnitId)
-    {
-        return appLovinMAX.isRewardedInterstitialAdReady( adUnitId.trim() );
-    }
-
-    @UsedByGodot
-    public void show_rewarded_interstitial(String adUnitId, String placement, String customData)
-    {
-        appLovinMAX.showRewardedInterstitialAd( adUnitId.trim(), placement, customData );
-    }
-
-    @UsedByGodot
-    public void set_rewarded_interstitial_extra_parameter(String adUnitId, String key, String value)
-    {
-        appLovinMAX.setRewardedInterstitialAdExtraParameter( adUnitId.trim(), key, value );
-    }
-
-    @UsedByGodot
-    public void set_rewarded_interstitial_local_extra_parameter(String adUnitId, String key, Object value)
-    {
-        appLovinMAX.setRewardedInterstitialAdLocalExtraParameter( adUnitId.trim(), key, value );
     }
 
     //endregion

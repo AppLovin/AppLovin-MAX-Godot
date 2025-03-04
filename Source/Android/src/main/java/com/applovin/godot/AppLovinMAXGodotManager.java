@@ -36,7 +36,6 @@ import com.applovin.mediation.ads.MaxAdView;
 import com.applovin.mediation.ads.MaxAppOpenAd;
 import com.applovin.mediation.ads.MaxInterstitialAd;
 import com.applovin.mediation.ads.MaxRewardedAd;
-import com.applovin.mediation.ads.MaxRewardedInterstitialAd;
 import com.applovin.sdk.AppLovinMediationProvider;
 import com.applovin.sdk.AppLovinSdk;
 import com.applovin.sdk.AppLovinSdkConfiguration;
@@ -99,7 +98,6 @@ public class AppLovinMAXGodotManager
     private final Map<String, MaxInterstitialAd>         interstitials;
     private final Map<String, MaxAppOpenAd>              appOpenAds;
     private final Map<String, MaxRewardedAd>             rewardedAds;
-    private final Map<String, MaxRewardedInterstitialAd> rewardedInterstitialAds;
 
     // AdView Fields
     private final Map<String, MaxAdView>           adViews;
@@ -125,7 +123,6 @@ public class AppLovinMAXGodotManager
         interstitials = new HashMap<>( 2 );
         appOpenAds = new HashMap<>( 2 );
         rewardedAds = new HashMap<>( 2 );
-        rewardedInterstitialAds = new HashMap<>( 2 );
         adViews = new HashMap<>( 2 );
         adViewAdFormats = new HashMap<>( 2 );
         adViewPositions = new HashMap<>( 2 );
@@ -481,38 +478,6 @@ public class AppLovinMAXGodotManager
         rewardedAd.setLocalExtraParameter( key, value );
     }
 
-    // REWARDED INTERSTITIAL
-
-    public void loadRewardedInterstitialAd(final String adUnitId)
-    {
-        MaxRewardedInterstitialAd rewardedInterstitialAd = retrieveRewardedInterstitialAd( adUnitId );
-        rewardedInterstitialAd.loadAd();
-    }
-
-    public boolean isRewardedInterstitialAdReady(final String adUnitId)
-    {
-        MaxRewardedInterstitialAd rewardedInterstitialAd = retrieveRewardedInterstitialAd( adUnitId );
-        return rewardedInterstitialAd.isReady();
-    }
-
-    public void showRewardedInterstitialAd(final String adUnitId, final String placement, final String customData)
-    {
-        MaxRewardedInterstitialAd rewardedInterstitialAd = retrieveRewardedInterstitialAd( adUnitId );
-        rewardedInterstitialAd.showAd( placement, customData );
-    }
-
-    public void setRewardedInterstitialAdExtraParameter(final String adUnitId, final String key, final String value)
-    {
-        MaxRewardedInterstitialAd rewardedInterstitialAd = retrieveRewardedInterstitialAd( adUnitId );
-        rewardedInterstitialAd.setExtraParameter( key, value );
-    }
-
-    public void setRewardedInterstitialAdLocalExtraParameter(final String adUnitId, final String key, final Object value)
-    {
-        MaxRewardedInterstitialAd rewardedInterstitialAd = retrieveRewardedInterstitialAd( adUnitId );
-        rewardedInterstitialAd.setLocalExtraParameter( key, value );
-    }
-
     // AD INFO
 
     private Dictionary getAdInfo(final MaxAd ad)
@@ -643,10 +608,6 @@ public class AppLovinMAXGodotManager
         {
             signalName = Signal.REWARDED_ON_AD_LOADED;
         }
-        else if ( MaxAdFormat.REWARDED_INTERSTITIAL == adFormat )
-        {
-            signalName = Signal.REWARDED_INTERSTITIAL_ON_AD_LOADED;
-        }
         else
         {
             logInvalidAdFormat( adFormat );
@@ -703,10 +664,6 @@ public class AppLovinMAXGodotManager
         {
             signalName = Signal.REWARDED_ON_AD_LOAD_FAILED;
         }
-        else if ( rewardedInterstitialAds.containsKey( adUnitId ) )
-        {
-            signalName = Signal.REWARDED_INTERSTITIAL_ON_AD_LOAD_FAILED;
-        }
         else
         {
             logStackTrace( new IllegalStateException( "invalid adUnitId: " + adUnitId ) );
@@ -759,10 +716,6 @@ public class AppLovinMAXGodotManager
         {
             signalName = Signal.REWARDED_ON_AD_CLICKED;
         }
-        else if ( MaxAdFormat.REWARDED_INTERSTITIAL == adFormat )
-        {
-            signalName = Signal.REWARDED_INTERSTITIAL_ON_AD_CLICKED;
-        }
         else
         {
             logInvalidAdFormat( adFormat );
@@ -800,9 +753,10 @@ public class AppLovinMAXGodotManager
         {
             signalName = Signal.REWARDED_ON_AD_DISPLAYED;
         }
-        else // REWARDED INTERSTITIAL
+        else
         {
-            signalName = Signal.REWARDED_INTERSTITIAL_ON_AD_DISPLAYED;
+            logInvalidAdFormat( adFormat );
+            return;
         }
 
         Dictionary adInfo = getAdInfo( ad );
@@ -836,9 +790,10 @@ public class AppLovinMAXGodotManager
         {
             signalName = Signal.REWARDED_ON_AD_DISPLAY_FAILED;
         }
-        else // REWARDED INTERSTITIAL
+        else
         {
-            signalName = Signal.REWARDED_INTERSTITIAL_ON_AD_DISPLAY_FAILED;
+            logInvalidAdFormat( adFormat );
+            return;
         }
 
         Dictionary adInfo = getAdInfo( ad );
@@ -880,9 +835,10 @@ public class AppLovinMAXGodotManager
         {
             signalName = Signal.REWARDED_ON_AD_HIDDEN;
         }
-        else // REWARDED INTERSTITIAL
+        else
         {
-            signalName = Signal.REWARDED_INTERSTITIAL_ON_AD_HIDDEN;
+            logInvalidAdFormat( adFormat );
+            return;
         }
 
         Dictionary adInfo = getAdInfo( ad );
@@ -901,7 +857,7 @@ public class AppLovinMAXGodotManager
     public void onUserRewarded(final MaxAd ad, final MaxReward reward)
     {
         final MaxAdFormat adFormat = ad.getFormat();
-        if ( adFormat != MaxAdFormat.REWARDED && adFormat != MaxAdFormat.REWARDED_INTERSTITIAL )
+        if ( adFormat != MaxAdFormat.REWARDED )
         {
             logInvalidAdFormat( adFormat );
             return;
@@ -911,7 +867,7 @@ public class AppLovinMAXGodotManager
         final int rewardAmountInt = reward != null ? reward.getAmount() : 0;
         final String rewardAmount = Integer.toString( rewardAmountInt );
 
-        final String signalName = ( adFormat == MaxAdFormat.REWARDED ) ? Signal.REWARDED_ON_AD_RECEIVED_REWARD : Signal.REWARDED_INTERSTITIAL_ON_AD_RECEIVED_REWARD;
+        final String signalName = Signal.REWARDED_ON_AD_RECEIVED_REWARD;
 
         Dictionary adInfo = getAdInfo( ad );
 
@@ -953,10 +909,6 @@ public class AppLovinMAXGodotManager
         else if ( MaxAdFormat.REWARDED == adFormat )
         {
             signalName = Signal.REWARDED_ON_AD_REVENUE_PAID;
-        }
-        else if ( MaxAdFormat.REWARDED_INTERSTITIAL == adFormat )
-        {
-            signalName = Signal.REWARDED_INTERSTITIAL_ON_AD_REVENUE_PAID;
         }
         else
         {
@@ -1617,21 +1569,6 @@ public class AppLovinMAXGodotManager
             result.setRevenueListener( this );
 
             rewardedAds.put( adUnitId, result );
-        }
-
-        return result;
-    }
-
-    private MaxRewardedInterstitialAd retrieveRewardedInterstitialAd(final String adUnitId)
-    {
-        MaxRewardedInterstitialAd result = rewardedInterstitialAds.get( adUnitId );
-        if ( result == null )
-        {
-            result = new MaxRewardedInterstitialAd( adUnitId, sdk, getCurrentActivity() );
-            result.setListener( this );
-            result.setRevenueListener( this );
-
-            rewardedInterstitialAds.put( adUnitId, result );
         }
 
         return result;

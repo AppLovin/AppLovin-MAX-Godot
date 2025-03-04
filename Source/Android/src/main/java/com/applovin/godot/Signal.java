@@ -42,14 +42,5 @@ public class Signal
     public static String REWARDED_ON_AD_DISPLAY_FAILED = "rewarded_on_ad_display_failed";
     public static String REWARDED_ON_AD_HIDDEN = "rewarded_on_ad_hidden";
     public static String REWARDED_ON_AD_RECEIVED_REWARD = "rewarded_on_ad_received_reward";
-
-    public static String REWARDED_INTERSTITIAL_ON_AD_LOADED = "rewarded_interstitial_on_ad_loaded";
-    public static String REWARDED_INTERSTITIAL_ON_AD_LOAD_FAILED = "rewarded_interstitial_on_ad_load_failed";
-    public static String REWARDED_INTERSTITIAL_ON_AD_CLICKED = "rewarded_interstitial_on_ad_clicked";
-    public static String REWARDED_INTERSTITIAL_ON_AD_REVENUE_PAID = "rewarded_interstitial_on_ad_revenue_paid";
-    public static String REWARDED_INTERSTITIAL_ON_AD_DISPLAYED = "rewarded_interstitial_on_ad_displayed";
-    public static String REWARDED_INTERSTITIAL_ON_AD_DISPLAY_FAILED = "rewarded_interstitial_on_ad_display_failed";
-    public static String REWARDED_INTERSTITIAL_ON_AD_HIDDEN = "rewarded_interstitial_on_ad_hidden";
-    public static String REWARDED_INTERSTITIAL_ON_AD_RECEIVED_REWARD = "rewarded_interstitial_on_ad_received_reward";
 }
 

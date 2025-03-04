@@ -51,6 +51,7 @@ Check out the `Active development considerations` section in Godot's [Exporting 
 
 This will allow you to make changes to your game code without having to export to Xcode again. You can simply make changes in Godot and run your build in your Xcode project immediately after.
 
+- Note: The Godot iOS engine/framework uses different functions signatures depending on the target mode between release/debug. There may be incompatibility issues if the AppLovinMAXGodotPlugin.xcframework and exported Xcode project have mismatched release/debug versions. By default, Godot can differentiate between the AppLovinMAXGodotPlugin.release.xcframework and AppLovinMAXGodotPlugin.debug.xcframework when exporting to Xcode (target mode is controlled by the `Export with Debug` option).
 #### Android
 1. Requirement: please read Godot's [Exporting for Android](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_android.html) on how to setup your Godot project for Android.
 2. In the Godot editor, click on `Install Android Build Template...` from the Project menu. Click `Install`.
@@ -120,7 +121,7 @@ This command does the following:
 5. Runs `pod install` for AppLovin-MAX-Godot.xcworkspace and installs the `AppLovinSDK` dependency.
 
 #### `python3 godot_plugin.py build_ios`
-Builds the iOS plugin to `ios/plugins/AppLovin-MAX-Godot-Plugin`.
+Builds the iOS plugin to `ios/plugins/AppLovin-MAX-Godot-Plugin`. Note: this builds both the debug and release versions of the .xcframework. Godot has different engine functions depending on the target mode. To be compatible with Godot debug/release Xcode project exports, the appropriate debug/release xcframework must be used; by default, the gdip is capable of selecting the correct version.
 
 #### `python3 godot_plugin.py build_android`
 Builds the Android plugin to `android/plugins/AppLovin-MAX-Godot-Plugin`

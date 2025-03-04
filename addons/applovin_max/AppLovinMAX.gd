@@ -10,7 +10,7 @@
 class_name AppLovinMAX
 
 ## Returns the plugin version
-static var version: String = "1.1.0"
+static var version: String = "1.1.1"
 
 static var _banner_ad_listener: AdEventListener
 static var _mrec_ad_listener: AdEventListener

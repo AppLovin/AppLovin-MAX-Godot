@@ -64,7 +64,7 @@ public class AppLovinMAXGodotManager
 {
     private static final String SDK_TAG = "AppLovinSdk";
     private static final String TAG     = "AppLovinMAXGodotManager";
-    private static final String VERSION = "1.1.0";
+    private static final String VERSION = "1.1.1";
 
     private static final String DEFAULT_AD_VIEW_POSITION = "top_left";
     private static final Point  DEFAULT_AD_VIEW_OFFSET   = new Point( 0, 0 );

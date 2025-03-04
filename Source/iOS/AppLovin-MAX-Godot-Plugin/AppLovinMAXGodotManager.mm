@@ -13,7 +13,7 @@
 #import "Categories/NSObject+AppLovinMAXGodotPlugin.h"
 #import "Categories/NSString+AppLovinMAXGodotPlugin.h"
 
-#define VERSION @"1.1.0"
+#define VERSION @"1.1.1"
 #define KEY_WINDOW [UIApplication sharedApplication].keyWindow
 #define DEVICE_SPECIFIC_ADVIEW_AD_FORMAT ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) ? MAAdFormat.leader : MAAdFormat.banner
 #define IS_VERTICAL_BANNER_POSITION(_POS) ( [@"center_left" isEqual: adViewPosition] || [@"center_right" isEqual: adViewPosition] )

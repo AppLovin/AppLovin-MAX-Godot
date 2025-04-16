@@ -40,6 +40,10 @@ func _ready():
 	else:
 		status_label.text = "Initializing Plugin v" + AppLovinMAX.version + "..."
 	
+	AppLovinMAX.set_terms_and_privacy_policy_flow_enabled(true);
+	AppLovinMAX.set_privacy_policy_url("https://your_company_name.com/privacy/");
+	AppLovinMAX.set_terms_of_service_url("https://your_company_name.com/terms/");
+	
 	var init_listener = AppLovinMAX.InitializationListener.new()
 	init_listener.on_sdk_initialized = func(sdk_configuration: AppLovinMAX.SdkConfiguration):
 

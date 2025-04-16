@@ -27,17 +27,11 @@ class AppLovinMAXGodotPlugin : public Object
     
     static bool _isSdkInitialized;
     
+    static MASegmentCollectionBuilder *_segmentCollectionBuilder;
+
     // Store these values if pub attempts to set it before calling _MaxInitializeSdk()
     static NSArray<NSString *> *_testDeviceIdentifiersToSet;
-    static NSNumber *_verboseLoggingToSet;
-    static NSNumber *_creativeDebuggerEnabledToSet;
-    static NSNumber *_exceptionHandlerEnabledToSet;
-    static NSMutableDictionary<NSString *, NSString *> *_extraParametersToSet;
-    static NSObject *_extraParametersToSetLock;
-    
-    ALSdkSettings *generateSDKSettings(Array ad_unit_identifiers, Dictionary metadata);
-    void setPendingExtraParametersIfNeeded(ALSdkSettings *settings);
-    
+
 public:
     AppLovinMAXGodotPlugin();
     ~AppLovinMAXGodotPlugin();
@@ -56,6 +50,18 @@ public:
     bool is_tablet();
     bool is_physical_device();
     
+#pragma mark - Consent Flow
+    void set_terms_and_privacy_policy_flow_enabled(bool enabled);
+    void set_privacy_policy_url(String url_string);
+    void set_terms_of_service_url(String url_string);
+    void set_consent_flow_debug_user_geography(String user_geography);
+    void show_cmp_for_existing_user();
+    bool has_supported_cmp();
+
+#pragma mark - Segment Targeting
+    void add_segment(int key, Array values);
+    Dictionary get_segment();
+
 #pragma mark - Privacy
     void set_has_user_consent(bool has_user_consent);
     bool get_has_user_consent();

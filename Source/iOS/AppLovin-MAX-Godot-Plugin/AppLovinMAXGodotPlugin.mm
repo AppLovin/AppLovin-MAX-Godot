@@ -424,7 +424,7 @@ void AppLovinMAXGodotPlugin::show_cmp_for_existing_user()
             cmp_error["cmpMessage"] = GODOT_STRING(error.cmpMessage);
         }
 
-        emit_signal(AppLovinMAXSignalCmpOnShowForExistingUser, cmp_error);
+        call_deferred("emit_signal", AppLovinMAXSignalCmpOnShowForExistingUser, cmp_error);
    }];
 }
 

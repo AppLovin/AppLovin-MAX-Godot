@@ -60,7 +60,6 @@ public:
 
 #pragma mark - Segment Targeting
     void add_segment(int key, Array values);
-    Dictionary get_segment();
 
 #pragma mark - Privacy
     void set_has_user_consent(bool has_user_consent);

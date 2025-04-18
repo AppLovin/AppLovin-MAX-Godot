@@ -176,7 +176,7 @@ static func has_supported_cmp() -> bool:
 		return false
 		
 	return _plugin.has_supported_cmp()
-	
+
 
 ### Segment Targeting ###
 
@@ -185,13 +185,6 @@ static func add_segment(key: int, values: Array[int]) -> void:
 		return
 		
 	_plugin.add_segment(key, values)
-
-
-static func get_segment() -> Dictionary:
-	if _plugin == null:
-		return Dictionary();
-		
-	return _plugin.get_segment()
 
 
 ### Privacy ###

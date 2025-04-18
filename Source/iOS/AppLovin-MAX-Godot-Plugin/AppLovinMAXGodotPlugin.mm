@@ -209,7 +209,6 @@ void AppLovinMAXGodotPlugin::_bind_methods()
 
     // Segment Targeting
     ClassDB::bind_method(D_METHOD("add_segment"), &AppLovinMAXGodotPlugin::add_segment);
-    ClassDB::bind_method(D_METHOD("get_segment"), &AppLovinMAXGodotPlugin::get_segment);
 
     // Privacy
     ClassDB::bind_method(D_METHOD("set_has_user_consent"), &AppLovinMAXGodotPlugin::set_has_user_consent);
@@ -461,37 +460,6 @@ void AppLovinMAXGodotPlugin::add_segment(int key, Array segment_values)
     }
 
     [_segmentCollectionBuilder addSegment: [[MASegment alloc] initWithKey: @(key) values: ns_number_array]];
-}
-
-Dictionary AppLovinMAXGodotPlugin::get_segment()
-{
-    if ( !_isSdkInitialized )
-    {
-        NSLog(@"[%@] Segment cannot be retrieved before calling 'AppLovinMAX.initialize()'!", TAG);
-        return Dictionary();
-    }
-    
-    NSArray<MASegment *> *segments = _sdk.segmentCollection.segments;
-    
-    if ( ![segments count] )
-    {
-        return Dictionary();
-    }
-    
-    Dictionary segment_map = Dictionary();
-
-    for ( MASegment *segment in segments )
-    {
-        Array int_values;
-        for ( NSNumber *num in segment.values )
-        {
-            int_values.append(num.intValue);
-        }
-
-        segment_map[segment.key.intValue] = int_values;
-    }
-
-    return segment_map;
 }
 
 #pragma mark - Privacy

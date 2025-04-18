@@ -439,7 +439,7 @@ void AppLovinMAXGodotPlugin::add_segment(int key, Array segment_values)
 {
     if ( _isSdkInitialized )
     {
-        NSLog(@"Segment must be added before calling 'AppLovinMAX.initialize()'!");
+        NSLog(@"[%@] Segment must be added before calling 'AppLovinMAX.initialize()'!", TAG);
         return;
     }
     
@@ -453,6 +453,11 @@ void AppLovinMAXGodotPlugin::add_segment(int key, Array segment_values)
             int intVal = item;
             [ns_number_array addObject: @(intVal)];
         }
+        else
+        {
+            String strVal = item.stringify();
+            NSLog(@"[%@] Expected an integer for segment: '%@'", TAG, NSSTRING(strVal));
+        }
     }
 
     [_segmentCollectionBuilder addSegment: [[MASegment alloc] initWithKey: @(key) values: ns_number_array]];
@@ -462,7 +467,7 @@ Dictionary AppLovinMAXGodotPlugin::get_segment()
 {
     if ( !_isSdkInitialized )
     {
-        NSLog(@"Segment cannot be retrieved before before calling 'AppLovinMAX.initialize()'!");
+        NSLog(@"[%@] Segment cannot be retrieved before calling 'AppLovinMAX.initialize()'!", TAG);
         return Dictionary();
     }
     

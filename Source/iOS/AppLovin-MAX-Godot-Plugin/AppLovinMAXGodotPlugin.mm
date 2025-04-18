@@ -413,7 +413,7 @@ void AppLovinMAXGodotPlugin::show_cmp_for_existing_user()
     
     [_sdk.cmpService showCMPForExistingUserWithCompletion:^(ALCMPError *_Nullable error) {
         
-        Dictionary cmp_error = Dictionary();
+        Dictionary cmp_error;
 
         if ( error )
         {

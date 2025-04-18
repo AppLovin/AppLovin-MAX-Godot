@@ -897,7 +897,6 @@ enum CMPErrorCode {
 }
 
 
-
 enum AdLoadState {
 	AD_LOAD_NOT_ATTEMPTED,
 	AD_LOADED,
@@ -1160,7 +1159,6 @@ class ErrorInfo:
 		return stringbuilder + ", adLoadFailureInfo: " + ad_load_failure_info + "]"
 		
 		
-
 class CMPErrorInfo:
 	var code: CMPErrorCode
 	var message: String
@@ -1175,7 +1173,7 @@ class CMPErrorInfo:
 		cmp_message = AppLovinMAXDictionaryUtils.get_string(error_info_dictionary, "cmpMessage", "")
 
 
-	func to_string() -> String:
+	func _to_string() -> String:
 		return "[CMPErrorInfo code: " + str(code) +\
 			   ", message: " + message +\
 			   ", cmpCode: " + str(cmp_code) +\

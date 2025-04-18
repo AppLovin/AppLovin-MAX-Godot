@@ -317,7 +317,7 @@ void AppLovinMAXGodotPlugin::initialize(String sdk_key, Dictionary metadata, Arr
 
     [_sdk.settings setExtraParameterForKey: @"applovin_godot_metadata" value: NSDICTIONARY(metadata).serializedString];
 
-    [_sdk initializeWithConfiguration:initConfig completionHandler:^(ALSdkConfiguration *configuration) {
+    [_sdk initializeWithConfiguration: initConfig completionHandler:^(ALSdkConfiguration *configuration) {
         _isSdkInitialized = true;
         
         emit_signal(AppLovinMAXSignalSdkInitialization, get_sdk_configuration());
@@ -412,7 +412,7 @@ void AppLovinMAXGodotPlugin::show_cmp_for_existing_user()
         return;
     }
     
-    [_sdk.cmpService showCMPForExistingUserWithCompletion:^(ALCMPError * _Nullable error) {
+    [_sdk.cmpService showCMPForExistingUserWithCompletion:^(ALCMPError *_Nullable error) {
         
         Dictionary cmp_error = Dictionary();
 

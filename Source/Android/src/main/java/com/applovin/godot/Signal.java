@@ -4,6 +4,8 @@ public class Signal
 {
     public static String SDK_INITIALIZATION = "on_sdk_initialized";
 
+    public static String SHOW_CMP_FOR_EXISTING_USER = "on_show_cmp_for_existing_user";
+
     public static String BANNER_ON_AD_LOADED = "banner_on_ad_loaded";
     public static String BANNER_ON_AD_LOAD_FAILED = "banner_on_ad_load_failed";
     public static String BANNER_ON_AD_CLICKED = "banner_on_ad_clicked";

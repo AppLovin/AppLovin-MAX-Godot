@@ -20,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.applovin.impl.sdk.utils.JsonUtils;
-import com.applovin.impl.sdk.utils.StringUtils;
 import com.applovin.mediation.MaxAd;
 import com.applovin.mediation.MaxAdFormat;
 import com.applovin.mediation.MaxAdListener;
@@ -36,10 +35,7 @@ import com.applovin.mediation.ads.MaxAdView;
 import com.applovin.mediation.ads.MaxAppOpenAd;
 import com.applovin.mediation.ads.MaxInterstitialAd;
 import com.applovin.mediation.ads.MaxRewardedAd;
-import com.applovin.sdk.AppLovinMediationProvider;
-import com.applovin.sdk.AppLovinSdk;
 import com.applovin.sdk.AppLovinSdkConfiguration;
-import com.applovin.sdk.AppLovinSdkSettings;
 import com.applovin.sdk.AppLovinSdkUtils;
 
 import org.godotengine.godot.Dictionary;
@@ -64,7 +60,6 @@ public class AppLovinMAXGodotManager
 {
     private static final String SDK_TAG = "AppLovinSdk";
     private static final String TAG     = "AppLovinMAXGodotManager";
-    private static final String VERSION = "1.1.1";
 
     private static final String DEFAULT_AD_VIEW_POSITION = "top_left";
     private static final Point  DEFAULT_AD_VIEW_OFFSET   = new Point( 0, 0 );
@@ -91,13 +86,12 @@ public class AppLovinMAXGodotManager
     }
 
     // Parent Fields
-    private       AppLovinSdk                           sdk;
     private final WeakReference<AppLovinMAXGodotPlugin> plugin;
 
     // Fullscreen Ad Fields
-    private final Map<String, MaxInterstitialAd>         interstitials;
-    private final Map<String, MaxAppOpenAd>              appOpenAds;
-    private final Map<String, MaxRewardedAd>             rewardedAds;
+    private final Map<String, MaxInterstitialAd> interstitials;
+    private final Map<String, MaxAppOpenAd>      appOpenAds;
+    private final Map<String, MaxRewardedAd>     rewardedAds;
 
     // AdView Fields
     private final Map<String, MaxAdView>           adViews;
@@ -183,34 +177,6 @@ public class AppLovinMAXGodotManager
         {
             AppLovinMAXGodotManager.godotActivity = new WeakReference<>( godotActivity );
         }
-    }
-
-    public AppLovinSdk initializeSdkWithCompletionHandler(final String sdkKey,
-                                                          final AppLovinSdkSettings settings,
-                                                          final Listener listener)
-    {
-        final Activity currentActivity = getCurrentActivity();
-        if ( StringUtils.isValidString( sdkKey ) )
-        {
-            sdk = AppLovinSdk.getInstance( sdkKey, settings, currentActivity );
-        }
-        else
-        {
-            sdk = AppLovinSdk.getInstance( settings, currentActivity );
-        }
-
-        sdk.setPluginVersion( "Godot-" + VERSION );
-        sdk.setMediationProvider( AppLovinMediationProvider.MAX );
-        sdk.initializeSdk( new AppLovinSdk.SdkInitializationListener()
-        {
-            @Override
-            public void onSdkInitialized(final AppLovinSdkConfiguration config)
-            {
-                listener.onSdkInitializationComplete( config );
-            }
-        } );
-
-        return sdk;
     }
 
     // BANNERS
@@ -1534,7 +1500,7 @@ public class AppLovinMAXGodotManager
         MaxInterstitialAd result = interstitials.get( adUnitId );
         if ( result == null )
         {
-            result = new MaxInterstitialAd( adUnitId, sdk, getCurrentActivity() );
+            result = new MaxInterstitialAd( adUnitId, plugin.get().getSdk(), getCurrentActivity() );
             result.setListener( this );
             result.setRevenueListener( this );
 
@@ -1549,7 +1515,7 @@ public class AppLovinMAXGodotManager
         MaxAppOpenAd result = appOpenAds.get( adUnitId );
         if ( result == null )
         {
-            result = new MaxAppOpenAd( adUnitId, sdk );
+            result = new MaxAppOpenAd( adUnitId, plugin.get().getSdk() );
             result.setListener( this );
             result.setRevenueListener( this );
 
@@ -1564,7 +1530,7 @@ public class AppLovinMAXGodotManager
         MaxRewardedAd result = rewardedAds.get( adUnitId );
         if ( result == null )
         {
-            result = MaxRewardedAd.getInstance( adUnitId, sdk, getCurrentActivity() );
+            result = MaxRewardedAd.getInstance( adUnitId, plugin.get().getSdk(), getCurrentActivity() );
             result.setListener( this );
             result.setRevenueListener( this );
 
@@ -1584,7 +1550,7 @@ public class AppLovinMAXGodotManager
         MaxAdView result = adViews.get( adUnitId );
         if ( result == null && adViewPosition != null && adViewOffset != null )
         {
-            result = new MaxAdView( adUnitId, adFormat, sdk, getCurrentActivity() );
+            result = new MaxAdView( adUnitId, adFormat, plugin.get().getSdk(), getCurrentActivity() );
             result.setListener( this );
             result.setRevenueListener( this );
 

@@ -342,7 +342,7 @@ public class AppLovinMAXGodotPlugin
     {
         if ( !isSdkInitialized )
         {
-            Log.d( "[" + AppLovinMAXGodotPlugin.TAG + "]", "Failed to show CMP for existing user - please ensure the AppLovin MAX Godot Plugin has been initialized by calling 'AppLovinMAX.initialize();'!" );
+            Log.e( "[" + AppLovinMAXGodotPlugin.TAG + "]", "Failed to show CMP for existing user - please ensure the AppLovin MAX Godot Plugin has been initialized by calling 'AppLovinMAX.initialize();'!" );
             return;
         }
 
@@ -375,10 +375,9 @@ public class AppLovinMAXGodotPlugin
     @UsedByGodot
     public void add_segment(int key, int[] values)
     {
-
         if ( isSdkInitialized )
         {
-            Log.d( "[" + AppLovinMAXGodotPlugin.TAG + "]", "Segment must be added before calling 'AppLovinMAX.initialize();'!" );
+            Log.e( "[" + AppLovinMAXGodotPlugin.TAG + "]", "Segment must be added before calling 'AppLovinMAX.initialize();'!" );
             return;
         }
 

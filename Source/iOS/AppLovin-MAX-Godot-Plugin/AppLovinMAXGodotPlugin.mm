@@ -29,6 +29,7 @@ bool AppLovinMAXGodotPlugin::_isSdkInitialized;
 NSString const *TAG = @"AppLovinMAXGodotPlugin";
 
 NSArray<NSString *> *AppLovinMAXGodotPlugin::_testDeviceIdentifiersToSet;
+NSNumber *AppLovinMAXGodotPlugin::_exceptionHandlerEnabledToSet;
 
 #pragma mark - AppLovinMAXGodotPlugin Initialization
 
@@ -311,6 +312,12 @@ void AppLovinMAXGodotPlugin::initialize(String sdk_key, Dictionary metadata, Arr
         {
             builder.testDeviceAdvertisingIdentifiers = _testDeviceIdentifiersToSet;
             _testDeviceIdentifiersToSet = nil;
+        }
+
+        if ( _exceptionHandlerEnabledToSet )
+        {
+            builder.exceptionHandlerEnabled = _exceptionHandlerEnabledToSet.boolValue;
+            _exceptionHandlerEnabledToSet = nil;
         }
     }];
 
@@ -802,7 +809,7 @@ void AppLovinMAXGodotPlugin::set_test_device_advertising_identifiers(Array adver
 
 void AppLovinMAXGodotPlugin::set_exception_handler_enabled(bool enabled)
 {
-    _sdk.settings.exceptionHandlerEnabled = enabled;
+    _exceptionHandlerEnabledToSet = @(enabled);
 }
 
 void AppLovinMAXGodotPlugin::set_extra_parameter(String key, String value)

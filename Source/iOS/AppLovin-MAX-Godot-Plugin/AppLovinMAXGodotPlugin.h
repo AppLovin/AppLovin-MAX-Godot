@@ -31,6 +31,7 @@ class AppLovinMAXGodotPlugin : public Object
 
     // Store these values if pub attempts to set it before calling _MaxInitializeSdk()
     static NSArray<NSString *> *_testDeviceIdentifiersToSet;
+    static NSNumber *_exceptionHandlerEnabledToSet;
 
 public:
     AppLovinMAXGodotPlugin();

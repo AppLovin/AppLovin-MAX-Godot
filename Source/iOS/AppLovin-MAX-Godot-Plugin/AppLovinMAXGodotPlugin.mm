@@ -15,7 +15,7 @@
 #include "core/config/engine.h"
 #include "core/config/project_settings.h"
 
-#define VERSION @"1.1.1"
+#define VERSION @"1.1.2"
 
 #pragma mark - AppLovinMAXGodotPlugin Fields
 

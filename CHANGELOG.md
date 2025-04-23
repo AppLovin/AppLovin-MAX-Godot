@@ -1,6 +1,6 @@
 ## Versions
 
-## x.x.x
+## 1.1.2
 * Add Segment Targeting APIs. For more info, check out our [docs](https://developers.applovin.com/en/max/godot/overview/data-and-keyword-passing/).
 * Add Terms and Privacy Policy Flow APIs. For more info, check out our [docs](https://developers.applovin.com/en/max/godot/overview/terms-and-privacy-policy-flow/).
 

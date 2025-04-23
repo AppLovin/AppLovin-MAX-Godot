@@ -35,7 +35,7 @@ public class AppLovinMAXGodotPlugin
 {
     private final static String TAG     = "AppLovinMAX-Godot";
     private static final String SDK_TAG = "AppLovinSdk";
-    private static final String VERSION = "1.1.1";
+    private static final String VERSION = "1.1.2";
 
     private final AppLovinMAXGodotManager      appLovinMAX;
     private final AppLovinSdk                  sdk;

@@ -8,6 +8,7 @@
 #include "AppLovinMAXGodotSignal.h"
 
 String AppLovinMAXSignalSdkInitialization = "on_sdk_initialized";
+String AppLovinMAXSignalCmpOnShowForExistingUser = "on_show_cmp_for_existing_user";
 
 String AppLovinMAXSignalBannerOnAdLoaded = "banner_on_ad_loaded";
 String AppLovinMAXSignalBannerOnAdLoadFailed = "banner_on_ad_load_failed";

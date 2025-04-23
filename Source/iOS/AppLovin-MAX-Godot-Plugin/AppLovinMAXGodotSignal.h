@@ -10,6 +10,7 @@
 #include "core/object/class_db.h"
 
 extern String AppLovinMAXSignalSdkInitialization;
+extern String AppLovinMAXSignalCmpOnShowForExistingUser;
 
 extern String AppLovinMAXSignalBannerOnAdLoaded;
 extern String AppLovinMAXSignalBannerOnAdLoadFailed;

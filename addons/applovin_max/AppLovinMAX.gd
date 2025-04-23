@@ -127,6 +127,66 @@ static func is_physical_device() -> bool:
 	return _plugin.is_physical_device()
 	
 
+### Consent Flow ###
+
+static func set_terms_and_privacy_policy_flow_enabled(enabled: bool) -> void:
+	if _plugin == null:
+		return
+		
+	_plugin.set_terms_and_privacy_policy_flow_enabled(enabled)
+
+
+static func set_privacy_policy_url(url_string: String) -> void:
+	if _plugin == null:
+		return
+		
+	_plugin.set_privacy_policy_url(url_string)
+
+
+static func set_terms_of_service_url(url_string: String) -> void:
+	if _plugin == null:
+		return
+		
+	_plugin.set_terms_of_service_url(url_string)
+
+
+static func set_consent_flow_debug_user_geography(user_geography: ConsentFlowUserGeography) -> void:
+	if _plugin == null:
+		return
+		
+	_plugin.set_consent_flow_debug_user_geography(str(user_geography))
+
+
+static func show_cmp_for_existing_user() -> CMPErrorInfo:
+	if _plugin == null:
+		return CMPErrorInfo.new(Dictionary());
+   
+	_plugin.show_cmp_for_existing_user()
+
+	var error: Dictionary = await _plugin.on_show_cmp_for_existing_user;
+	
+	if error.is_empty():
+		return null
+
+	return CMPErrorInfo.new(error)
+
+
+static func has_supported_cmp() -> bool:
+	if _plugin == null:
+		return false
+		
+	return _plugin.has_supported_cmp()
+
+
+### Segment Targeting ###
+
+static func add_segment(key: int, values: Array[int]) -> void:
+	if _plugin == null:
+		return
+		
+	_plugin.add_segment(key, values)
+
+
 ### Privacy ###
 	
 static func set_has_user_consent(has_user_consent: bool) -> void:
@@ -766,6 +826,13 @@ enum AppTrackingStatus {
 }
 
 
+enum ConsentFlowUserGeography {
+	UNKNOWN,
+	GDPR,
+	OTHER
+}
+
+
 enum AdViewPosition {
 	TOP_LEFT,
 	TOP_CENTER,
@@ -815,6 +882,14 @@ enum ErrorCode {
 }
 
 
+enum CMPErrorCode {
+	UNSPECIFIED = -1,
+	INTEGRATION_ERROR = 1,
+	FORM_UNAVAILABLE = 2,
+	FORM_NOT_REQUIRED = 3,
+}
+
+
 enum AdLoadState {
 	AD_LOAD_NOT_ATTEMPTED,
 	AD_LOADED,
@@ -850,10 +925,35 @@ static func get_app_tracking_status_string(status: AppTrackingStatus) -> String:
 			return "AUTHORIZED"
 
 
+static func get_consent_flow_user_geography(user_geography_string: String) -> ConsentFlowUserGeography:
+	match user_geography_string:
+		"0": 
+			return ConsentFlowUserGeography.UNKNOWN
+		"1": 
+			return ConsentFlowUserGeography.GDPR
+		"2":
+			return ConsentFlowUserGeography.OTHER
+		_: 
+			return ConsentFlowUserGeography.UNKNOWN
+			
+
+static func get_consent_flow_user_geography_string(user_geography: ConsentFlowUserGeography) -> String:
+	match user_geography:
+		ConsentFlowUserGeography.UNKNOWN: 
+			return "UNKNOWN"
+		ConsentFlowUserGeography.GDPR: 
+			return "GDPR"
+		ConsentFlowUserGeography.OTHER:
+			return "OTHER"
+		_: 
+			return "UNKNOWN"
+			
+
 class SdkConfiguration:
 	var is_successfully_initialized: bool
 	var country_code: String
 	var app_tracking_status: AppTrackingStatus
+	var consent_flow_user_geography: ConsentFlowUserGeography
 	var is_test_mode_enabled: bool
 
 
@@ -875,6 +975,9 @@ class SdkConfiguration:
 		var app_tracking_status_string = AppLovinMAXDictionaryUtils.get_string(event_props, "appTrackingStatus", "-1")
 		sdk_configuration.app_tracking_status = AppLovinMAX.get_app_tracking_status(app_tracking_status_string)
 
+		var consent_flow_user_geography_string = AppLovinMAXDictionaryUtils.get_string(event_props, "consentFlowUserGeography", "-1")
+		sdk_configuration.consent_flow_user_geography = AppLovinMAX.get_consent_flow_user_geography(consent_flow_user_geography_string)
+
 		return sdk_configuration
 		
 		
@@ -882,6 +985,7 @@ class SdkConfiguration:
 		return "[SdkConfiguration: is_successfully_initialized = " + str(is_successfully_initialized) +\
 			   ", country_code = " + country_code +\
 			   ", app_tracking_status = " + AppLovinMAX.get_app_tracking_status_string(app_tracking_status) +\
+			   ", consent_flow_user_geography = " + AppLovinMAX.get_consent_flow_user_geography_string(consent_flow_user_geography) +\
 			   ", is_test_mode_enabled = " + str(is_test_mode_enabled) + "]"
 
 
@@ -1048,3 +1152,22 @@ class ErrorInfo:
 		return stringbuilder + ", adLoadFailureInfo: " + ad_load_failure_info + "]"
 		
 		
+class CMPErrorInfo:
+	var code: CMPErrorCode
+	var message: String
+	var cmp_code: int
+	var cmp_message: String
+
+
+	func _init(error_info_dictionary: Dictionary):
+		code = AppLovinMAXDictionaryUtils.get_int(error_info_dictionary, "code", CMPErrorCode.UNSPECIFIED)
+		message = AppLovinMAXDictionaryUtils.get_string(error_info_dictionary, "message", "")
+		cmp_code = AppLovinMAXDictionaryUtils.get_int(error_info_dictionary, "cmpCode", int(CMPErrorCode.UNSPECIFIED))
+		cmp_message = AppLovinMAXDictionaryUtils.get_string(error_info_dictionary, "cmpMessage", "")
+
+
+	func _to_string() -> String:
+		return "[CMPErrorInfo code: " + str(code) +\
+			   ", message: " + message +\
+			   ", cmpCode: " + str(cmp_code) +\
+			   ", cmpMessage: " + cmp_message + "]"

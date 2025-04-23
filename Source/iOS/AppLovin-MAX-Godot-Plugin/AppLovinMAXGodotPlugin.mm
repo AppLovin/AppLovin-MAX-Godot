@@ -15,22 +15,21 @@
 #include "core/config/engine.h"
 #include "core/config/project_settings.h"
 
+#define VERSION @"1.1.1"
+
 #pragma mark - AppLovinMAXGodotPlugin Fields
 
 AppLovinMAXGodotPlugin *_plugin_instance;
 AppLovinMAXGodotManager *AppLovinMAXGodotPlugin::_appLovinMAX;
 ALSdk *AppLovinMAXGodotPlugin::_sdk;
+MASegmentCollectionBuilder *AppLovinMAXGodotPlugin::_segmentCollectionBuilder;
 
 bool AppLovinMAXGodotPlugin::_isSdkInitialized;
 
 NSString const *TAG = @"AppLovinMAXGodotPlugin";
 
 NSArray<NSString *> *AppLovinMAXGodotPlugin::_testDeviceIdentifiersToSet;
-NSNumber *AppLovinMAXGodotPlugin::_verboseLoggingToSet;
-NSNumber *AppLovinMAXGodotPlugin::_creativeDebuggerEnabledToSet;
 NSNumber *AppLovinMAXGodotPlugin::_exceptionHandlerEnabledToSet;
-NSMutableDictionary<NSString *, NSString *> *AppLovinMAXGodotPlugin::_extraParametersToSet;
-NSObject *AppLovinMAXGodotPlugin::_extraParametersToSetLock;
 
 #pragma mark - AppLovinMAXGodotPlugin Initialization
 
@@ -54,8 +53,8 @@ AppLovinMAXGodotPlugin::AppLovinMAXGodotPlugin()
     
     _plugin_instance = this;
     _appLovinMAX = [AppLovinMAXGodotManager shared];
-    _extraParametersToSet = [NSMutableDictionary dictionary];
-    _extraParametersToSetLock = [[NSObject alloc] init];
+    _sdk = [ALSdk shared];
+    _segmentCollectionBuilder = [MASegmentCollection builder];
 }
 
 AppLovinMAXGodotPlugin::~AppLovinMAXGodotPlugin()
@@ -64,6 +63,7 @@ AppLovinMAXGodotPlugin::~AppLovinMAXGodotPlugin()
     {
         _plugin_instance = NULL;
         _appLovinMAX = NULL;
+        _sdk = NULL;
     }
 }
 
@@ -74,6 +74,8 @@ AppLovinMAXGodotPlugin *AppLovinMAXGodotPlugin::get_instance() {
 void AppLovinMAXGodotPlugin::_bind_methods()
 {
     ADD_SIGNAL(MethodInfo(AppLovinMAXSignalSdkInitialization, PropertyInfo(Variant::DICTIONARY, "sdk_configuration")));
+    
+    ADD_SIGNAL(MethodInfo(AppLovinMAXSignalCmpOnShowForExistingUser, PropertyInfo(Variant::DICTIONARY, "cmp_error")));
     
     ADD_SIGNAL(MethodInfo(AppLovinMAXSignalBannerOnAdLoaded,
                           PropertyInfo(Variant::STRING, "ad_unit_identifier"),
@@ -198,6 +200,17 @@ void AppLovinMAXGodotPlugin::_bind_methods()
     ClassDB::bind_method(D_METHOD("is_tablet"), &AppLovinMAXGodotPlugin::is_tablet);
     ClassDB::bind_method(D_METHOD("is_physical_device"), &AppLovinMAXGodotPlugin::is_physical_device);
     
+    // Consent Flow
+    ClassDB::bind_method(D_METHOD("set_terms_and_privacy_policy_flow_enabled"), &AppLovinMAXGodotPlugin::set_terms_and_privacy_policy_flow_enabled);
+    ClassDB::bind_method(D_METHOD("set_privacy_policy_url"), &AppLovinMAXGodotPlugin::set_privacy_policy_url);
+    ClassDB::bind_method(D_METHOD("set_terms_of_service_url"), &AppLovinMAXGodotPlugin::set_terms_of_service_url);
+    ClassDB::bind_method(D_METHOD("set_consent_flow_debug_user_geography"), &AppLovinMAXGodotPlugin::set_consent_flow_debug_user_geography);
+    ClassDB::bind_method(D_METHOD("show_cmp_for_existing_user"), &AppLovinMAXGodotPlugin::show_cmp_for_existing_user);
+    ClassDB::bind_method(D_METHOD("has_supported_cmp"), &AppLovinMAXGodotPlugin::has_supported_cmp);
+
+    // Segment Targeting
+    ClassDB::bind_method(D_METHOD("add_segment"), &AppLovinMAXGodotPlugin::add_segment);
+
     // Privacy
     ClassDB::bind_method(D_METHOD("set_has_user_consent"), &AppLovinMAXGodotPlugin::set_has_user_consent);
     ClassDB::bind_method(D_METHOD("get_has_user_consent"), &AppLovinMAXGodotPlugin::get_has_user_consent);
@@ -288,14 +301,33 @@ void AppLovinMAXGodotPlugin::initialize(String sdk_key, Dictionary metadata, Arr
         [infoDict setValue: sdkKey forKey: @"AppLovinSdkKey"];
     }
     
-    _sdk = [_appLovinMAX initializeSdkWithSettings: generateSDKSettings(ad_unit_identifiers, metadata)
-                            andCompletionHandler:^(ALSdkConfiguration *configuration) {
+    ALSdkInitializationConfiguration *initConfig = [ALSdkInitializationConfiguration configurationWithSdkKey: sdkKey builderBlock:^(ALSdkInitializationConfigurationBuilder *builder) {
+        
+        builder.mediationProvider = ALMediationProviderMAX;
+        builder.pluginVersion = [@"Godot-" stringByAppendingString: VERSION];
+        builder.segmentCollection = [_segmentCollectionBuilder build];
+        builder.adUnitIdentifiers = NSARRAY(ad_unit_identifiers);
+
+        if ( _testDeviceIdentifiersToSet )
+        {
+            builder.testDeviceAdvertisingIdentifiers = _testDeviceIdentifiersToSet;
+            _testDeviceIdentifiersToSet = nil;
+        }
+
+        if ( _exceptionHandlerEnabledToSet )
+        {
+            builder.exceptionHandlerEnabled = _exceptionHandlerEnabledToSet.boolValue;
+            _exceptionHandlerEnabledToSet = nil;
+        }
+    }];
+
+    [_sdk.settings setExtraParameterForKey: @"applovin_godot_metadata" value: NSDICTIONARY(metadata).serializedString];
+
+    [_sdk initializeWithConfiguration: initConfig completionHandler:^(ALSdkConfiguration *configuration) {
         _isSdkInitialized = true;
         
         emit_signal(AppLovinMAXSignalSdkInitialization, get_sdk_configuration());
     }];
-    
-    setPendingExtraParametersIfNeeded( _sdk.settings );
 }
 
 bool AppLovinMAXGodotPlugin::is_initialized()
@@ -305,7 +337,7 @@ bool AppLovinMAXGodotPlugin::is_initialized()
 
 void AppLovinMAXGodotPlugin::show_mediation_debugger()
 {
-    if ( !_sdk )
+    if ( !_isSdkInitialized )
     {
         NSLog(@"[%@] Failed to show mediation debugger - please ensure the AppLovin MAX Godot Plugin has been initialized by calling 'AppLovinMAX.initialize()'!", TAG);
         return;
@@ -316,7 +348,7 @@ void AppLovinMAXGodotPlugin::show_mediation_debugger()
 
 void AppLovinMAXGodotPlugin::show_creative_debugger()
 {
-    if ( !_sdk )
+    if ( !_isSdkInitialized )
     {
         NSLog(@"[%@] Failed to show creative debugger - please ensure the AppLovin MAX Godot Plugin has been initialized by calling 'AppLovinMAX.initialize()'!", TAG);
         return;
@@ -327,14 +359,15 @@ void AppLovinMAXGodotPlugin::show_creative_debugger()
 
 Dictionary AppLovinMAXGodotPlugin::get_sdk_configuration()
 {
-    if ( !_sdk )
+    if ( !_sdk.configuration )
     {
         return Dictionary();
     }
     
     Dictionary sdk_configuration = Dictionary();
-    sdk_configuration["countryCode"] = _sdk.configuration.countryCode;
-    sdk_configuration["appTrackingStatus"] = @(_sdk.configuration.appTrackingTransparencyStatus).stringValue; // Deliberately name it `appTrackingStatus` to be a bit more generic (in case Android introduces a similar concept)
+    sdk_configuration["countryCode"] = GODOT_STRING(_sdk.configuration.countryCode);
+    sdk_configuration["appTrackingStatus"] = GODOT_STRING(@(_sdk.configuration.appTrackingTransparencyStatus).stringValue); // Deliberately name it `appTrackingStatus` to be a bit more generic (in case Android introduces a similar concept)
+    sdk_configuration["consentFlowUserGeography"] = GODOT_STRING(@(_sdk.configuration.consentFlowUserGeography).stringValue);
     sdk_configuration["isSuccessfullyInitialized"] = [_sdk isInitialized];
     sdk_configuration["isTestModeEnabled"] = [_sdk.configuration isTestModeEnabled];
     return sdk_configuration;
@@ -353,6 +386,87 @@ bool AppLovinMAXGodotPlugin::is_tablet()
 bool AppLovinMAXGodotPlugin::is_physical_device()
 {
     return !ALUtils.simulator;
+}
+
+#pragma mark - Consent Flow
+
+void AppLovinMAXGodotPlugin::set_terms_and_privacy_policy_flow_enabled(bool enabled)
+{
+    _sdk.settings.termsAndPrivacyPolicyFlowSettings.enabled = enabled;
+}
+
+void AppLovinMAXGodotPlugin::set_privacy_policy_url(String url_string)
+{
+    _sdk.settings.termsAndPrivacyPolicyFlowSettings.privacyPolicyURL = [NSURL URLWithString: NSSTRING(url_string)];
+}
+
+void AppLovinMAXGodotPlugin::set_terms_of_service_url(String url_string)
+{
+    _sdk.settings.termsAndPrivacyPolicyFlowSettings.termsOfServiceURL = [NSURL URLWithString: NSSTRING(url_string)];
+}
+
+void AppLovinMAXGodotPlugin::set_consent_flow_debug_user_geography(String user_geography)
+{
+    _sdk.settings.termsAndPrivacyPolicyFlowSettings.debugUserGeography = (ALConsentFlowUserGeography) NSSTRING(user_geography).intValue;
+}
+
+void AppLovinMAXGodotPlugin::show_cmp_for_existing_user()
+{
+    if ( !_isSdkInitialized )
+    {
+        NSLog(@"[%@] Failed to show CMP for existing user - please ensure the AppLovin MAX Godot Plugin has been initialized by calling 'AppLovinMAX.initialize()'!", TAG);
+        return;
+    }
+    
+    [_sdk.cmpService showCMPForExistingUserWithCompletion:^(ALCMPError *_Nullable error) {
+        
+        Dictionary cmp_error;
+
+        if ( error )
+        {
+            cmp_error["code"] = (int) error.code;
+            cmp_error["message"] = GODOT_STRING(error.message);
+            cmp_error["cmpCode"] =  (int) error.cmpCode;
+            cmp_error["cmpMessage"] = GODOT_STRING(error.cmpMessage);
+        }
+
+        call_deferred("emit_signal", AppLovinMAXSignalCmpOnShowForExistingUser, cmp_error);
+   }];
+}
+
+bool AppLovinMAXGodotPlugin::has_supported_cmp()
+{
+    return [_sdk.cmpService hasSupportedCMP];
+}
+
+#pragma mark - Segment Targeting
+
+void AppLovinMAXGodotPlugin::add_segment(int key, Array segment_values)
+{
+    if ( _isSdkInitialized )
+    {
+        NSLog(@"[%@] Segment must be added before calling 'AppLovinMAX.initialize()'!", TAG);
+        return;
+    }
+    
+    NSMutableArray<NSNumber *> *ns_number_array = [NSMutableArray arrayWithCapacity: segment_values.size()];
+
+    for ( int i = 0; i < segment_values.size(); i++ )
+    {
+        Variant item = segment_values[i];
+        if ( item.get_type() == Variant::INT )
+        {
+            int intVal = item;
+            [ns_number_array addObject: @(intVal)];
+        }
+        else
+        {
+            String strVal = item.stringify();
+            NSLog(@"[%@] Expected an integer for segment: '%@'", TAG, NSSTRING(strVal));
+        }
+    }
+
+    [_segmentCollectionBuilder addSegment: [[MASegment alloc] initWithKey: @(key) values: ns_number_array]];
 }
 
 #pragma mark - Privacy
@@ -664,56 +778,27 @@ void AppLovinMAXGodotPlugin::track_event(String name, Dictionary parameters)
 
 void AppLovinMAXGodotPlugin::set_muted(bool muted)
 {
-    if ( !_sdk ) return;
-    
     _sdk.settings.muted = muted;
 }
 
 bool AppLovinMAXGodotPlugin::is_muted()
 {
-    if ( !_sdk ) return false;
-    
     return _sdk.settings.muted;
 }
 
 void AppLovinMAXGodotPlugin::set_verbose_logging(bool enabled)
 {
-    if ( _sdk )
-    {
-        _sdk.settings.verboseLoggingEnabled = enabled;
-        _verboseLoggingToSet = nil;
-    }
-    else
-    {
-        _verboseLoggingToSet = @(enabled);
-    }
+    _sdk.settings.verboseLoggingEnabled = enabled;
 }
 
 bool AppLovinMAXGodotPlugin::is_verbose_logging_enabled()
 {
-    if ( _sdk )
-    {
-        return [_sdk.settings isVerboseLoggingEnabled];
-    }
-    else if ( _verboseLoggingToSet )
-    {
-        return _verboseLoggingToSet;
-    }
-
-    return false;
+    return [_sdk.settings isVerboseLoggingEnabled];
 }
 
 void AppLovinMAXGodotPlugin::set_creative_debugger_enabled(bool enabled)
 {
-    if ( _sdk )
-    {
-        _sdk.settings.creativeDebuggerEnabled = enabled;
-        _creativeDebuggerEnabledToSet = nil;
-    }
-    else
-    {
-        _creativeDebuggerEnabledToSet = @(enabled);
-    }
+    _sdk.settings.creativeDebuggerEnabled = enabled;
 }
 
 void AppLovinMAXGodotPlugin::set_test_device_advertising_identifiers(Array advertising_identifiers)
@@ -724,15 +809,7 @@ void AppLovinMAXGodotPlugin::set_test_device_advertising_identifiers(Array adver
 
 void AppLovinMAXGodotPlugin::set_exception_handler_enabled(bool enabled)
 {
-    if ( _sdk )
-    {
-        _sdk.settings.exceptionHandlerEnabled = enabled;
-        _exceptionHandlerEnabledToSet = nil;
-    }
-    else
-    {
-        _exceptionHandlerEnabledToSet = @(enabled);
-    }
+    _exceptionHandlerEnabledToSet = @(enabled);
 }
 
 void AppLovinMAXGodotPlugin::set_extra_parameter(String key, String value)
@@ -744,71 +821,5 @@ void AppLovinMAXGodotPlugin::set_extra_parameter(String key, String value)
         return;
     }
     
-    if ( _sdk )
-    {
-        ALSdkSettings *settings = _sdk.settings;
-        [settings setExtraParameterForKey: stringKey value: NSSTRING(value)];
-        setPendingExtraParametersIfNeeded( settings );
-    }
-    else
-    {
-        @synchronized ( _extraParametersToSetLock )
-        {
-            _extraParametersToSet[stringKey] = NSSTRING(value);
-        }
-    }
-}
-
-#pragma mark - Utility/Private Methods
-
-ALSdkSettings *AppLovinMAXGodotPlugin::generateSDKSettings(Array ad_unit_identifiers, Dictionary metadata)
-{
-    ALSdkSettings *settings = [[ALSdkSettings alloc] init];
-    
-    if ( _testDeviceIdentifiersToSet )
-    {
-        settings.testDeviceAdvertisingIdentifiers = _testDeviceIdentifiersToSet;
-        _testDeviceIdentifiersToSet = nil;
-    }
-    
-    if ( _verboseLoggingToSet )
-    {
-        settings.verboseLoggingEnabled = _verboseLoggingToSet.boolValue;
-        _verboseLoggingToSet = nil;
-    }
-
-    if ( _creativeDebuggerEnabledToSet )
-    {
-        settings.creativeDebuggerEnabled = _creativeDebuggerEnabledToSet.boolValue;
-        _creativeDebuggerEnabledToSet = nil;
-    }
-
-    if ( _exceptionHandlerEnabledToSet )
-    {
-        settings.exceptionHandlerEnabled = _exceptionHandlerEnabledToSet.boolValue;
-        _exceptionHandlerEnabledToSet = nil;
-    }
-    
-    settings.initializationAdUnitIdentifiers = NSARRAY(ad_unit_identifiers);
-
-    [settings setExtraParameterForKey: @"applovin_godot_metadata" value: NSDICTIONARY(metadata).serializedString];
-    
-    return settings;
-}
-
-void AppLovinMAXGodotPlugin::setPendingExtraParametersIfNeeded(ALSdkSettings *settings)
-{
-    NSDictionary *extraParameters;
-    @synchronized ( _extraParametersToSetLock )
-    {
-        if ( _extraParametersToSet.count <= 0 ) return;
-        
-        extraParameters = [NSDictionary dictionaryWithDictionary: _extraParametersToSet];
-        [_extraParametersToSet removeAllObjects];
-    }
-    
-    for ( NSString *key in extraParameters.allKeys )
-    {
-        [settings setExtraParameterForKey: key value: extraParameters[key]];
-    }
+    [_sdk.settings setExtraParameterForKey: stringKey value: NSSTRING(value)];
 }

@@ -1,15 +1,20 @@
 package com.applovin.godot;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.applovin.mediation.MaxSegment;
+import com.applovin.mediation.MaxSegmentCollection;
+import com.applovin.sdk.AppLovinCmpError;
+import com.applovin.sdk.AppLovinMediationProvider;
 import com.applovin.sdk.AppLovinPrivacySettings;
 import com.applovin.sdk.AppLovinSdk;
 import com.applovin.sdk.AppLovinSdkConfiguration;
-import com.applovin.sdk.AppLovinSdkSettings;
+import com.applovin.sdk.AppLovinSdkInitializationConfiguration;
 import com.applovin.sdk.AppLovinSdkUtils;
 
 import org.godotengine.godot.Dictionary;
@@ -17,14 +22,13 @@ import org.godotengine.godot.Godot;
 import org.godotengine.godot.plugin.GodotPlugin;
 import org.godotengine.godot.plugin.SignalInfo;
 import org.godotengine.godot.plugin.UsedByGodot;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class AppLovinMAXGodotPlugin
@@ -32,9 +36,11 @@ public class AppLovinMAXGodotPlugin
 {
     private final static String TAG     = "AppLovinMAX-Godot";
     private static final String SDK_TAG = "AppLovinSdk";
+    private static final String VERSION = "1.1.1";
 
-    private final AppLovinMAXGodotManager appLovinMAX;
-    private       AppLovinSdk             sdk;
+    private final AppLovinMAXGodotManager      appLovinMAX;
+    private final AppLovinSdk                  sdk;
+    private final MaxSegmentCollection.Builder segmentCollectionBuilder;
 
     private boolean isPluginInitialized = false;
     private boolean isSdkInitialized    = false;
@@ -44,12 +50,7 @@ public class AppLovinMAXGodotPlugin
 
     // Store these values if pub attempts to set it before calling initializeSdk()
     private List<String> testDeviceAdvertisingIds;
-    private Boolean      verboseLogging;
-    private Boolean      creativeDebuggerEnabled;
     private Boolean      exceptionHandlerEnabled;
-
-    private final Map<String, String> extraParametersToSet     = new HashMap<>();
-    private final Object              extraParametersToSetLock = new Object();
 
     public AppLovinMAXGodotPlugin(final Godot godot)
     {
@@ -57,7 +58,14 @@ public class AppLovinMAXGodotPlugin
 
         AppLovinMAXGodotManager.setGodotActivity( getActivity() );
         appLovinMAX = new AppLovinMAXGodotManager( new WeakReference<>( this ) );
+        sdk = AppLovinSdk.getInstance( getActivity() );
+        segmentCollectionBuilder = MaxSegmentCollection.builder();
         isPluginInitialized = true;
+    }
+
+    public AppLovinSdk getSdk()
+    {
+        return sdk;
     }
 
     @Override
@@ -88,6 +96,9 @@ public class AppLovinMAXGodotPlugin
         HashSet<SignalInfo> signals = new HashSet<>();
 
         signals.add( new SignalInfo( Signal.SDK_INITIALIZATION,
+                                     Dictionary.class ) );
+
+        signals.add( new SignalInfo( Signal.SHOW_CMP_FOR_EXISTING_USER,
                                      Dictionary.class ) );
 
         signals.add( new SignalInfo( Signal.BANNER_ON_AD_LOADED,
@@ -207,18 +218,31 @@ public class AppLovinMAXGodotPlugin
     @UsedByGodot
     public void initialize(String sdkKey, Dictionary metadata, String[] adUnitIds)
     {
-        sdk = appLovinMAX.initializeSdkWithCompletionHandler( sdkKey, generateSdkSettings( adUnitIds, metadata ), new AppLovinMAXGodotManager.Listener()
+        AppLovinSdkInitializationConfiguration.Builder initConfigBuilder = AppLovinSdkInitializationConfiguration.builder( sdkKey, getActivity() );
+        initConfigBuilder.setPluginVersion( "Godot-" + VERSION );
+        initConfigBuilder.setMediationProvider( AppLovinMediationProvider.MAX );
+        initConfigBuilder.setSegmentCollection( segmentCollectionBuilder.build() );
+        initConfigBuilder.setAdUnitIds( Arrays.asList( adUnitIds ) );
+
+        if ( testDeviceAdvertisingIds != null )
         {
-            @Override
-            public void onSdkInitializationComplete(final AppLovinSdkConfiguration sdkConfiguration)
-            {
-                isSdkInitialized = true;
+            initConfigBuilder.setTestDeviceAdvertisingIds( testDeviceAdvertisingIds );
+            testDeviceAdvertisingIds = null;
+        }
 
-                emitSignal( Signal.SDK_INITIALIZATION, get_sdk_configuration() );
-            }
+        if ( exceptionHandlerEnabled != null )
+        {
+            initConfigBuilder.setExceptionHandlerEnabled( exceptionHandlerEnabled );
+            exceptionHandlerEnabled = null;
+        }
+
+        sdk.getSettings().setExtraParameter( "applovin_godot_metadata", Utils.toJSONString( metadata ) );
+
+        sdk.initialize( initConfigBuilder.build(), appLovinSdkConfiguration -> {
+            isSdkInitialized = true;
+
+            emitSignal( Signal.SDK_INITIALIZATION, get_sdk_configuration() );
         } );
-
-        setPendingExtraParametersIfNeeded( sdk.getSettings() );
     }
 
     @UsedByGodot
@@ -260,6 +284,7 @@ public class AppLovinMAXGodotPlugin
 
         Dictionary configuration = new Dictionary();
         configuration.put( "countryCode", sdkConfiguration.getCountryCode() );
+        configuration.put( "consentFlowUserGeography", Integer.toString( sdkConfiguration.getConsentFlowUserGeography().ordinal() ) );
         configuration.put( "isSuccessfullyInitialized", sdk.isInitialized() );
         configuration.put( "isTestModeEnabled", sdkConfiguration.isTestModeEnabled() );
 
@@ -283,6 +308,89 @@ public class AppLovinMAXGodotPlugin
     {
         return !AppLovinSdkUtils.isEmulator();
     }
+
+    //region Consent Flow
+
+    @UsedByGodot
+    public void set_terms_and_privacy_policy_flow_enabled(boolean enabled)
+    {
+        sdk.getSettings().getTermsAndPrivacyPolicyFlowSettings().setEnabled( enabled );
+    }
+
+    @UsedByGodot
+    public void set_privacy_policy_url(String urlString)
+    {
+        sdk.getSettings().getTermsAndPrivacyPolicyFlowSettings().setPrivacyPolicyUri( Uri.parse( urlString ) );
+    }
+
+    @UsedByGodot
+    public void set_terms_of_service_url(String urlString)
+    {
+        sdk.getSettings().getTermsAndPrivacyPolicyFlowSettings().setTermsOfServiceUri( Uri.parse( urlString ) );
+    }
+
+    @UsedByGodot
+    public void set_consent_flow_debug_user_geography(String userGeographyIndexStr)
+    {
+        int index = Integer.parseInt( userGeographyIndexStr );
+        AppLovinSdkConfiguration.ConsentFlowUserGeography userGeography = AppLovinSdkConfiguration.ConsentFlowUserGeography.values()[index];
+        sdk.getSettings().getTermsAndPrivacyPolicyFlowSettings().setDebugUserGeography( userGeography );
+    }
+
+    @UsedByGodot
+    public void show_cmp_for_existing_user()
+    {
+        if ( !isSdkInitialized )
+        {
+            Log.e( "[" + AppLovinMAXGodotPlugin.TAG + "]", "Failed to show CMP for existing user - please ensure the AppLovin MAX Godot Plugin has been initialized by calling 'AppLovinMAX.initialize();'!" );
+            return;
+        }
+
+        sdk.getCmpService().showCmpForExistingUser( getCurrentActivity(), (@Nullable final AppLovinCmpError cmpError) -> {
+
+            Dictionary error = new Dictionary();
+
+            if ( cmpError != null )
+            {
+                error.put( "code", cmpError.getCode().getValue() );
+                error.put( "message", cmpError.getMessage() );
+                error.put( "cmpCode", cmpError.getCmpCode() );
+                error.put( "cmpMessage", cmpError.getCmpMessage() );
+            }
+
+            super.emitSignal( Signal.SHOW_CMP_FOR_EXISTING_USER, error );
+        } );
+    }
+
+    @UsedByGodot
+    public boolean has_supported_cmp()
+    {
+        return sdk.getCmpService().hasSupportedCmp();
+    }
+
+    //endregion
+
+    //region Segment Targeting
+
+    @UsedByGodot
+    public void add_segment(int key, int[] values)
+    {
+        if ( isSdkInitialized )
+        {
+            Log.e( "[" + AppLovinMAXGodotPlugin.TAG + "]", "Segment must be added before calling 'AppLovinMAX.initialize();'!" );
+            return;
+        }
+
+        List<Integer> intArray = new ArrayList<>();
+        for ( int i : values )
+        {
+            intArray.add( i );
+        }
+
+        segmentCollectionBuilder.addSegment( new MaxSegment( key, intArray ) );
+    }
+
+    //endregion
 
     //region Privacy
 
@@ -428,7 +536,7 @@ public class AppLovinMAXGodotPlugin
         return AppLovinMAXGodotManager.getAdaptiveBannerHeight( width );
     }
 
-    //endgion
+    //endregion
 
     //region MRec
 
@@ -649,44 +757,19 @@ public class AppLovinMAXGodotPlugin
     @UsedByGodot
     public void set_verbose_logging(boolean enabled)
     {
-        if ( sdk != null )
-        {
-            sdk.getSettings().setVerboseLogging( enabled );
-            verboseLogging = null;
-        }
-        else
-        {
-            verboseLogging = enabled;
-        }
+        sdk.getSettings().setVerboseLogging( enabled );
     }
 
     @UsedByGodot
     public boolean is_verbose_logging_enabled()
     {
-        if ( sdk != null )
-        {
-            return sdk.getSettings().isVerboseLoggingEnabled();
-        }
-        else if ( verboseLogging != null )
-        {
-            return verboseLogging;
-        }
-
-        return false;
+        return sdk.getSettings().isVerboseLoggingEnabled();
     }
 
     @UsedByGodot
     public void set_creative_debugger_enabled(boolean enabled)
     {
-        if ( sdk != null )
-        {
-            sdk.getSettings().setCreativeDebuggerEnabled( enabled );
-            creativeDebuggerEnabled = null;
-        }
-        else
-        {
-            creativeDebuggerEnabled = enabled;
-        }
+        sdk.getSettings().setCreativeDebuggerEnabled( enabled );
     }
 
     @UsedByGodot
@@ -698,15 +781,7 @@ public class AppLovinMAXGodotPlugin
     @UsedByGodot
     public void set_exception_handler_enabled(boolean enabled)
     {
-        if ( sdk != null )
-        {
-            sdk.getSettings().setExceptionHandlerEnabled( enabled );
-            exceptionHandlerEnabled = null;
-        }
-        else
-        {
-            exceptionHandlerEnabled = enabled;
-        }
+        exceptionHandlerEnabled = enabled;
     }
 
     @UsedByGodot
@@ -718,19 +793,7 @@ public class AppLovinMAXGodotPlugin
             return;
         }
 
-        if ( sdk != null )
-        {
-            AppLovinSdkSettings settings = sdk.getSettings();
-            settings.setExtraParameter( key, value );
-            setPendingExtraParametersIfNeeded( settings );
-        }
-        else
-        {
-            synchronized ( extraParametersToSetLock )
-            {
-                extraParametersToSet.put( key, value );
-            }
-        }
+        sdk.getSettings().setExtraParameter( key, value );
     }
 
     //region Private
@@ -738,58 +801,6 @@ public class AppLovinMAXGodotPlugin
     private Activity getCurrentActivity()
     {
         return activity != null ? activity.get() : getActivity();
-    }
-
-    private void setPendingExtraParametersIfNeeded(final AppLovinSdkSettings settings)
-    {
-        Map<String, String> extraParameters;
-        synchronized ( extraParametersToSetLock )
-        {
-            if ( extraParametersToSet.size() <= 0 ) return;
-
-            extraParameters = new HashMap<>( extraParametersToSet );
-            extraParametersToSet.clear();
-        }
-
-        for ( final String key : extraParameters.keySet() )
-        {
-            settings.setExtraParameter( key, extraParameters.get( key ) );
-        }
-    }
-
-    private AppLovinSdkSettings generateSdkSettings(final String[] adUnitIds, final Dictionary metaData)
-    {
-        AppLovinSdkSettings settings = new AppLovinSdkSettings( getCurrentActivity() );
-
-        if ( testDeviceAdvertisingIds != null && !testDeviceAdvertisingIds.isEmpty() )
-        {
-            settings.setTestDeviceAdvertisingIds( testDeviceAdvertisingIds );
-            testDeviceAdvertisingIds = null;
-        }
-
-        if ( verboseLogging != null )
-        {
-            settings.setVerboseLogging( verboseLogging );
-            verboseLogging = null;
-        }
-
-        if ( creativeDebuggerEnabled != null )
-        {
-            settings.setCreativeDebuggerEnabled( creativeDebuggerEnabled );
-            creativeDebuggerEnabled = null;
-        }
-
-        if ( exceptionHandlerEnabled != null )
-        {
-            settings.setExceptionHandlerEnabled( exceptionHandlerEnabled );
-            exceptionHandlerEnabled = null;
-        }
-
-        settings.setInitializationAdUnitIds( Arrays.asList( adUnitIds ) );
-
-        settings.setExtraParameter( "applovin_godot_metadata", Utils.toJSONString( metaData ) );
-
-        return settings;
     }
 
     //endregion

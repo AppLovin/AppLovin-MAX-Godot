@@ -12,8 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AppLovinMAXGodotManager : NSObject
 
-- (ALSdk *)initializeSdkWithSettings:(ALSdkSettings *)settings andCompletionHandler:(ALSdkInitializationCompletionHandler)completionHandler;
-
 - (void)createBannerWithAdUnitIdentifier:(NSString *)adUnitIdentifier atPosition:(NSString *)bannerPosition;
 - (void)createBannerWithAdUnitIdentifier:(NSString *)adUnitIdentifier x:(CGFloat)xOffset y:(CGFloat)yOffset;
 - (void)loadBannerWithAdUnitIdentifier:(NSString *)adUnitIdentifier;

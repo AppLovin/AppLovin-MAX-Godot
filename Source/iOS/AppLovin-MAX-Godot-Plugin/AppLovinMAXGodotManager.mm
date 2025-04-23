@@ -13,7 +13,6 @@
 #import "Categories/NSObject+AppLovinMAXGodotPlugin.h"
 #import "Categories/NSString+AppLovinMAXGodotPlugin.h"
 
-#define VERSION @"1.1.1"
 #define KEY_WINDOW [UIApplication sharedApplication].keyWindow
 #define DEVICE_SPECIFIC_ADVIEW_AD_FORMAT ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) ? MAAdFormat.leader : MAAdFormat.banner
 #define IS_VERTICAL_BANNER_POSITION(_POS) ( [@"center_left" isEqual: adViewPosition] || [@"center_right" isEqual: adViewPosition] )
@@ -106,6 +105,8 @@ static NSString *const DEFAULT_AD_VIEW_POSITION = @"top_left";
     self = [super init];
     if ( self )
     {
+        self.sdk = [ALSdk shared];
+
         self.interstitials = [NSMutableDictionary dictionaryWithCapacity: 2];
         self.appOpenAds = [NSMutableDictionary dictionaryWithCapacity: 2];
         self.rewardedAds = [NSMutableDictionary dictionaryWithCapacity: 2];
@@ -148,32 +149,6 @@ static NSString *const DEFAULT_AD_VIEW_POSITION = @"top_left";
         }];
     }
     return self;
-}
-
-#pragma mark - Plugin Initialization
-
-- (ALSdk *)initializeSdkWithSettings:(ALSdkSettings *)settings andCompletionHandler:(ALSdkInitializationCompletionHandler)completionHandler
-{
-    NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
-    NSString *sdkKey = infoDict[@"AppLovinSdkKey"];
-    if ( [sdkKey al_isValidString] )
-    {
-        self.sdk = [ALSdk sharedWithKey: sdkKey settings: settings];
-    }
-    else
-    {
-        self.sdk = [ALSdk sharedWithSettings: settings];
-    }
-    
-    [self.sdk setPluginVersion: [@"Godot-" stringByAppendingString: VERSION]];
-    self.sdk.mediationProvider = @"max";
-    [self.sdk initializeSdkWithCompletionHandler:^(ALSdkConfiguration *configuration)
-     {
-        // Note: internal state should be updated first
-        completionHandler( configuration );
-    }];
-    
-    return self.sdk;
 }
 
 #pragma mark - Banners

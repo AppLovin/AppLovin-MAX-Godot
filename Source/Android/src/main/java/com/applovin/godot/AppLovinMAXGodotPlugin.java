@@ -22,7 +22,6 @@ import org.godotengine.godot.Godot;
 import org.godotengine.godot.plugin.GodotPlugin;
 import org.godotengine.godot.plugin.SignalInfo;
 import org.godotengine.godot.plugin.UsedByGodot;
-import org.jetbrains.annotations.Nullable;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -346,7 +345,7 @@ public class AppLovinMAXGodotPlugin
             return;
         }
 
-        sdk.getCmpService().showCmpForExistingUser( getCurrentActivity(), (@Nullable final AppLovinCmpError cmpError) -> {
+        sdk.getCmpService().showCmpForExistingUser( getCurrentActivity(), (final AppLovinCmpError cmpError) -> {
 
             Dictionary error = new Dictionary();
 
